@@ -13,7 +13,7 @@ export default function TweetBox() {
    const [input, setInput] = useState<string>("")
 
    return (
-      <div className="flex space-x-2 p-5 border-t-2 border-b-2">
+      <div className="flex space-x-2 border-t-2 border-b-2 p-5 transition dark:border-gray-500">
          <Image
             src={placeholder}
             alt=""
@@ -29,7 +29,7 @@ export default function TweetBox() {
                   onChange={(e) => setInput(e.target.value)}
                   type="text"
                   placeholder="What's Happening?"
-                  className=" h-24 w-full text-xl text-gray-400 outline-none placeholder:text-xl"
+                  className=" h-24 w-full bg-transparent text-xl text-gray-400 outline-none placeholder:text-xl dark:text-gray-200"
                />
                <div className="flex items-center">
                   <div className="flex flex-1 space-x-2 text-twitter">

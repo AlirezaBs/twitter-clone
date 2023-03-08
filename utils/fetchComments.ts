@@ -1,9 +1,14 @@
-import { Comments } from './../typings.d';
+import { Comments } from "./../typings.d"
 
 export const fetchComments = async (tweetId: string) => {
-    const res = await fetch(`/api/getComments?tweetId=${tweetId}`)
+   const res = await fetch(`/api/getComments?tweetId=${tweetId}`)
 
-    const comments: Comments[] = await res.json()
+   if (res.status !== 200) {
+      console.log("can't fetch data")
+      return
+   }
 
-    return comments
+   const comments: Comments[] = await res.json()
+
+   return comments
 }

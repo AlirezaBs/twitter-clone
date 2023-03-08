@@ -37,7 +37,7 @@ export default function CommentsComponent({ comments }: Props) {
                      />
                   </div>
 
-                  <p className="pt-4 text-gray-700">{comment.comment}</p>
+                  <p className="pt-4 text-gray-700 transition dark:text-gray-200">{comment.comment}</p>
                </div>
             </div>
          ))}

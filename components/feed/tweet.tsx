@@ -20,8 +20,10 @@ export default function TweetComponent({ tweet }: Props) {
    const [showCommets, setShowComments] = useState<boolean>(false)
 
    const refreshComments = async () => {
-      const allComments: Comments[] = await fetchComments(tweet._id)
-      setComments(allComments)
+      const allComments = await fetchComments(tweet._id)
+      if (allComments) {
+         setComments(allComments)
+      }
    }
 
    useEffect(() => {
@@ -30,7 +32,7 @@ export default function TweetComponent({ tweet }: Props) {
    }, [])
 
    return (
-      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-100 p-5">
+      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-100 dark:border-gray-500 p-5">
          <div className="flex space-x-3">
             <Image
                src={tweet.profileImg}
@@ -73,7 +75,9 @@ export default function TweetComponent({ tweet }: Props) {
          <div className="mt-5 flex justify-between">
             <div
                onClick={() => setShowComments(!showCommets)}
-               className={`duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110 ${showCommets && "text-gray-800 scale-110"}`}
+               className={`duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110 ${
+                  showCommets && "scale-110 text-gray-800 dark:text-gray-100"
+               }`}
             >
                <ChatAlt2Icon className="h-5 w-5" />
                <p>{comments.length}</p>
@@ -83,7 +87,7 @@ export default function TweetComponent({ tweet }: Props) {
                <SwitchHorizontalIcon className="h-5 w-5" />
             </div>
 
-            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110">
+            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110 hover:text-red-300">
                <HeartIcon className="h-5 w-5" />
             </div>
 

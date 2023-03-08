@@ -32,7 +32,7 @@ export default function Ffdeed({ tweets: tweetsProp }: Props) {
    }, [tweetsProp, tweets])
 
    return (
-      <div className="col-span-8 h-screen overflow-scroll border-x-2 md:col-span-7 lg:col-span-5">
+      <div className="col-span-8 h-screen overflow-scroll border-x-2 transition dark:border-gray-600 md:col-span-7 lg:col-span-5">
          <div className="my-5 flex items-center justify-between">
             <h1 className="pl-5 pb-0 text-xl font-bold">Home</h1>
             <RefreshIcon

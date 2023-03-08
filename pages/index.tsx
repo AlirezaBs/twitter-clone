@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react'
 import Head from "next/head"
 import Sidebar from "@/components/sidebar/sidebar"
 import Feed from "@/components/feed/feed"
@@ -13,7 +14,16 @@ interface Props {
 }
 
 export default function Home({ tweets, error }: Props) {
+   const [loaded, setLoaded] = useState<Boolean>(false)
+   
+   useEffect(() => {
+      setLoaded(true)
+   }, [])
 
+   if (!loaded) {
+      return null
+   }
+   
    if (error) {
       return (
          <div className="flex h-screen items-center justify-center">
@@ -21,9 +31,8 @@ export default function Home({ tweets, error }: Props) {
          </div>
       )
    }
-
    return (
-      <div className="mx-auto max-h-screen overflow-hidden lg:max-w-6xl">
+      <div className=" bg-bgLight transition-colors dark:bg-bgDark">
          <Head>
             <title>Twitter 2.0</title>
             <meta
@@ -32,14 +41,18 @@ export default function Home({ tweets, error }: Props) {
             />
             <link rel="icon" href="/favicon.ico" />
          </Head>
-         <div><Toaster /></div>
-         <main className="grid grid-cols-10">
-            <Sidebar />
+         <div className="mx-auto max-h-screen overflow-hidden lg:max-w-6xl">
+            <div>
+               <Toaster />
+            </div>
+            <main className="grid grid-cols-10">
+               <Sidebar />
 
-            <Feed tweets={tweets} />
+               <Feed tweets={tweets} />
 
-            <Widegts />
-         </main>
+               <Widegts />
+            </main>
+         </div>
       </div>
    )
 }
