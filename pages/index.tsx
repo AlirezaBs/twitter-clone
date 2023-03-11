@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from "react"
 import Head from "next/head"
 import Sidebar from "@/components/sidebar/sidebar"
 import Feed from "@/components/feed/feed"
@@ -7,6 +7,7 @@ import { GetServerSideProps } from "next"
 import { fetchTweets } from "@/utils/fetchTweets"
 import { Tweet } from "@/typings"
 import { Toaster } from "react-hot-toast"
+import SplashScreen from "@/components/splashScreen"
 
 interface Props {
    tweets: Tweet[]
@@ -14,16 +15,18 @@ interface Props {
 }
 
 export default function Home({ tweets, error }: Props) {
-   const [loaded, setLoaded] = useState<Boolean>(false)
-   
+   const [mounted, setMounted] = useState<Boolean>(false)
+
    useEffect(() => {
-      setLoaded(true)
+      setTimeout(() => {
+         setMounted(true)
+      }, 2000)
    }, [])
 
-   if (!loaded) {
-      return null
+   if (!mounted) {
+      return <SplashScreen />
    }
-   
+
    if (error) {
       return (
          <div className="flex h-screen items-center justify-center">

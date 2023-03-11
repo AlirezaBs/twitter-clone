@@ -9,7 +9,7 @@ import {
    HomeIcon,
    DotsCircleHorizontalIcon,
 } from "@heroicons/react/outline"
-import twiiterLogo from "../../public/Twitter-logo.svg.webp"
+import twiiterLogo from "../../public/Twitter-logo.svg"
 import SidebarRow from "./sidebarRow"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/router"

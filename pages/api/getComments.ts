@@ -18,9 +18,18 @@ export default async function handler(
 ) {
    const { tweetId } = req.query
 
-   const comments: Comments[] = await sanityClient.fetch(commentQuery, {
-      tweetId,
-   })
+   try {
+      const comments: Comments[] = await sanityClient.fetch(commentQuery, {
+         tweetId,
+      })
 
-   res.status(200).json(comments)
+      res.json(comments)
+   } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+         res.status(403).end({ error: "Forbidden" })
+      } else {
+         // Handle other errors
+         res.status(500).end({ error: "Internal Server Error" })
+      }
+   }
 }
