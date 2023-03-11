@@ -51,7 +51,7 @@ export default function Home({ tweets, error }: Props) {
             <main className="grid grid-cols-10">
                <Sidebar />
 
-               <Feed tweets={tweets} />
+               <Feed tweets={tweets} /> 
 
                <Widegts />
             </main>
