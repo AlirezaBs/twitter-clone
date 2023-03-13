@@ -9,12 +9,12 @@ import { Tweet } from "@/typings"
 import { Toaster } from "react-hot-toast"
 import SplashScreen from "@/components/splashScreen"
 
-interface Props {
-   tweets: Tweet[]
-   error?: boolean
-}
+// interface Props {
+//    tweets: Tweet[]
+//    error?: boolean
+// }
 
-export default function Home({ tweets, error }: Props) {
+export default function Home() {
    const [mounted, setMounted] = useState<Boolean>(false)
 
    useEffect(() => {
@@ -27,13 +27,13 @@ export default function Home({ tweets, error }: Props) {
       return <SplashScreen />
    }
 
-   if (error) {
-      return (
-         <div className="flex h-screen items-center justify-center">
-            Can not fetch any data, check your INTERNET or PROXY
-         </div>
-      )
-   }
+   // if (error) {
+   //    return (
+   //       <div className="flex h-screen items-center justify-center">
+   //          Can not fetch any data, check your INTERNET or PROXY
+   //       </div>
+   //    )
+   // }
    return (
       <div className=" bg-bgLight transition-colors dark:bg-bgDark">
          <Head>
@@ -51,7 +51,7 @@ export default function Home({ tweets, error }: Props) {
             <main className="grid grid-cols-10">
                <Sidebar />
 
-               <Feed tweets={tweets} />
+               <Feed />
 
                <Widegts />
             </main>
@@ -60,20 +60,20 @@ export default function Home({ tweets, error }: Props) {
    )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-   const tweets = await fetchTweets()
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//    const tweets = await fetchTweets()
 
-   if (tweets === undefined) {
-      return {
-         props: {
-            error: true,
-         },
-      }
-   }
+//    if (tweets === undefined) {
+//       return {
+//          props: {
+//             error: true,
+//          },
+//       }
+//    }
 
-   return {
-      props: {
-         tweets,
-      },
-   }
-}
+//    return {
+//       props: {
+//          tweets,
+//       },
+//    }
+// }
