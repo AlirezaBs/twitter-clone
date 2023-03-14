@@ -2,8 +2,6 @@ import { RefreshIcon } from "@heroicons/react/outline"
 import React, { useEffect, useState } from "react"
 import TweetBox from "./tweetBox"
 import { Tweet } from "@/typings"
-// import TweetComponent from "./tweet"
-import { fetchTweets } from "@/utils/fetchTweets"
 import toast from "react-hot-toast"
 
 interface Props {

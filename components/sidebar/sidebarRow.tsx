@@ -14,7 +14,7 @@ export default function SidebarRow({ Icon, title, active }: Props) {
          }`}
       >
          <Icon className="h-6 w-6" />
-         <p className="hidden text-base font-light md:inline-flex lg:text-xl">
+         <p className="hidden text-base font-light lg:inline-flex lg:text-xl">
             {title}
          </p>
       </div>

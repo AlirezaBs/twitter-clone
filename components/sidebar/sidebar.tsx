@@ -24,7 +24,7 @@ export default function Sidebar() {
    }
 
    return (
-      <div className="col-span-2 flex flex-col items-center px-4 pt-3 md:items-start ">
+      <div className="col-span-2 flex flex-col items-center px-4 pt-3 lg:items-start ">
          <Image
             onClick={toggleTheme}
             src={twiiterLogo}

@@ -13,25 +13,28 @@
   "pluginOptions": {},
   "attributes": {
     "comment": {
-      "type": "text"
-    },
-    "username": {
-      "type": "string",
+      "type": "text",
       "required": true
     },
-    "profileImage": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images"
-      ]
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "comments"
+    },
+    "likes": {
+      "type": "integer",
+      "default": 0
     },
     "tweet": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::tweet.tweet",
       "inversedBy": "comments"
+    },
+    "blockComment": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

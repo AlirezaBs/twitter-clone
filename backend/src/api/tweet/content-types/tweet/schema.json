@@ -32,10 +32,11 @@
       "type": "integer",
       "default": 0
     },
-    "username": {
-      "type": "string",
-      "required": true,
-      "unique": false
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tweets"
     },
     "comments": {
       "type": "relation",
