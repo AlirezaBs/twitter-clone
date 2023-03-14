@@ -3,15 +3,18 @@ import React, { useEffect, useState } from "react"
 import TweetBox from "./tweetBox"
 import { Tweet } from "@/typings"
 import toast from "react-hot-toast"
+import TweetComponent from "./tweet"
 
 interface Props {
    tweets: Tweet[]
 }
 
-export default function Ffdeed() {
-   // const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
-   const [loading, setLoading] = useState<boolean>(true)
 
+export default function Feed({tweets: tweetsProp}: Props) {
+   const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
+   const [loading, setLoading] = useState<boolean>(false)
+
+   
    // const handleRefresh = async () => {
    //    setLoading(true)
    //    const tweets = await fetchTweets()
@@ -43,15 +46,15 @@ export default function Ffdeed() {
             <TweetBox />
          </div>
 
-         {/* {!!loading ? (
+         {!!loading ? (
             <div>skleton loading</div>
          ) : (
             <div>
                {tweets.map((tweet) => (
-                  <TweetComponent key={tweet._id} tweet={tweet} />
+                  <TweetComponent key={tweet.id} tweet={tweet} />
                ))}
             </div>
-         )} */}
+         )}
       </div>
    )
 }

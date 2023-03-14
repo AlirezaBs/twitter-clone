@@ -21,10 +21,11 @@ export default function Home({ tweets, error }: Props) {
 
    console.log(tweets)
 
+
    useEffect(() => {
       setTimeout(() => {
          setMounted(true)
-      }, 2000)
+      }, 1000)
    }, [])
 
    if (!mounted) {
@@ -55,7 +56,7 @@ export default function Home({ tweets, error }: Props) {
             <main className="grid grid-cols-10">
                <Sidebar />
 
-               <Feed />
+               <Feed tweets={tweets} />
 
                <Widegts />
             </main>

@@ -45,7 +45,7 @@ export default function TweetBox() {
 
             <button
                disabled={!input}
-               className="rounded-full bg-twitter px-5 py-2 font-bold text-white transition-all duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter"
+               className="rounded-full bg-twitter px-3 py-1 md:px-5 md:py-2 font-bold text-white transition-all duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter"
             >
                Tweet
             </button>

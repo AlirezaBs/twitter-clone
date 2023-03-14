@@ -11,7 +11,7 @@ export interface Tweet extends TweetBody {
       blocked: boolean
       profileImage: string
    }
-   comment?: Comments[]
+   comments?: Comments[]
 }
 
 export interface Comments extends CommentBody {
