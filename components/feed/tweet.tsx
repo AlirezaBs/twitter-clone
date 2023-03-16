@@ -39,8 +39,7 @@ export default function TweetComponent({ tweet }: Props) {
 
             <div className="flex-1">
                <div className="flex items-center space-x-1">
-                  <p className=" mr-1 font-bold">{tweet.user.username}</p>
-                  <p className="hidden text-sm text-gray-500 sm:inline">
+                  <p className="text-sm font-bold">
                      @
                      {tweet.user.username
                         .replace(/\s+/g, "")
@@ -98,7 +97,6 @@ export default function TweetComponent({ tweet }: Props) {
 
          {showCommets && (tweet?.comments?.length || 0) > 0 && (
             <div className="my-2 mt-5 max-h-44 space-y-5 overflow-y-scroll border-t border-gray-100 p-5">
-               {/* <CommentsComponent comments={tweet.comments} /> */}
                {tweet?.comments && tweet.comments.map((comment) => (
                   <CommentsComponent key={comment.id} comment={comment} />
                ))}
