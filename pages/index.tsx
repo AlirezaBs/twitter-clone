@@ -22,7 +22,7 @@ export default function Home({ tweets, error }: Props) {
       )
    }
    return (
-      <div className=" bg-bgLight transition-colors dark:bg-bgDark">
+      <div className=" bg-bgLight transition dark:bg-bgDark">
          <Head>
             <title>Twitter 2.0</title>
             <meta

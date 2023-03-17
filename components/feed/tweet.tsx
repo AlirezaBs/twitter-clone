@@ -9,6 +9,7 @@ import Image from "next/image"
 import React, { useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import CommentsComponent from "./comment"
+import userPlaceholder from "../../public/man-placeholder.png"
 
 interface Props {
    tweet: Tweet
@@ -27,15 +28,26 @@ export default function TweetComponent({ tweet }: Props) {
    return (
       <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-100 p-5 dark:border-gray-500">
          <div className="flex space-x-3">
-            <Image
-               loader={tweetUserLoader}
-               src={tweet.user?.profileImage}
-               alt={tweet.user.username}
-               quality={30}
-               width={40}
-               height={40}
-               className="h-10 w-10 rounded-full object-cover"
-            />
+            {!!tweet.user.profileImage ? (
+               <Image
+                  loader={tweetUserLoader}
+                  src={tweet.user?.profileImage}
+                  alt={tweet.user.username}
+                  quality={30}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-full object-cover"
+               />
+            ) : (
+               <Image
+                  src={userPlaceholder}
+                  alt={tweet.user.username}
+                  quality={30}
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 rounded-full object-cover bg-transparent"
+               />
+            )}
 
             <div className="flex-1">
                <div className="flex items-center space-x-1">
@@ -55,7 +67,7 @@ export default function TweetComponent({ tweet }: Props) {
                <p className="pt-1">{tweet.text}</p>
 
                {tweet.image && (
-                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden shadow-sm rounded-lg">
+                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg shadow-sm">
                      <Image
                         loader={tweetImgLoader}
                         src={tweet?.image}
@@ -64,7 +76,7 @@ export default function TweetComponent({ tweet }: Props) {
                         width={30}
                         height={30}
                         layout="responsive"
-                        className="hover:scale-110 transition duration-500"
+                        className="transition duration-500 hover:scale-110"
                      />
                   </div>
                )}
@@ -97,9 +109,10 @@ export default function TweetComponent({ tweet }: Props) {
 
          {showCommets && (tweet?.comments?.length || 0) > 0 && (
             <div className="my-2 mt-5 max-h-44 space-y-5 overflow-y-scroll border-t border-gray-100 p-5">
-               {tweet?.comments && tweet.comments.map((comment) => (
-                  <CommentsComponent key={comment.id} comment={comment} />
-               ))}
+               {tweet?.comments &&
+                  tweet.comments.map((comment) => (
+                     <CommentsComponent key={comment.id} comment={comment} />
+                  ))}
             </div>
          )}
       </div>
