@@ -1,4 +1,4 @@
-import { Tweet, Comments } from '@/typings'
+import { Tweet, Comments } from '@/types/typings'
 
 interface TweetData {
    id: number

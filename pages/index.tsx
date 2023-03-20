@@ -3,8 +3,7 @@ import Sidebar from "@/components/sidebar/sidebar"
 import Feed from "@/components/feed/feed"
 import Widegts from "@/components/widegts/widegts"
 import { GetServerSideProps } from "next"
-import { Tweet } from "@/typings"
-import { Toaster } from "react-hot-toast"
+import { Tweet } from "@/types/typings"
 import { feedData } from "@/utils/fetch/feedData"
 
 interface Props {
@@ -32,9 +31,6 @@ export default function Home({ tweets, error }: Props) {
             <link rel="icon" href="/favicon.ico" />
          </Head>
          <div className="mx-auto max-h-screen overflow-hidden lg:max-w-6xl">
-            <div>
-               <Toaster />
-            </div>
             <main className="grid grid-cols-10">
                <Sidebar />
 

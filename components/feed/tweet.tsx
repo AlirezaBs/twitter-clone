@@ -1,4 +1,4 @@
-import { Comments, Tweet } from "@/typings"
+import { Comments, Tweet } from "@/types/typings"
 import {
    ChatAlt2Icon,
    HeartIcon,

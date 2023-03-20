@@ -1,7 +1,7 @@
 import { RefreshIcon } from "@heroicons/react/outline"
 import React, { useEffect, useState } from "react"
 import TweetBox from "./tweetBox"
-import { Tweet } from "@/typings"
+import { Tweet } from "@/types/typings"
 import toast from "react-hot-toast"
 import TweetComponent from "./tweet"
 import { feedData } from "@/utils/fetch/feedData"

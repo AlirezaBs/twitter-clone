@@ -3,8 +3,11 @@ import React, { useState } from "react"
 import twitterLogo from "../../../public/Twitter-logo.svg"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { EyeIcon } from "@heroicons/react/outline"
+import { signUp } from "@/utils/fetch/register"
+import toast from "react-hot-toast"
 
 interface IFormInput {
    username: string
@@ -14,9 +17,22 @@ interface IFormInput {
 
 export default function Signup() {
    const [visible, setVisible] = useState<boolean>(false)
-   const { register, handleSubmit } = useForm<IFormInput>()
+   const {
+      register,
+      handleSubmit,
+      formState: { errors },
+   } = useForm<IFormInput>()
+   const router = useRouter()
 
-   const onSubmit: SubmitHandler<IFormInput> = () => {}
+   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+      try {
+         const res = await signUp(data)
+         toast.success("Registered Successfully!")
+         router.push("/auth/login")
+      } catch (error: any) {
+         toast.error(error.message || "An error occurred")
+      }
+   }
 
    return (
       <AuthLayout>
@@ -36,9 +52,9 @@ export default function Signup() {
 
             <form
                onSubmit={handleSubmit(onSubmit)}
-               className="flex w-full flex-col space-y-4"
+               className="flex w-full flex-col space-y-2"
             >
-               <div className="flex w-full max-w-4xl flex-col space-y-1 lg:w-2/3">
+               <div className="flex w-full max-w-4xl flex-col lg:w-2/3">
                   <label
                      htmlFor="username"
                      className="pl-1 font-light hover:cursor-pointer"
@@ -53,12 +69,21 @@ export default function Signup() {
                      })}
                      id="username"
                      type="text"
-                     className="w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-black outline-none transition duration-300 focus:border-twitter "
+                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter "
                      placeholder="username"
                   />
+                  <div className="h-2">
+                     {errors.username &&
+                        (errors.username.type === "maxLength" ||
+                           "minLength") && (
+                           <span className="text-xs text-red-600">
+                              username must be between 4 and 15 characters
+                           </span>
+                        )}
+                  </div>
                </div>
 
-               <div className="flex w-full max-w-4xl flex-col space-y-1 lg:w-2/3">
+               <div className="flex w-full max-w-4xl flex-col lg:w-2/3">
                   <label
                      htmlFor="email"
                      className="pl-1 font-light hover:cursor-pointer"
@@ -72,12 +97,19 @@ export default function Signup() {
                      })}
                      id="email"
                      type="text"
-                     className="w-full  rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-black outline-none transition duration-300 focus:border-twitter"
+                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter"
                      placeholder="example@mail.com"
                   />
+                  <div className="h-2 ">
+                     {errors.email && errors.email?.type === "pattern" && (
+                        <span className="text-xs text-red-600">
+                           enter a valid email
+                        </span>
+                     )}
+                  </div>
                </div>
 
-               <div className="relative flex w-full max-w-4xl flex-col space-y-1 lg:w-2/3">
+               <div className="relative flex w-full max-w-4xl flex-col lg:w-2/3">
                   <label
                      htmlFor="password"
                      className="pl-1 font-light hover:cursor-pointer"
@@ -92,21 +124,49 @@ export default function Signup() {
                      })}
                      id="password"
                      type={visible ? "text" : "password"}
-                     className="w-full  rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-black outline-none transition duration-300 focus:border-twitter"
+                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter"
                      placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                   />
                   <EyeIcon
-                     className="absolute right-5 bottom-4 h-7 w-7 cursor-pointer text-twitter"
+                     className={`absolute right-5 bottom-7 h-7 w-7 cursor-pointer rounded-full text-twitter transition ${
+                        visible && "bg-twitter/30"
+                     }`}
                      onClick={() => setVisible(!visible)}
                   />
+                  <div className="flex h-3 flex-col">
+                     {errors.password &&
+                        (errors.password.type === "maxLength" ||
+                           "minLength") && (
+                           <span className="text-xs text-red-600">
+                              password must be between 5 and 15 characters
+                           </span>
+                        )}
+                  </div>
                </div>
 
                <button
                   type="submit"
-                  className="over:bg-twitter/80 mt-5 w-2/3 max-w-4xl self-center rounded-full bg-twitter py-4 text-lg font-bold text-white hover:bg-twitter/80 active:bg-twitter/70 md:w-2/3 lg:self-start"
+                  className="over:bg-twitter/80 w-2/3 max-w-4xl self-center rounded-full bg-twitter py-4 text-lg font-bold text-white hover:bg-twitter/80 active:bg-twitter/70 md:w-2/3 lg:self-start"
                >
                   Create Account
                </button>
+               <div className="flex h-12 flex-col text-center lg:text-start">
+                  {errors.username && errors.username?.type === "required" && (
+                     <span className="text-xs text-red-600">
+                        username is required
+                     </span>
+                  )}
+                  {errors.email && errors.email?.type === "required" && (
+                     <span className="text-xs text-red-600">
+                        email is required
+                     </span>
+                  )}
+                  {errors.password && errors.password?.type === "required" && (
+                     <span className="text-xs text-red-600">
+                        password is required
+                     </span>
+                  )}
+               </div>
             </form>
          </div>
       </AuthLayout>

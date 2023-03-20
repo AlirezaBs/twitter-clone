@@ -13,14 +13,25 @@ import twiiterLogo from "../../public/Twitter-logo.svg"
 import SidebarRow from "./sidebarRow"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
 
 export default function Sidebar() {
+   const { data: session } = useSession()
    const { theme, setTheme } = useTheme()
    const router = useRouter()
    const path = router.asPath
 
+   console.log(session)
+
    const toggleTheme = () => {
       setTheme(theme === "dark" ? "light" : "dark")
+   }
+
+   const handleAuth = () => {
+      console.log("hello")
+      if (!!!session) {
+         router.push("/auth")
+      }
    }
 
    return (
@@ -60,7 +71,12 @@ export default function Sidebar() {
                Icon={CollectionIcon}
                title="Lists"
             />
-            <SidebarRow active={false} Icon={UserIcon} title="Sign In" />
+            <SidebarRow
+               active={false}
+               Icon={UserIcon}
+               title={session ? "Log out" : "log in"}
+               clicked={handleAuth}
+            />
 
             <SidebarRow
                active={false}

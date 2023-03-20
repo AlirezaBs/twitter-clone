@@ -1,4 +1,4 @@
-import { Tweet } from "@/typings"
+import { Tweet } from "@/types/typings"
 import qs from "qs"
 import { parseTweetData } from "../parser/feedDataParse"
 

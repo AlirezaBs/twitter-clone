@@ -1,4 +1,4 @@
-import { Comments } from "@/typings"
+import { Comments } from "@/types/typings"
 import Image from "next/image"
 import React from "react"
 import TimeAgo from "react-timeago"
