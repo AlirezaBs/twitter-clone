@@ -13,7 +13,7 @@ import twiiterLogo from "../../public/Twitter-logo.svg"
 import SidebarRow from "./sidebarRow"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 export default function Sidebar() {
    const { data: session } = useSession()
@@ -28,10 +28,7 @@ export default function Sidebar() {
    }
 
    const handleAuth = () => {
-      console.log("hello")
-      if (!!!session) {
-         router.push("/auth")
-      }
+      !!!session ? router.push("/auth") : signOut({redirect: false})
    }
 
    return (

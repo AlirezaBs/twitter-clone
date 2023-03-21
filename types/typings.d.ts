@@ -1,12 +1,12 @@
 
 export interface Tweet extends TweetBody {
-   id: number
+   id: string
    createdAt: string
    updatedAt: string
    blockTweet: boolean
    image?: string
    user: {
-      id: number
+      id: string
       username: string
       blocked: boolean
       profileImage: string
@@ -15,12 +15,12 @@ export interface Tweet extends TweetBody {
 }
 
 export interface Comments extends CommentBody {
-   id: number
+   id: string
    createdAt: string
    updatedAt: string
    blockComment: boolean
    user: {
-      id: number
+      id: string
       username: string
       profileImage: string
       blocked: boolean

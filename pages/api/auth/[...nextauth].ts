@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { User } from "next-auth/core/types"
 
 export const authOptions: NextAuthOptions = {
    session: {
@@ -51,35 +52,61 @@ export const authOptions: NextAuthOptions = {
                throw new Error(data.error.message || "An error occurred")
             }
 
-            // every thing is alright
-            return {
+            const user: User = {
                jwt: data.jwt,
                ...data.user,
             }
+
+            // every thing is alright
+            return user
          },
       }),
    ],
    pages: {
       signIn: "/auth/signin",
    },
+   jwt: {
+      maxAge: 7 * 24 * 60 * 60,
+   },
    callbacks: {
-      // Getting the JWT token from API response
-      jwt: async ({token, user, account}) => {        
+      async jwt({ token, user, account, profile, isNewUser }) {
          if (user) {
-           token.id = user.id;
-           token.jwt = user.jwt;
+            token.user = {
+               email: user.email,
+               createdAt: user.createdAt,
+               id: user.id,
+               updatedAt: user.updatedAt,
+               blocked: user.blocked,
+               provider: user.provider,
+               confirmed: user.confirmed,
+               image: user.image,
+               username: user.username,
+               jwt: user.jwt,
+            }
          }
-         return Promise.resolve(token);
+
+         return token
       },
-    
+
       session: async ({ session, token }) => {
-         if (session.user){
-            session.user.jwt = token.jwt as string;
-            session.user.id = token.id as number;
+         if (token && session.user) {
+            session.user = {
+               email: token.user.email,
+               createdAt: token.user.createdAt,
+               id: token.user.id,
+               updatedAt: token.user.updatedAt,
+               blocked: token.user.blocked,
+               provider: token.user.provider,
+               confirmed: token.user.confirmed,
+               image: token.user.image,
+               username: token.user.username,
+               jwt: token.user.jwt,
+            }
          }
-         return Promise.resolve(session);
-       },
-    }
+
+         return session
+      },
+   },
 }
 
 export default NextAuth(authOptions)
