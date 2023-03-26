@@ -26,7 +26,7 @@ export default function TweetComponent({ tweet }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-100 p-5 dark:border-gray-500">
+      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-300 p-5 transition dark:border-gray-600">
          <div className="flex space-x-3">
             {!!tweet.user.profileImage ? (
                <Image
@@ -45,7 +45,7 @@ export default function TweetComponent({ tweet }: Props) {
                   quality={30}
                   width={28}
                   height={28}
-                  className="h-7 w-7 rounded-full object-cover bg-transparent"
+                  className="h-7 w-7 rounded-full bg-transparent object-cover"
                />
             )}
 
@@ -86,12 +86,12 @@ export default function TweetComponent({ tweet }: Props) {
          <div className="mt-5 flex justify-between">
             <div
                onClick={() => setShowComments(!showCommets)}
-               className={`duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110 ${
+               className={`duration-125 flex cursor-pointer items-center space-x-1 text-gray-400 transition-all hover:scale-110 ${
                   showCommets && "scale-110 text-gray-800 dark:text-gray-100"
                }`}
             >
                <ChatAlt2Icon className="h-5 w-5" />
-               <p>{tweet.comments?.length || 0}</p>
+               <p>{tweet.comments?.length || "+"}</p>
             </div>
 
             <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110">

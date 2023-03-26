@@ -8,22 +8,74 @@ import {
    PhotographIcon,
    SearchCircleIcon,
 } from "@heroicons/react/outline"
+import { useSession } from "next-auth/react"
+import { postTweet } from "@/utils/fetch/postTweet"
+import { toast } from "react-hot-toast"
 
-export default function TweetBox() {
+interface Props {
+   handleRefresh: Function
+}
+
+export default function TweetBox({handleRefresh}: Props) {
    const [input, setInput] = useState<string>("")
+   const [showImageInput, setShowImageInput] = useState<boolean>(false)
+   const [showImage, setShowImage] = useState<boolean>(false)
+   const [imageInputValue, setImageInputValue] = useState<string>("")
+   const { data: session } = useSession()
+
+   const handleImage = (e: React.FormEvent) => {
+      e.preventDefault()
+      setShowImageInput(false)
+      setShowImage(true)
+   }
+
+   const handleSubmit = async () => {
+      try {
+         if (!session?.user?.id || !session?.user?.jwt) {
+            throw new Error("User ID is undefined")
+         }
+
+         const res = await postTweet({
+            id: +session.user.id,
+            text: input,
+            image: imageInputValue,
+            jwt: session.user.jwt,
+         })
+         console.log(res)
+         toast.success("submitted successfully!")
+         handleRefresh()
+      } catch (error) {
+         toast.error("something went wrong!")
+      }
+   }
+
+   const imageLoader = ({}) => {
+      return `${process.env.NEXT_PUBLIC_API_URL_IMG}${session?.user?.image}`
+   }
 
    return (
       <div className="flex flex-col space-x-2 border-t-2 border-b-2 p-5 transition dark:border-gray-500">
          <div className="flex space-x-2">
-            <Image
-               src={placeholder}
-               alt=""
-               width={56}
-               height={54}
-               className="mt-4 h-14 w-14 rounded-full"
-            />
+            {session?.user?.image ? (
+               <Image
+                  loader={imageLoader}
+                  src={session?.user?.image}
+                  alt=""
+                  width={56}
+                  height={54}
+                  className="mt-4 h-14 w-14 rounded-full"
+               />
+            ) : (
+               <Image
+                  src={placeholder}
+                  alt=""
+                  width={56}
+                  height={54}
+                  className="mt-4 h-14 w-14 rounded-full"
+               />
+            )}
 
-            <form className="flex flex-1">
+            <div className="flex flex-1">
                <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -31,12 +83,15 @@ export default function TweetBox() {
                   placeholder="What's Happening?"
                   className="lg h-24 w-full bg-transparent text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
                />
-            </form>
+            </div>
          </div>
 
          <div className="flex items-center">
             <div className="flex flex-1 space-x-2 text-twitter">
-               <PhotographIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
+               <PhotographIcon
+                  onClick={() => setShowImageInput(!showImageInput)}
+                  className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150"
+               />
                <SearchCircleIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
                <EmojiHappyIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
                <CalendarIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
@@ -44,12 +99,31 @@ export default function TweetBox() {
             </div>
 
             <button
-               disabled={!input}
-               className="rounded-full bg-twitter px-3 py-1 md:px-5 md:py-2 font-bold text-white transition-all duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter"
+               disabled={!input || !!!session}
+               onClick={handleSubmit}
+               className="rounded-full bg-twitter px-3 py-1 font-bold text-white transition-all duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:py-2"
             >
                Tweet
             </button>
          </div>
+
+         {showImageInput && (
+            <form
+               onSubmit={handleImage}
+               className="mt-3 flex h-14 flex-row overflow-hidden rounded-lg border-2 border-gray-300 text-xs transition dark:border-gray-500 md:text-sm"
+            >
+               <input
+                  className=" flex-1 bg-transparent pl-2 text-gray-500 outline-none placeholder:text-gray-400"
+                  type="text"
+                  value={imageInputValue}
+                  placeholder="http:// Image section not working now!"
+                  onChange={(e) => setImageInputValue(e.target.value)}
+               ></input>
+               <button className="bg-gray-200 px-2 transition dark:bg-gray-600">
+                  Submit
+               </button>
+            </form>
+         )}
       </div>
    )
 }

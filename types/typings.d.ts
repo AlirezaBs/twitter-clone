@@ -1,4 +1,3 @@
-
 export interface Tweet extends TweetBody {
    id: string
    createdAt: string

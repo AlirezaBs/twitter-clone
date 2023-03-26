@@ -1,3 +1,4 @@
+import { memo } from "react"
 import Image from "next/image"
 import {
    BellIcon,
@@ -7,7 +8,8 @@ import {
    MailIcon,
    UserIcon,
    HomeIcon,
-   DotsCircleHorizontalIcon,
+   SunIcon,
+   MoonIcon
 } from "@heroicons/react/outline"
 import twiiterLogo from "../../public/Twitter-logo.svg"
 import SidebarRow from "./sidebarRow"
@@ -15,19 +17,17 @@ import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
 import { signOut, useSession } from "next-auth/react"
 
-export default function Sidebar() {
+function Sidebar() {
    const { data: session } = useSession()
    const { theme, setTheme } = useTheme()
    const router = useRouter()
    const path = router.asPath
 
-   console.log(session)
-
    const toggleTheme = () => {
       setTheme(theme === "dark" ? "light" : "dark")
    }
 
-   const handleAuth = () => {
+   const handleAuthClick = () => {
       !!!session ? router.push("/auth") : signOut({redirect: false})
    }
 
@@ -71,16 +71,19 @@ export default function Sidebar() {
             <SidebarRow
                active={false}
                Icon={UserIcon}
-               title={session ? "Log out" : "log in"}
-               clicked={handleAuth}
+               title={session ? "Log out" : "Log in"}
+               onClick={handleAuthClick}
             />
 
             <SidebarRow
                active={false}
-               Icon={DotsCircleHorizontalIcon}
-               title="More"
+               Icon={theme === "dark" ? SunIcon : MoonIcon}
+               title="Theme"
+               onClick={toggleTheme}
             />
          </div>
       </div>
    )
 }
+
+export default memo(Sidebar)

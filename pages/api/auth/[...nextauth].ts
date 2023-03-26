@@ -5,7 +5,7 @@ import { User } from "next-auth/core/types"
 export const authOptions: NextAuthOptions = {
    session: {
       strategy: "jwt",
-      // maxAge: 30 * 24 * 60 * 60, // 30 days
+      maxAge: 30 * 24 * 60 * 60, // 30 days
    },
 
    providers: [
@@ -47,6 +47,12 @@ export const authOptions: NextAuthOptions = {
 
             const data = await res.json()
 
+            // get users profile image
+            const imgRes = await fetch(
+               `${process.env.NEXT_PUBLIC_API_URL}api/users/${data.user.id}?fields[0]=id&populate[profileImage][fields][0]=url`
+            )
+            const image = await imgRes.json()
+
             // return error if user there is any error :)
             if (!res.ok) {
                throw new Error(data.error.message || "An error occurred")
@@ -55,6 +61,7 @@ export const authOptions: NextAuthOptions = {
             const user: User = {
                jwt: data.jwt,
                ...data.user,
+               image: image?.profileImage?.url || undefined,
             }
 
             // every thing is alright
@@ -63,7 +70,7 @@ export const authOptions: NextAuthOptions = {
       }),
    ],
    pages: {
-      signIn: "/auth/signin",
+      signIn: "/auth/login",
    },
    jwt: {
       maxAge: 7 * 24 * 60 * 60,
@@ -91,15 +98,15 @@ export const authOptions: NextAuthOptions = {
       session: async ({ session, token }) => {
          if (token && session.user) {
             session.user = {
-               email: token.user.email,
-               createdAt: token.user.createdAt,
                id: token.user.id,
-               updatedAt: token.user.updatedAt,
+               email: token.user.email,
+               username: token.user.username,
                blocked: token.user.blocked,
                provider: token.user.provider,
                confirmed: token.user.confirmed,
                image: token.user.image,
-               username: token.user.username,
+               updatedAt: token.user.updatedAt,
+               createdAt: token.user.createdAt,
                jwt: token.user.jwt,
             }
          }

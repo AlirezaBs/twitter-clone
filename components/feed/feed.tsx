@@ -7,6 +7,7 @@ import TweetComponent from "./tweet"
 import { feedData } from "@/utils/fetch/feedData"
 import TweetSkeleton from "../skeleton/tweetSkeleton"
 import TweetNonImageSkeleton from "../skeleton/tweetNonImageSkeleton"
+import { useSession } from "next-auth/react"
 
 interface Props {
    tweets: Tweet[]
@@ -15,6 +16,7 @@ interface Props {
 export default function Feed({ tweets: tweetsProp }: Props) {
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
+   const {data: session} = useSession()
 
    const handleRefresh = async () => {
       setLoading(true)
@@ -27,6 +29,8 @@ export default function Feed({ tweets: tweetsProp }: Props) {
       }
    }
 
+   console.log("hello")
+
    useEffect(() => {
       if (tweets) {
          setLoading(false)
@@ -34,9 +38,13 @@ export default function Feed({ tweets: tweetsProp }: Props) {
    }, [tweetsProp, tweets])
 
    return (
-      <div className="col-span-8 h-screen overflow-scroll border-x-2 transition dark:border-gray-600 md:col-span-7 lg:col-span-5">
+      <div className="col-span-8 h-screen overflow-scroll border-x-2 transition dark:border-gray-600 md:col-span-7 lg:col-span-5 pb-20">
          <div className="my-5 flex items-center justify-between">
-            <h1 className="pl-5 pb-0 text-xl font-bold">Home</h1>
+            {!!session ? (
+               <h1 className="pl-5 pb-0 text-xl font-bold">Hello {session.user.username}</h1>
+            ) : (
+               <h1 className="pl-5 pb-0 text-xl font-bold">Home</h1>
+            )}
             <RefreshIcon
                onClick={handleRefresh}
                className="mr-5 h-8 w-8 cursor-pointer text-twitter transition-all duration-500 ease-out hover:rotate-180 active:scale-125"
@@ -44,7 +52,7 @@ export default function Feed({ tweets: tweetsProp }: Props) {
          </div>
 
          <div>
-            <TweetBox />
+            <TweetBox handleRefresh={handleRefresh} />
          </div>
 
          {!!loading ? (

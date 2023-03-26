@@ -1,8 +1,8 @@
 import Head from "next/head"
+import { GetServerSideProps } from "next"
 import Sidebar from "@/components/sidebar/sidebar"
 import Feed from "@/components/feed/feed"
 import Widegts from "@/components/widegts/widegts"
-import { GetServerSideProps } from "next"
 import { Tweet } from "@/types/typings"
 import { feedData } from "@/utils/fetch/feedData"
 
@@ -44,7 +44,6 @@ export default function Home({ tweets, error }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-   
    try {
       const tweets = await feedData()
 
