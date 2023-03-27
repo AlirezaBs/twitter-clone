@@ -8,7 +8,7 @@ export interface Tweet extends TweetBody {
       id: string
       username: string
       blocked: boolean
-      profileImage: string
+      profileImage?: string
    }
    comments?: Comments[]
 }
@@ -21,7 +21,7 @@ export interface Comments extends CommentBody {
    user: {
       id: string
       username: string
-      profileImage: string
+      profileImage?: string
       blocked: boolean
    }
 }

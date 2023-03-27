@@ -37,7 +37,7 @@ export default function CommentsComponent({ comment }: Props) {
                className="h-7 w-7 rounded-full bg-transparent object-cover"
             />
          )}
-         
+
          <div>
             <div className="flex items-center space-x-1">
                <p className="inline text-sm font-bold">

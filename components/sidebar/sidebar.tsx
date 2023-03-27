@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { ComponentType, SVGProps, memo, useEffect, useState } from "react"
 import Image from "next/image"
 import {
    BellIcon,
@@ -18,6 +18,7 @@ import { useRouter } from "next/router"
 import { signOut, useSession } from "next-auth/react"
 
 function Sidebar() {
+   const [icon, setIcon] = useState<ComponentType<SVGProps<SVGSVGElement>>>(SunIcon);
    const { data: session } = useSession()
    const { theme, setTheme } = useTheme()
    const router = useRouter()
@@ -30,6 +31,14 @@ function Sidebar() {
    const handleAuthClick = () => {
       !!!session ? router.push("/auth") : signOut({redirect: false})
    }
+
+   useEffect(() => {
+      if (theme === 'light') {
+        setIcon(SunIcon);
+      } else {
+        setIcon(MoonIcon);
+      }
+    }, [theme]);
 
    return (
       <div className="col-span-2 flex flex-col items-center px-4 pt-3 lg:items-start ">
@@ -74,10 +83,9 @@ function Sidebar() {
                title={session ? "Log out" : "Log in"}
                onClick={handleAuthClick}
             />
-
             <SidebarRow
                active={false}
-               Icon={theme === "dark" ? SunIcon : MoonIcon}
+               Icon={icon}
                title="Theme"
                onClick={toggleTheme}
             />

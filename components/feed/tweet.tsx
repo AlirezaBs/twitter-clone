@@ -10,13 +10,61 @@ import React, { useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import CommentsComponent from "./comment"
 import userPlaceholder from "../../public/man-placeholder.png"
+import { useSession } from "next-auth/react"
+import { toast } from "react-hot-toast"
+import { postComments } from "@/utils/fetch/postComment"
 
 interface Props {
    tweet: Tweet
+   addComment: Function
 }
 
-export default function TweetComponent({ tweet }: Props) {
+export default function TweetComponent({ tweet, addComment }: Props) {
    const [showCommets, setShowComments] = useState<boolean>(false)
+   const [commentText, setCommentText] = useState<string>("")
+   const { data: session } = useSession()
+
+   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+
+      try {
+         if (!session?.user?.id || !session?.user?.jwt) {
+            throw new Error("User ID is undefined")
+         }
+
+         const res = await postComments({
+            user: +session.user.id,
+            comment: commentText,
+            tweet: +tweet.id,
+            jwt: session.user.jwt,
+         })
+
+         // get data and add to tweet list
+         const id = res.data.id
+         const { blockComment, createdAt, likes, comment, updatedAt } =
+            res.data.attributes
+         const newComment: Comments = {
+            id,
+            blockComment,
+            createdAt,
+            likes,
+            comment,
+            updatedAt,
+            user: {
+               id: session.user.id,
+               username: session.user.username,
+               blocked: session.user.blocked,
+               profileImage: session.user?.image,
+            },
+         }
+
+         addComment(newComment, tweet.id)
+         setCommentText("")
+         toast.success("submitted successfully!")
+      } catch (error) {
+         toast.error("something went wrong")
+      }
+   }
 
    const tweetImgLoader = ({}) => {
       return `${process.env.NEXT_PUBLIC_API_URL_IMG}${tweet.image}`
@@ -26,7 +74,7 @@ export default function TweetComponent({ tweet }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-300 p-5 transition dark:border-gray-600">
+      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-400 p-2  transition dark:border-gray-500  md:p-5">
          <div className="flex space-x-3">
             {!!tweet.user.profileImage ? (
                <Image
@@ -107,12 +155,35 @@ export default function TweetComponent({ tweet }: Props) {
             </div>
          </div>
 
-         {showCommets && (tweet?.comments?.length || 0) > 0 && (
-            <div className="my-2 mt-5 max-h-44 space-y-5 overflow-y-scroll border-t border-gray-100 p-5">
-               {tweet?.comments &&
-                  tweet.comments.map((comment) => (
-                     <CommentsComponent key={comment.id} comment={comment} />
-                  ))}
+         {showCommets && (
+            <div className="my-2 mt-5 max-h-80  space-y-5 overflow-y-scroll border-t border-gray-300 p-3 py-0 transition dark:border-gray-500">
+               <form onSubmit={handleCommentSubmit} className="flex pt-5">
+                  <input
+                     className=" flex-1 bg-transparent text-gray-500 outline-none transition placeholder:text-gray-400 dark:text-gray-300"
+                     type="text"
+                     placeholder="Write your comment here"
+                     value={commentText}
+                     onChange={(e) => setCommentText(e.target.value)}
+                  />
+                  <button
+                     disabled={!session || !commentText}
+                     className="rounded-full bg-twitter px-2 py-3 text-sm leading-3 text-white hover:bg-twitter/80 disabled:opacity-40"
+                     type="submit"
+                  >
+                     Comment
+                  </button>
+               </form>
+               {(tweet?.comments?.length || 0) > 0 && (
+                  <div className="border-t border-gray-300 pt-4 transition dark:border-gray-500">
+                     {tweet?.comments &&
+                        tweet.comments.map((comment) => (
+                           <CommentsComponent
+                              key={comment.id}
+                              comment={comment}
+                           />
+                        ))}
+                  </div>
+               )}
             </div>
          )}
       </div>

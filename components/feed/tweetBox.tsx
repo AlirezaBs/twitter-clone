@@ -11,12 +11,13 @@ import {
 import { useSession } from "next-auth/react"
 import { postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
+import { Tweet } from "@/types/typings"
 
 interface Props {
-   handleRefresh: Function
+   addToList: Function
 }
 
-export default function TweetBox({handleRefresh}: Props) {
+export default function TweetBox({ addToList }: Props) {
    const [input, setInput] = useState<string>("")
    const [showImageInput, setShowImageInput] = useState<boolean>(false)
    const [showImage, setShowImage] = useState<boolean>(false)
@@ -41,9 +42,28 @@ export default function TweetBox({handleRefresh}: Props) {
             image: imageInputValue,
             jwt: session.user.jwt,
          })
-         console.log(res)
+
+         // get data and add to tweet list
+         const id = res.data.id
+         const { blockTweet, createdAt, likes, text, updatedAt } =
+            res.data.attributes
+         const newTweet: Tweet = {
+            id,
+            blockTweet,
+            createdAt,
+            likes,
+            text,
+            updatedAt,
+            user: {
+               id: session.user.id,
+               username: session.user.username,
+               blocked: session.user.blocked,
+               profileImage: session.user?.image,
+            },
+            comments: [],
+         }
+         addToList(newTweet)
          toast.success("submitted successfully!")
-         handleRefresh()
       } catch (error) {
          toast.error("something went wrong!")
       }
@@ -54,7 +74,7 @@ export default function TweetBox({handleRefresh}: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-2 border-t-2 border-b-2 p-5 transition dark:border-gray-500">
+      <div className="flex flex-col space-x-2 border-t-2 border-b-2 p-5 transition  border-gray-400 dark:border-gray-500 ">
          <div className="flex space-x-2">
             {session?.user?.image ? (
                <Image

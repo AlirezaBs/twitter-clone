@@ -4,7 +4,7 @@ import { parseTweetData } from "../parser/feedDataParse"
 
 const queryParams = qs.stringify(
    {
-      sort: ['createdAt:desc'],
+      sort: ["createdAt:desc"],
       fields: ["text", "blockTweet", "likes", "createdAt", "updatedAt"],
       populate: {
          image: {
@@ -19,6 +19,7 @@ const queryParams = qs.stringify(
             },
          },
          comments: {
+            sort: ["createdAt:desc"],
             fields: [
                "comment",
                "blockComment",
@@ -49,7 +50,6 @@ export async function feedData() {
       `${process.env.NEXT_PUBLIC_API_URL}api/tweets?${queryParams}`
    )
    const data = await res.json()
-   console.log(data)
 
    const tweets: Tweet[] = parseTweetData(data.data)
 

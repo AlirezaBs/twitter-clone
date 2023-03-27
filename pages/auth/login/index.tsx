@@ -24,18 +24,23 @@ export default function Login() {
    } = useForm<IFormInput>()
 
    const onSubmit = async (data: IFormInput) => {
-         const res = await signIn("credentials", {
-            username: data.username,
-            password: data.password,
-            redirect: false,
-         })
+      const res = await signIn("credentials", {
+         username: data.username,
+         password: data.password,
+         redirect: false,
+      })
 
-         if(res?.error) {
-            toast.error(res.error || "An error occurred")
-            return
-         }
+      if (res?.error) {
+         toast.error(
+            res.error === "Cannot read properties of undefined (reading 'id')"
+               ? "Invalid username or password"
+               : res.error || "An error occurred"
+         )
+         return
+      }
 
-         router.push('/')
+      toast.success(`Welcome ${data.username}`)
+      router.push("/")
    }
 
    return (
@@ -46,7 +51,7 @@ export default function Login() {
                   src={twitterLogo}
                   alt="TWITTER"
                   loading="eager"
-                  width={50} 
+                  width={50}
                   height={50}
                />
             </Link>
