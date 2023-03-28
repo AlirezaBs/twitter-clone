@@ -58,7 +58,7 @@ export default function Feed({ tweets: tweetsProp, title }: Props) {
    }, [tweetsProp, tweets])
 
    return (
-      <div className="hide-scrollbar col-span-8 h-screen overflow-scroll border-x-2 border-gray-300 pb-20 transition dark:border-gray-600 md:col-span-7 lg:col-span-5">
+      <div className="hide-scrollbar col-span-10 sm:col-span-8 h-screen overflow-scroll border-x-2 border-gray-300 pb-20 transition dark:border-gray-600 md:col-span-7 lg:col-span-5">
          <div className="sticky top-0 z-50 flex items-center justify-between border-b border-gray-300 py-6 backdrop-blur-md dark:border-gray-500">
             {!!session ? (
                <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">

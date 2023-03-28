@@ -10,7 +10,7 @@ interface Props {
 export default function SidebarRow({ Icon, title, active, onClick }: Props) {
    return (
       <div
-         className={`flex w-full cursor-pointer items-center space-x-2 rounded-full px-4 py-2 transition-all hover:bg-gray-100 hover:text-twitter dark:hover:bg-gray-200 ${
+         className={`flex w-fitt cursor-pointer items-center space-x-2 rounded-full px-4 py-2 transition-all hover:bg-gray-100 hover:text-twitter dark:hover:bg-gray-200 ${
             active
                ? "bg-gray-100 text-twitter hover:bg-gray-200 dark:bg-gray-100 dark:hover:bg-gray-300"
                : ""

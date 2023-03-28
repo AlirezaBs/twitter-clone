@@ -92,7 +92,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
 
             <div className="flex-1">
                <div className="flex items-center space-x-1">
-                  <p className="text-sm font-bold hover:text-twitter hover:cursor-pointer">
+                  <p className="text-sm font-bold hover:cursor-pointer hover:text-twitter">
                      @
                      {tweet.user.username
                         .replace(/\s+/g, "")
@@ -154,7 +154,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   <input
                      className=" flex-1 bg-transparent text-gray-500 outline-none transition placeholder:text-gray-400 dark:text-gray-300"
                      type="text"
-                     placeholder="Write your comment here"
+                     placeholder="Your comment here"
                      value={commentText}
                      onChange={(e) => setCommentText(e.target.value)}
                   />

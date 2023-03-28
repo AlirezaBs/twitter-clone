@@ -1,6 +1,6 @@
 import Image from "next/image"
 import React, { ReactNode } from "react"
-import twitter from "../public/auth.jpg"
+import twitter from "../../public/auth.jpg"
 
 interface Props {
    children: ReactNode
