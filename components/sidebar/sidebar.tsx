@@ -41,7 +41,7 @@ function Sidebar() {
     }, [theme]);
 
    return (
-      <div className="col-span-2 flex flex-col items-center px-4 pt-3 lg:items-start ">
+      <div className="col-span-2 flex flex-col items-center px-4 pt-3">
          <Image
             onClick={toggleTheme}
             src={twiiterLogo}
@@ -56,26 +56,6 @@ function Sidebar() {
                active={path === "explore"}
                Icon={HashtagIcon}
                title="Explore"
-            />
-            <SidebarRow
-               active={path === "notifications"}
-               Icon={BellIcon}
-               title="Notifications"
-            />
-            <SidebarRow
-               active={path === "messages"}
-               Icon={MailIcon}
-               title="Messages"
-            />
-            <SidebarRow
-               active={path === "bookmarks"}
-               Icon={BookmarkIcon}
-               title="Bookmarks"
-            />
-            <SidebarRow
-               active={path === "lists"}
-               Icon={CollectionIcon}
-               title="Lists"
             />
             <SidebarRow
                active={false}

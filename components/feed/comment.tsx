@@ -3,23 +3,20 @@ import Image from "next/image"
 import React from "react"
 import TimeAgo from "react-timeago"
 import userPlaceholder from "../../public/man-placeholder.png"
+import imageLoader from "@/utils/imageLoader"
 
 interface Props {
    comment: Comments
 }
 
 export default function CommentsComponent({ comment }: Props) {
-   const commentUserLoader = ({}) => {
-      return `${process.env.NEXT_PUBLIC_API_URL_IMG}${comment.user.profileImage}`
-   }
-
    return (
       <div key={comment.id} className="relative mb-5 flex space-x-2">
          <hr className="absolute left-5 top-10 h-[calc(100%-35px)] border-x border-twitter/20" />
 
          {!!comment.user.profileImage ? (
             <Image
-               loader={commentUserLoader}
+               loader={() => imageLoader(comment.user.profileImage as string)}
                src={comment.user?.profileImage}
                alt={comment.user.username}
                quality={30}
@@ -40,7 +37,7 @@ export default function CommentsComponent({ comment }: Props) {
 
          <div>
             <div className="flex items-center space-x-1">
-               <p className="inline text-sm font-bold">
+               <p className="inline text-sm font-bold hover:cursor-pointer hover:text-twitter">
                   @
                   {comment.user.username
                      .replace(/\s+/g, "")

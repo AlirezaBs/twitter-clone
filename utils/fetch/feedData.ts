@@ -49,8 +49,12 @@ export async function feedData() {
    const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}api/tweets?${queryParams}`
    )
-   const data = await res.json()
 
+   if (res.status !== 200) {
+      throw new Error("some error accured")
+   }
+
+   const data = await res.json()
    const tweets: Tweet[] = parseTweetData(data.data)
 
    return tweets

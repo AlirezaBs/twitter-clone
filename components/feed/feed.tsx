@@ -56,14 +56,14 @@ export default function Feed({ tweets: tweetsProp }: Props) {
    }, [tweetsProp, tweets])
 
    return (
-      <div className="col-span-8 h-screen overflow-scroll border-x-2 border-gray-400 pb-20 transition dark:border-gray-500 md:col-span-7 lg:col-span-5">
+      <div className="hide-scrollbar col-span-8 h-screen overflow-scroll border-x-2 border-gray-300 pb-20 transition dark:border-gray-600 md:col-span-7 lg:col-span-5">
          <div className="my-5 flex items-center justify-between">
             {!!session ? (
-               <h1 className="pl-5 pb-0 text-xl font-bold">
+               <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">
                   Hello {session.user.username}
                </h1>
             ) : (
-               <h1 className="pl-5 pb-0 text-xl font-bold">Home</h1>
+               <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">Home</h1>
             )}
             <RefreshIcon
                onClick={handleRefresh}
@@ -84,7 +84,7 @@ export default function Feed({ tweets: tweetsProp }: Props) {
                <TweetNonImageSkeleton />
             </div>
          ) : (
-            <div>
+            <div className="">
                {tweets.map((tweet) => (
                   <TweetComponent
                      key={tweet.id}

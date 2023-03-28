@@ -13,6 +13,7 @@ import userPlaceholder from "../../public/man-placeholder.png"
 import { useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { postComments } from "@/utils/fetch/postComment"
+import imageLoader from "@/utils/imageLoader"
 
 interface Props {
    tweet: Tweet
@@ -66,22 +67,14 @@ export default function TweetComponent({ tweet, addComment }: Props) {
       }
    }
 
-   const tweetImgLoader = ({}) => {
-      return `${process.env.NEXT_PUBLIC_API_URL_IMG}${tweet.image}`
-   }
-   const tweetUserLoader = ({}) => {
-      return `${process.env.NEXT_PUBLIC_API_URL_IMG}${tweet.user.profileImage}`
-   }
-
    return (
-      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-400 p-2  transition dark:border-gray-500  md:p-5">
+      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-400 p-4 transition dark:border-gray-500  md:p-5">
          <div className="flex space-x-3">
             {!!tweet.user.profileImage ? (
                <Image
-                  loader={tweetUserLoader}
+                  loader={() => imageLoader(tweet.user?.profileImage as string)}
                   src={tweet.user?.profileImage}
                   alt={tweet.user.username}
-                  quality={30}
                   width={40}
                   height={40}
                   className="h-10 w-10 rounded-full object-cover"
@@ -91,15 +84,15 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   src={userPlaceholder}
                   alt={tweet.user.username}
                   quality={30}
-                  width={28}
-                  height={28}
-                  className="h-7 w-7 rounded-full bg-transparent object-cover"
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-full bg-transparent object-cover"
                />
             )}
 
             <div className="flex-1">
                <div className="flex items-center space-x-1">
-                  <p className="text-sm font-bold">
+                  <p className="text-sm font-bold hover:text-twitter hover:cursor-pointer">
                      @
                      {tweet.user.username
                         .replace(/\s+/g, "")
@@ -117,7 +110,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                {tweet.image && (
                   <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg shadow-sm">
                      <Image
-                        loader={tweetImgLoader}
+                        loader={() => imageLoader(tweet.image as string)}
                         src={tweet?.image}
                         alt=""
                         quality={70}
@@ -156,7 +149,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          </div>
 
          {showCommets && (
-            <div className="my-2 mt-5 max-h-80  space-y-5 overflow-y-scroll border-t border-gray-300 p-3 py-0 transition dark:border-gray-500">
+            <div className="hide-scrollbar my-2 mt-5 max-h-80 space-y-5 overflow-y-scroll border-t border-gray-300 p-3 py-0 transition dark:border-gray-500">
                <form onSubmit={handleCommentSubmit} className="flex pt-5">
                   <input
                      className=" flex-1 bg-transparent text-gray-500 outline-none transition placeholder:text-gray-400 dark:text-gray-300"

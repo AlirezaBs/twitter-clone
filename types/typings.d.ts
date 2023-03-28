@@ -26,6 +26,19 @@ export interface Comments extends CommentBody {
    }
 }
 
+export interface User {
+   id: string
+   username: string
+   email: string
+   confirmed: boolean
+   blocked: boolean
+   createdAt: string
+   updatedAt: string
+   profileImage?: {
+      url: string
+   }
+}
+
 export type TweetBody = {
    text: string
    likes: number

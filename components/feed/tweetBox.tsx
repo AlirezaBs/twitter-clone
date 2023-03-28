@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react"
 import { postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
 import { Tweet } from "@/types/typings"
+import imageLoader from "@/utils/imageLoader"
 
 interface Props {
    addToList: Function
@@ -69,16 +70,12 @@ export default function TweetBox({ addToList }: Props) {
       }
    }
 
-   const imageLoader = ({}) => {
-      return `${process.env.NEXT_PUBLIC_API_URL_IMG}${session?.user?.image}`
-   }
-
    return (
-      <div className="flex flex-col space-x-2 border-t-2 border-b-2 p-5 transition  border-gray-400 dark:border-gray-500 ">
+      <div className="flex flex-col space-x-2 border-t-2 border-b-2 p-5 transition border-gray-300 dark:border-gray-600 ">
          <div className="flex space-x-2">
             {session?.user?.image ? (
                <Image
-                  loader={imageLoader}
+                  loader={() => imageLoader(session.user.image as string)}
                   src={session?.user?.image}
                   alt=""
                   width={56}

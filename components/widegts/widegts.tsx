@@ -1,9 +1,33 @@
+import React, { useEffect, useState, memo } from "react"
 import { SearchIcon } from "@heroicons/react/outline"
-import React from "react"
+import { GetUsersList } from "@/utils/fetch/usersList"
+import { User } from "@/types/typings"
+import UserSkeleton from "../skeleton/userSkeleton"
+import UserRow from "./userRow"
 
-export default function Widegts() {
+function Widegts() {
+   const [users, setUsers] = useState<User[]>([])
+   const [loading, setLoading] = useState<Boolean>(true)
+
+   console.log(users)
+
+   useEffect(() => {
+      const fetchUsers = async () => {
+         try {
+            const res = await GetUsersList()
+
+            setUsers(res)
+            setLoading(false)
+         } catch (error) {
+            console.log("error accured")
+         }
+      }
+
+      fetchUsers()
+   }, [])
+
    return (
-      <div className="col-span-3 mt-2 hidden px-2 lg:inline">
+      <div className="col-span-3 mt-2 hidden flex-col px-2 lg:flex space-y-4">
          <div className="my-2 flex items-center space-x-1 rounded-full bg-gray-100 p-3 text-gray-400 transition dark:bg-gray-600 dark:text-gray-200">
             <SearchIcon className="h-5 w-5" />
             <input
@@ -12,6 +36,24 @@ export default function Widegts() {
                className="flex-1 break-words bg-transparent outline-none"
             />
          </div>
+
+         {!!loading ? (
+            <>
+               {Array.from(Array(8)).map(() => (
+                  <>
+                     <UserSkeleton />
+                  </>
+               ))}
+            </>
+         ) : (
+            <>
+               {users.map(user => (
+                  <UserRow key={user.id} user={user} />
+               ))}
+            </>
+         )}
       </div>
    )
 }
+
+export default memo(Widegts)
