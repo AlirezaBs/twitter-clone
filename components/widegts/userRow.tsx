@@ -41,7 +41,7 @@ export default function UserRow({ user }: Props) {
             </span>
          </div>
 
-         <button className="py-1 rounded-full px-3 bg-twitter text-white">view</button>
+         <button className="py-1 rounded-full px-3 bg-twitter hover:bg-twitter/70 text-white">view</button>
       </div>
    )
 }

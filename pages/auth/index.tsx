@@ -1,4 +1,4 @@
-import AuthLayout from "@/components/authLayout"
+import AuthLayout from "@/components/layouts/authLayout"
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"

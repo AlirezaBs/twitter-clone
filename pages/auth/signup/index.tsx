@@ -1,4 +1,4 @@
-import AuthLayout from "@/components/authLayout"
+import AuthLayout from "@/components/layouts/authLayout"
 import React, { useState } from "react"
 import twitterLogo from "../../../public/Twitter-logo.svg"
 import Image from "next/image"

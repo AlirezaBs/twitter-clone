@@ -53,7 +53,7 @@ function Sidebar() {
          <div className="w-fitt flex flex-col items-center space-y-2">
             <SidebarRow active={path === "/"} Icon={HomeIcon} title="Home" />
             <SidebarRow
-               active={path === "explore"}
+               active={path === "/explore"}
                Icon={HashtagIcon}
                title="Explore"
             />

@@ -11,12 +11,14 @@ import { useSession } from "next-auth/react"
 
 interface Props {
    tweets: Tweet[]
+   title: string
 }
 
-export default function Feed({ tweets: tweetsProp }: Props) {
+export default function Feed({ tweets: tweetsProp, title }: Props) {
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
    const { data: session } = useSession()
+   
 
    const handleRefresh = async () => {
       setLoading(true)
@@ -57,13 +59,15 @@ export default function Feed({ tweets: tweetsProp }: Props) {
 
    return (
       <div className="hide-scrollbar col-span-8 h-screen overflow-scroll border-x-2 border-gray-300 pb-20 transition dark:border-gray-600 md:col-span-7 lg:col-span-5">
-         <div className="my-5 flex items-center justify-between">
+         <div className="sticky top-0 z-50 flex items-center justify-between border-b border-gray-300 py-6 backdrop-blur-md dark:border-gray-500">
             {!!session ? (
                <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">
                   Hello {session.user.username}
                </h1>
             ) : (
-               <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">Home</h1>
+               <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">
+                  {title}
+               </h1>
             )}
             <RefreshIcon
                onClick={handleRefresh}

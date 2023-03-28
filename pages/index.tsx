@@ -1,59 +1,15 @@
-import Head from "next/head"
-import { GetServerSideProps } from "next"
-import Sidebar from "@/components/sidebar/sidebar"
-import Feed from "@/components/feed/feed"
-import Widegts from "@/components/widegts/widegts"
-import { Tweet } from "@/types/typings"
-import { feedData } from "@/utils/fetch/feedData"
+import SplashScreen from "@/components/splashScreen"
+import { useRouter } from "next/router"
+import React, { useEffect } from "react"
 
-interface Props {
-   tweets: Tweet[]
-   error?: boolean
-}
+export default function Page() {
+   const router = useRouter()
 
-export default function Home({ tweets, error }: Props) {
+   useEffect(() => {
+      setTimeout(() => {
+         router.push("/explore")
+      }, 1000)
+   }, [router])
 
-   if (error) {
-      return (
-         <div className="flex h-screen items-center justify-center">
-            Can not fetch any data, check your INTERNET or PROXY
-         </div>
-      )
-   }
-   return (
-      <div className=" bg-bgLight transition dark:bg-bgDark">
-         <Head>
-            <title>Twitter 2.0</title>
-            <meta
-               name="viewport"
-               content="width=device-width, initial-scale=1"
-            />
-            <link rel="icon" href="/favicon.ico" />
-         </Head>
-         <div className="mx-auto max-h-screen overflow-hidden lg:max-w-6xl">
-            <main className="grid grid-cols-10">
-               <Sidebar />
-
-               <Feed tweets={tweets} />
-
-               <Widegts />
-            </main>
-         </div>
-      </div>
-   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-   try {
-      const tweets = await feedData()
-
-      return {
-         props: {
-            tweets,
-         },
-      }
-   } catch (e) {
-      console.error(e)
-      return { props: { error: true } }
-   }
+   return <SplashScreen />
 }
