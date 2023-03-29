@@ -40,7 +40,7 @@ export default function Login() {
       }
 
       toast.success(`Welcome ${data.username}`)
-      router.push("/")
+      router.push("/feed")
    }
 
    return (
@@ -112,8 +112,8 @@ export default function Login() {
                      placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                   />
                   <EyeIcon
-                     className={`absolute right-5 bottom-7 h-7 w-7 cursor-pointer rounded-full text-twitter transition ${
-                        visible && "bg-twitter/30"
+                     className={`absolute right-4 bottom-5 hover:bg-twitter/10 p-2 h-11 w-11 cursor-pointer rounded-full text-twitter transition ${
+                        visible && "bg-twitter/30 hover:bg-twitter/50"
                      }`}
                      onClick={() => setVisible(!visible)}
                   />

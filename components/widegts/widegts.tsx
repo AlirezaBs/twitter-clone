@@ -9,15 +9,15 @@ function Widegts() {
    const [users, setUsers] = useState<User[]>([])
    const [loading, setLoading] = useState<Boolean>(true)
 
-   console.log(users)
-
    useEffect(() => {
       const fetchUsers = async () => {
          try {
             const res = await GetUsersList()
-
             setUsers(res)
-            setLoading(false)
+            
+            setTimeout(() => {
+               setLoading(false)
+            }, 500)
          } catch (error) {
             console.log("error accured")
          }
@@ -37,8 +37,10 @@ function Widegts() {
             />
          </div>
 
-         <div className="flex flex-col space-y-4 transition bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
-            <h1 className="font-semibold text-xl">Who Joined Twitter<small>2</small></h1>
+         <div className="flex flex-col overflow-hidden rounded-lg bg-gray-100 transition dark:bg-gray-800">
+            <h1 className="py-3 pl-3 text-xl font-semibold">
+               Who Joined Twitter<small>2</small>
+            </h1>
             {!!loading ? (
                <>
                   {Array.from(Array(8)).map(() => (

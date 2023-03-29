@@ -2,7 +2,7 @@ import React from "react"
 
 export default function TweetSkeleton() {
    return (
-      <div className="border-y border-t-0 border-gray-100 p-5 pt-4 dark:border-gray-500">
+      <div className="border-y border rounded-lg border-gray-200 p-5 pt-4 dark:border-gray-700">
          <div className="flex animate-pulse space-x-3">
             <svg
                className="h-12 w-12 text-gray-300 dark:text-gray-600"

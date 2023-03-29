@@ -17,9 +17,10 @@ export default function Page({ tweets, error }: Props) {
          </div>
       )
    }
+   
    return (
-      <Layout title="Explore">
-         <Feed tweets={tweets} title="Explore" />
+      <Layout title="Feed">
+         <Feed tweets={tweets} title="Feed" />
       </Layout>
    )
 }

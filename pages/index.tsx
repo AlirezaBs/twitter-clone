@@ -7,7 +7,7 @@ export default function Page() {
 
    useEffect(() => {
       setTimeout(() => {
-         router.push("/explore")
+         router.push("/feed")
       }, 1000)
    }, [router])
 

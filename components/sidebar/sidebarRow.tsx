@@ -18,7 +18,7 @@ export default function SidebarRow({ Icon, title, active, onClick }: Props) {
          onClick={onClick}
       >
          <Icon className="h-6 w-6" />
-         <p className="text-sm sm:text-base text-center font-light lg:text-xl">
+         <p className={`text-sm sm:text-base text-center lg:text-xl ${active ? "font-bold" : "font-light"}`}>
             {title}
          </p>
       </div>

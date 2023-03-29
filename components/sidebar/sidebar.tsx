@@ -1,11 +1,11 @@
 import { ComponentType, SVGProps, memo, useEffect, useState } from "react"
 import Image from "next/image"
 import {
-   HashtagIcon,
    UserIcon,
    HomeIcon,
    SunIcon,
    MoonIcon,
+   SearchIcon,
 } from "@heroicons/react/outline"
 import twiiterLogo from "../../public/Twitter-logo.svg"
 import SidebarRow from "./sidebarRow"
@@ -15,7 +15,6 @@ import { signOut, useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
 
 function Sidebar() {
-   const [isHome, setIshome] = useState(false)
    const [icon, setIcon] =
       useState<ComponentType<SVGProps<SVGSVGElement>>>(SunIcon)
    const { data: session } = useSession()
@@ -37,12 +36,6 @@ function Sidebar() {
    }
 
    useEffect(() => {
-      if(!!session && path.includes(`user/${session?.user.id}`)){
-         setIshome(true)
-      }
-   }, [path, session,])
-
-   useEffect(() => {
       if (theme === "light") {
          setIcon(SunIcon)
       } else {
@@ -51,7 +44,7 @@ function Sidebar() {
    }, [theme])
 
    return (
-      <div className="absolute bottom-0 z-50 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 sm:py-3 transition dark:border-gray-500 dark:bg-bgDark sm:relative sm:col-span-2 sm:mt-3 sm:w-full sm:border-none">
+      <div className="absolute bottom-0 z-50 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 transition dark:border-gray-500 dark:bg-bgDark sm:relative sm:col-span-2 sm:mt-3 sm:w-full sm:border-none sm:py-3">
          <Image
             onClick={toggleTheme}
             src={twiiterLogo}
@@ -62,15 +55,20 @@ function Sidebar() {
          />
          <div className="flex w-full flex-row items-center justify-between sm:flex-col sm:space-y-2">
             <SidebarRow
-               active={isHome}
+               active={!!session && path.includes(`user/${session?.user.id}`)}
                Icon={HomeIcon}
                title="Home"
+               onClick={() =>
+                  !!session
+                     ? router.push(`/user/${session.user.id}`)
+                     : toast.error("Please log in")
+               }
             />
             <SidebarRow
-               active={!isHome}
-               Icon={HashtagIcon}
-               title="Explore"
-               onClick={() => path !== "/explore" && router.push("/explore")}
+               active={!!!session || path.includes("feed") || (!!session && !path.includes(`user/${session?.user.id}`))}
+               Icon={SearchIcon}
+               title="Feed"
+               onClick={() => path !== "/feed" && router.push("/feed")}
             />
             <SidebarRow
                active={false}

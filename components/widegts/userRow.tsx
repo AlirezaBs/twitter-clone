@@ -4,14 +4,17 @@ import { User } from "@/types/typings"
 import userPlaceholder from "../../public/man-placeholder.png"
 import imageLoader from "@/utils/imageLoader"
 import TimeAgo from "react-timeago"
+import { useRouter } from "next/router"
 
 interface Props {
    user: User
 }
 
 export default function UserRow({ user }: Props) {
+   const router = useRouter()
+   
    return (
-      <div className="flex flex-row items-center space-x-3">
+      <div className="flex flex-row items-center space-x-3 px-2 py-3 rounded-lg hover:bg-gray-200 hover:dark:bg-gray-700">
          {!!user.profileImage ? (
             <Image
                loader={() => imageLoader(user.profileImage?.url as string)}
@@ -32,7 +35,7 @@ export default function UserRow({ user }: Props) {
          )}
 
          <div className="flex flex-1 flex-col justify-start">
-            <p className="inline text-sm font-bold hover:cursor-pointer hover:text-twitter">
+            <p className="inline w-fit text-sm font-bold hover:cursor-pointer hover:text-twitter">
                @{user.username.replace(/\s+/g, "").toLocaleLowerCase()}
             </p>
             <span className="text-sm text-gray-400">
@@ -41,7 +44,7 @@ export default function UserRow({ user }: Props) {
             </span>
          </div>
 
-         <button className="py-1 rounded-full px-3 bg-twitter hover:bg-twitter/70 text-white">view</button>
+         <button className="py-1 rounded-full px-3 bg-twitter hover:bg-twitter/70 text-white" onClick={() => router.push(`/user/${user.id}`)}>view</button>
       </div>
    )
 }

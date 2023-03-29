@@ -13,6 +13,7 @@ import { postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
 import { Tweet } from "@/types/typings"
 import imageLoader from "@/utils/imageLoader"
+import { useRouter } from "next/router"
 
 interface Props {
    addToList: Function
@@ -24,6 +25,8 @@ export default function TweetBox({ addToList }: Props) {
    const [showImage, setShowImage] = useState<boolean>(false)
    const [imageInputValue, setImageInputValue] = useState<string>("")
    const { data: session } = useSession()
+   const router = useRouter()
+   const path = router.asPath
 
    const handleImage = (e: React.FormEvent) => {
       e.preventDefault()
@@ -63,7 +66,14 @@ export default function TweetBox({ addToList }: Props) {
             },
             comments: [],
          }
-         addToList(newTweet)
+
+         if (
+            path.includes(`user/${session.user.id}`) ||
+            path.includes("feed")
+         ) {
+            addToList(newTweet)
+         }
+         setInput("")
          toast.success("submitted successfully!")
       } catch (error) {
          toast.error("something went wrong!")
@@ -71,7 +81,7 @@ export default function TweetBox({ addToList }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-2 border-b border-x p-5 transition border-gray-200 rounded-b-lg dark:border-gray-700 ">
+      <div className="flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 transition dark:border-gray-700 ">
          <div className="flex space-x-2">
             {session?.user?.image ? (
                <Image

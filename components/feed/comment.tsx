@@ -4,12 +4,15 @@ import React from "react"
 import TimeAgo from "react-timeago"
 import userPlaceholder from "../../public/man-placeholder.png"
 import imageLoader from "@/utils/imageLoader"
+import { useRouter } from "next/router"
 
 interface Props {
    comment: Comments
 }
 
 export default function CommentsComponent({ comment }: Props) {
+   const router = useRouter()
+   
    return (
       <div key={comment.id} className="relative mb-5 flex space-x-2">
          <hr className="absolute left-5 top-10 h-[calc(100%-35px)] border-x border-twitter/20" />
@@ -22,7 +25,8 @@ export default function CommentsComponent({ comment }: Props) {
                quality={30}
                width={28}
                height={28}
-               className="h-7 w-7 rounded-full object-cover"
+               className="h-7 w-7 rounded-full object-cover cursor-pointer"
+               onClick={() => router.push(`/user/${comment.user.id}`)}
             />
          ) : (
             <Image
@@ -31,13 +35,14 @@ export default function CommentsComponent({ comment }: Props) {
                quality={30}
                width={28}
                height={28}
-               className="h-7 w-7 rounded-full bg-transparent object-cover"
+               className="h-7 w-7 rounded-full bg-transparent object-cover cursor-pointer"
+               onClick={() => router.push(`/user/${comment.user.id}`)}
             />
          )}
 
          <div>
             <div className="flex items-center space-x-1">
-               <p className="inline text-sm font-bold hover:cursor-pointer hover:text-twitter">
+               <p className="inline text-sm font-bold hover:cursor-pointer hover:text-twitter" onClick={() => router.push(`/user/${comment.user.id}`)}>
                   @
                   {comment.user.username
                      .replace(/\s+/g, "")
