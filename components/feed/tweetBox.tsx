@@ -71,7 +71,7 @@ export default function TweetBox({ addToList }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-2 border-b-2 p-5 transition border-gray-300 dark:border-gray-600 ">
+      <div className="flex flex-col space-x-2 border-b border-x p-5 transition border-gray-200 rounded-b-lg dark:border-gray-700 ">
          <div className="flex space-x-2">
             {session?.user?.image ? (
                <Image

@@ -68,7 +68,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-3 border-y border-t-0 border-gray-400 p-4 transition dark:border-gray-500  md:p-5">
+      <div className="flex flex-col space-x-3p-4 transition border p-3 border-gray-200 rounded-lg dark:border-gray-700 hover:bg-gray-100 hover:dark:bg-gray-800  md:p-5">
          <div className="flex space-x-3">
             {!!tweet.user.profileImage ? (
                <Image

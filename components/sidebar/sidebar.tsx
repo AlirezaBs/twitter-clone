@@ -1,11 +1,7 @@
 import { ComponentType, SVGProps, memo, useEffect, useState } from "react"
 import Image from "next/image"
 import {
-   BellIcon,
    HashtagIcon,
-   BookmarkIcon,
-   CollectionIcon,
-   MailIcon,
    UserIcon,
    HomeIcon,
    SunIcon,
@@ -16,8 +12,10 @@ import SidebarRow from "./sidebarRow"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
 import { signOut, useSession } from "next-auth/react"
+import { toast } from "react-hot-toast"
 
 function Sidebar() {
+   const [isHome, setIshome] = useState(false)
    const [icon, setIcon] =
       useState<ComponentType<SVGProps<SVGSVGElement>>>(SunIcon)
    const { data: session } = useSession()
@@ -30,8 +28,19 @@ function Sidebar() {
    }
 
    const handleAuthClick = () => {
-      !!!session ? router.push("/auth") : signOut({ redirect: false })
+      if (!!!session) {
+         router.push("/auth")
+      } else {
+         toast.success("User Signed out")
+         signOut({ redirect: false })
+      }
    }
+
+   useEffect(() => {
+      if(!!session && path.includes(`user/${session?.user.id}`)){
+         setIshome(true)
+      }
+   }, [path, session,])
 
    useEffect(() => {
       if (theme === "light") {
@@ -42,7 +51,7 @@ function Sidebar() {
    }, [theme])
 
    return (
-      <div className="absolute bottom-0 z-50 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-4 py-3 transition dark:border-gray-500 dark:bg-bgDark sm:relative sm:col-span-2 sm:w-full sm:border-none">
+      <div className="absolute bottom-0 z-50 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 sm:py-3 transition dark:border-gray-500 dark:bg-bgDark sm:relative sm:col-span-2 sm:mt-3 sm:w-full sm:border-none">
          <Image
             onClick={toggleTheme}
             src={twiiterLogo}
@@ -53,12 +62,12 @@ function Sidebar() {
          />
          <div className="flex w-full flex-row items-center justify-between sm:flex-col sm:space-y-2">
             <SidebarRow
-               active={path.includes("user")}
+               active={isHome}
                Icon={HomeIcon}
                title="Home"
             />
             <SidebarRow
-               active={path.includes("explore")}
+               active={!isHome}
                Icon={HashtagIcon}
                title="Explore"
                onClick={() => path !== "/explore" && router.push("/explore")}
