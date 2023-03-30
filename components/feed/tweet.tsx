@@ -79,7 +79,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   alt={tweet.user.username}
                   width={40}
                   height={40}
-                  className="h-10 w-10 rounded-full object-cover cursor-pointer"
+                  className="h-10 w-10 cursor-pointer rounded-full object-cover"
                   onClick={() => router.push(`/user/${tweet.user.id}`)}
                />
             ) : (
@@ -88,14 +88,17 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   alt={tweet.user.username}
                   width={40}
                   height={40}
-                  className="h-10 w-10 rounded-full bg-transparent object-cover cursor-pointer"
+                  className="h-10 w-10 cursor-pointer rounded-full bg-transparent object-cover"
                   onClick={() => router.push(`/user/${tweet.user.id}`)}
                />
             )}
 
             <div className="flex-1">
                <div className="flex items-center space-x-1">
-                  <p className="text-sm font-bold hover:cursor-pointer hover:text-twitter" onClick={() => router.push(`/user/${tweet.user.id}`)}>
+                  <p
+                     className="text-sm font-bold hover:cursor-pointer hover:text-twitter"
+                     onClick={() => router.push(`/user/${tweet.user.id}`)}
+                  >
                      @
                      {tweet.user.username
                         .replace(/\s+/g, "")
@@ -111,16 +114,15 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <p className="pt-1">{tweet.text}</p>
 
                {tweet.image && (
-                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg shadow-sm">
+                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm transition dark:border-gray-700">
                      <Image
                         loader={() => imageLoader(tweet.image as string)}
                         src={tweet?.image}
                         alt=""
                         width={30}
                         height={30}
-
                         layout="responsive"
-                        className="transition duration-500 hover:scale-110"
+                        className="transition duration-500 hover:scale-110 "
                      />
                   </div>
                )}

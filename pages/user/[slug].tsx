@@ -1,5 +1,5 @@
 import { Tweet, User } from "@/types/typings"
-import { GetStaticPaths, GetStaticProps } from "next"
+import { GetServerSideProps } from "next"
 import Layout from "@/components/layouts/layout"
 import Feed from "@/components/feed/feed"
 import { userTweets } from "@/utils/fetch/userTweets"
@@ -26,17 +26,8 @@ export default function Page({ tweets, error }: Props) {
    )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-   const users = await GetUsersList()
 
-   const paths = users.map((user) => ({
-      params: { slug: user.id },
-   }))
-
-   return { paths, fallback: false }
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
    const userId = params?.slug
    try {
       const tweets = await userTweets(userId as string)
