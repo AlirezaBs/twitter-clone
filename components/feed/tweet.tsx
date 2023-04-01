@@ -71,7 +71,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    }
 
    return (
-      <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 transition hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
+      <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
          <div className="flex space-x-3">
             {!!tweet.user.profileImage ? (
                <Image
@@ -114,7 +114,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <p className="pt-2 whitespace-pre-line">{tweet.text}</p>
 
                {tweet.image && (
-                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm transition dark:border-gray-700">
+                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
                      <Image
                         src={tweet?.image}
                         alt=""
@@ -132,7 +132,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          <div className="mt-5 flex justify-between">
             <div
                onClick={() => setShowComments(!showCommets)}
-               className={`duration-125 flex cursor-pointer items-center space-x-1 text-gray-400 transition-all hover:scale-110 ${
+               className={`duration-125 flex cursor-pointer items-center space-x-1 text-gray-400 transition-transform hover:scale-110 ${
                   showCommets && "scale-110 text-gray-800 dark:text-gray-100"
                }`}
             >
@@ -140,24 +140,24 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <p>{tweet.comments?.length || "+"}</p>
             </div>
 
-            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110">
+            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-transform hover:scale-110">
                <SwitchHorizontalIcon className="h-5 w-5" />
             </div>
 
-            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110 hover:text-red-300">
+            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-transform hover:scale-110 hover:text-red-300">
                <HeartIcon className="h-5 w-5" />
             </div>
 
-            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-all hover:scale-110">
+            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-transform hover:scale-110">
                <UploadIcon className="h-5 w-5" />
             </div>
          </div>
 
          {showCommets && (
-            <div className="hide-scrollbar my-2 mt-5 max-h-80 space-y-5 overflow-y-scroll border-t border-gray-300 p-3 py-0 transition dark:border-gray-500">
+            <div className="hide-scrollbar my-2 mt-5 max-h-80 space-y-5 overflow-y-scroll border-t border-gray-300 p-3 py-0 dark:border-gray-500">
                <form onSubmit={handleCommentSubmit} className="flex pt-5">
                   <input
-                     className=" flex-1 bg-transparent text-gray-500 outline-none transition placeholder:text-gray-400 dark:text-gray-300"
+                     className=" flex-1 bg-transparent text-gray-500 outline-none placeholder:text-gray-400 dark:text-gray-300"
                      type="text"
                      placeholder="Your comment here"
                      value={commentText}
@@ -172,7 +172,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   </button>
                </form>
                {(tweet?.comments?.length || 0) > 0 && (
-                  <div className="border-t border-gray-300 pt-4 transition dark:border-gray-500">
+                  <div className="border-t border-gray-300 pt-4 dark:border-gray-500">
                      {tweet?.comments &&
                         tweet.comments.map((comment) => (
                            <CommentsComponent

@@ -80,7 +80,7 @@ export default function TweetBox({ addToList }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 transition dark:border-gray-700 ">
+      <div className="flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700 ">
          <div className="flex space-x-2">
             {session?.user?.image ? (
                <Image
@@ -126,7 +126,7 @@ export default function TweetBox({ addToList }: Props) {
             <button
                disabled={!input || !!!session}
                onClick={handleSubmit}
-               className="rounded-full bg-twitter px-3 py-1 font-bold text-white transition-all duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:py-2"
+               className="rounded-full bg-twitter px-3 py-1 font-bold text-white duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:py-2"
             >
                Tweet
             </button>
@@ -135,7 +135,7 @@ export default function TweetBox({ addToList }: Props) {
          {showImageInput && (
             <form
                onSubmit={handleImage}
-               className="mt-3 flex h-14 flex-row overflow-hidden rounded-lg border-2 border-gray-300 text-xs transition dark:border-gray-500 md:text-sm"
+               className="mt-3 flex h-14 flex-row overflow-hidden rounded-lg border-2 border-gray-300 text-xs dark:border-gray-500 md:text-sm"
             >
                <input
                   className=" flex-1 bg-transparent pl-2 text-gray-500 outline-none placeholder:text-gray-400"
@@ -144,7 +144,7 @@ export default function TweetBox({ addToList }: Props) {
                   placeholder="http:// Image section not working now!"
                   onChange={(e) => setImageInputValue(e.target.value)}
                ></input>
-               <button className="bg-gray-200 px-2 transition dark:bg-gray-600">
+               <button className="bg-gray-200 px-2 dark:bg-gray-600">
                   Submit
                </button>
             </form>

@@ -53,7 +53,7 @@ export default function CommentsComponent({ comment }: Props) {
                />
             </div>
 
-            <p className="pt-4 text-gray-700 transition dark:text-gray-200 whitespace-pre-line">
+            <p className="pt-4 text-gray-700 dark:text-gray-200 whitespace-pre-line">
                {comment.comment}
             </p>
          </div>

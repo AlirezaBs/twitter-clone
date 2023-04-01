@@ -10,7 +10,7 @@ interface Props {
 
 export default function Layout({ children, title }: Props) {
    return (
-      <div className=" bg-bgLight transition dark:bg-bgDark">
+      <div className=" bg-bgLight dark:bg-bgDark">
         <Head>
             <title>{title}</title>
             <meta
