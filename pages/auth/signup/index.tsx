@@ -1,6 +1,6 @@
 import AuthLayout from "@/components/layouts/authLayout"
 import React, { useState } from "react"
-import twitterLogo from "../../../public/Twitter-logo.svg"
+import twitterLogo from "../../../public/twitter.webp"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
