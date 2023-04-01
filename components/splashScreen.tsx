@@ -1,6 +1,6 @@
 import Image from "next/image"
 import React from "react"
-import twiiterLogo from "../public/Twitter-logo.svg"
+import twiiterLogo from "../public/twitter.webp"
 
 export default function SplashScreen() {
    return (

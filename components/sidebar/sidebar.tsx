@@ -7,7 +7,7 @@ import {
    MoonIcon,
    SearchIcon,
 } from "@heroicons/react/outline"
-import twiiterLogo from "../../public/Twitter-logo.svg"
+import twiiterLogo from "../../public/twitter.webp"
 import SidebarRow from "./sidebarRow"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
