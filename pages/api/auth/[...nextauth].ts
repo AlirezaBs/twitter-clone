@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { User } from "next-auth/core/types"
+import { singleUser } from "@/utils/fetch/singleUser"
 
 export const authOptions: NextAuthOptions = {
    session: {
@@ -76,12 +77,12 @@ export const authOptions: NextAuthOptions = {
       maxAge: 7 * 24 * 60 * 60,
    },
    callbacks: {
-      async jwt({ token, user, account, profile, isNewUser }) {
+      async jwt({ token, user }) {
          if (user) {
             token.user = {
                email: user.email,
                createdAt: user.createdAt,
-               id: user.id,
+               id: user.id as number, 
                updatedAt: user.updatedAt,
                blocked: user.blocked,
                provider: user.provider,
@@ -97,17 +98,37 @@ export const authOptions: NextAuthOptions = {
 
       session: async ({ session, token }) => {
          if (token && session.user) {
-            session.user = {
-               id: token.user.id,
-               email: token.user.email,
-               username: token.user.username,
-               blocked: token.user.blocked,
-               provider: token.user.provider,
-               confirmed: token.user.confirmed,
-               image: token.user.image,
-               updatedAt: token.user.updatedAt,
-               createdAt: token.user.createdAt,
-               jwt: token.user.jwt,
+
+            // get updated user data on each request
+            try {
+               const res = await singleUser(token.user.id.toString())
+
+               session.user = {
+                  id: res.id,
+                  email: res.email,
+                  username: res.username,
+                  blocked: res.blocked,
+                  provider: token.user.provider,
+                  confirmed: res.confirmed,
+                  image: res?.profileImage, 
+                  updatedAt: res.updatedAt,
+                  createdAt: res.createdAt,
+                  jwt: token.user.jwt,
+               }
+
+            } catch {
+               session.user = {
+                  id: token.user.id,
+                  email: token.user.email,
+                  username: token.user.username,
+                  blocked: token.user.blocked,
+                  provider: token.user.provider,
+                  confirmed: token.user.confirmed,
+                  image: token.user?.image,
+                  updatedAt: token.user.updatedAt,
+                  createdAt: token.user.createdAt,
+                  jwt: token.user.jwt,
+               }
             }
          }
 

@@ -30,7 +30,7 @@ function Sidebar() {
       if (!!!session) {
          router.push("/auth")
       } else {
-         toast.success("User Signed out")
+         toast.success("User Logged out")
          signOut({ redirect: false })
       }
    }

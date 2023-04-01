@@ -11,6 +11,7 @@
    },
    "dependencies": {
       "@heroicons/react": "^1.0.6",
+      "@next/font": "^13.2.4",
       "@portabletext/react": "^2.0.2",
       "@types/node": "18.14.2",
       "@types/react": "18.0.28",

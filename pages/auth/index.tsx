@@ -20,7 +20,7 @@ export default function Page() {
                Happening Now
             </h1>
             <h2 className="text-center text-3xl font-light lg:text-start lg:text-5xl">
-               Join Twitter<span className="text-sm">2</span> Today
+               Join TweetHub Today
             </h2>
 
             <Link

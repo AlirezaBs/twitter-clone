@@ -7,12 +7,12 @@ export default function SplashScreen() {
       <div className="flex flex-col space-y-5 h-screen w-screen items-center justify-center bg-white">
             <Image
                src={twiiterLogo}
-               alt="twitter v2"
+               alt="tweethub"
                width={50}
                height={50}
                className="transition-all hover:scale-125"
             />
-         <h1 className="text-lg text-twitter">twitter V0.2</h1>
+         <h1 className="text-lg text-twitter">TweetHub</h1>
       </div>
    )
 }

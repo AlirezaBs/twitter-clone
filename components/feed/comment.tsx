@@ -3,7 +3,6 @@ import Image from "next/image"
 import React from "react"
 import TimeAgo from "react-timeago"
 import userPlaceholder from "../../public/man-placeholder.png"
-import imageLoader from "@/utils/imageLoader"
 import { useRouter } from "next/router"
 
 interface Props {
@@ -19,7 +18,6 @@ export default function CommentsComponent({ comment }: Props) {
 
          {!!comment.user.profileImage ? (
             <Image
-               loader={() => imageLoader(comment.user.profileImage as string)}
                src={comment.user?.profileImage}
                alt={comment.user.username}
                quality={30}
@@ -55,7 +53,7 @@ export default function CommentsComponent({ comment }: Props) {
                />
             </div>
 
-            <p className="pt-4 text-gray-700 transition dark:text-gray-200">
+            <p className="pt-4 text-gray-700 transition dark:text-gray-200 whitespace-pre-line">
                {comment.comment}
             </p>
          </div>

@@ -14,17 +14,14 @@ function Widegts() {
          try {
             const res = await GetUsersList()
             setUsers(res)
-            
-            setTimeout(() => {
-               setLoading(false)
-            }, 500)
+            setLoading(false)
          } catch (error) {
             console.log("error accured")
          }
       }
 
       fetchUsers()
-   }, [])
+   }, [users])
 
    return (
       <div className="hide-scrollbar col-span-3 mt-2 hidden flex-col space-y-2 px-2 lg:flex">
@@ -32,23 +29,23 @@ function Widegts() {
             <SearchIcon className="h-5 w-5" />
             <input
                type="text"
-               placeholder="Search Twitter"
+               placeholder="Search TweetHub"
                className="flex-1 break-words bg-transparent outline-none"
             />
          </div>
 
          <div className="flex flex-col overflow-hidden rounded-lg bg-gray-100 transition dark:bg-gray-800">
             <h1 className="py-3 pl-3 text-xl font-semibold">
-               Who Joined Twitter<small>2</small>
+               Who Joined tweethub
             </h1>
             {!!loading ? (
-               <>
-                  {Array.from(Array(8)).map(() => (
+               <div className="flex flex-col space-y-2">
+                  {Array.from(Array(5)).map(() => (
                      <>
                         <UserSkeleton />
                      </>
                   ))}
-               </>
+               </div>
             ) : (
                <>
                   {users.map((user) => (

@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react"
 import { postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
 import { Tweet } from "@/types/typings"
-import imageLoader from "@/utils/imageLoader"
 import { useRouter } from "next/router"
 
 interface Props {
@@ -85,8 +84,7 @@ export default function TweetBox({ addToList }: Props) {
          <div className="flex space-x-2">
             {session?.user?.image ? (
                <Image
-                  loader={() => imageLoader(session.user.image as string)}
-                  src={session?.user?.image}
+                  src={session.user.image}
                   alt=""
                   width={56}
                   height={54}

@@ -1,7 +1,7 @@
 import { Tweet, Comments } from '@/types/typings'
 
 interface TweetData {
-   id: string
+   id: number
    attributes: {
       text: string
       blockTweet: boolean
@@ -18,13 +18,13 @@ interface TweetData {
       } | null
       user: {
          data: {
-            id: string
+            id: number
             attributes: {
                username: string
                blocked: boolean
                profileImage: {
                   data: {
-                     id: string
+                     id: number
                      attributes: {
                         url: string
                      }
@@ -35,7 +35,7 @@ interface TweetData {
       }
       comments: {
          data: {
-            id: string
+            id: number
             attributes: {
                comment: string
                blockComment: boolean
@@ -44,13 +44,13 @@ interface TweetData {
                updatedAt: string
                user: {
                   data: {
-                     id: string
+                     id: number
                      attributes: {
                         username: string
                         blocked: boolean
                         profileImage: {
                            data: {
-                              id: string
+                              id: number
                               attributes: {
                                  url: string
                               }

@@ -27,7 +27,7 @@ export default function Feed({ tweets: tweetsProp, title }: Props) {
       setLoading(true)
       let tweets: Tweet[] = []
 
-      if (path.includes("/explore")) {
+      if (path.includes("/feed")) {
          tweets = await feedData()
       } else {
          const userId = router.query.slug
@@ -46,7 +46,7 @@ export default function Feed({ tweets: tweetsProp, title }: Props) {
       setTweets((tweets) => [newTweet, ...tweets])
    }
 
-   const addComment = (newComment: Comments, tweetId: string) => {
+   const addComment = (newComment: Comments, tweetId: number) => {
       setTweets((prevTweets) =>
          prevTweets.map((tweet) =>
             tweet.id === tweetId

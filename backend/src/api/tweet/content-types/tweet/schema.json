@@ -4,7 +4,8 @@
   "info": {
     "singularName": "tweet",
     "pluralName": "tweets",
-    "displayName": "tweet"
+    "displayName": "tweet",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -12,28 +13,36 @@
   "pluginOptions": {},
   "attributes": {
     "text": {
-      "type": "text"
+      "type": "text",
+      "required": true
     },
     "blockTweet": {
       "type": "boolean",
       "default": false
     },
-    "users_permissions_user": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "likes": {
+      "type": "integer",
+      "default": 0
+    },
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "tweets"
     },
-    "image": {
-      "allowedTypes": [
-        "images"
-      ],
-      "type": "media",
-      "multiple": false
-    },
-    "likes": {
-      "type": "integer",
-      "default": 0
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "tweet"
     }
   }
 }

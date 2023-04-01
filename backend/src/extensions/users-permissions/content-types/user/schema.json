@@ -34,20 +34,17 @@
       "type": "password",
       "minLength": 6,
       "configurable": false,
-      "private": true,
-      "searchable": false
+      "private": true
     },
     "resetPasswordToken": {
       "type": "string",
       "configurable": false,
-      "private": true,
-      "searchable": false
+      "private": true
     },
     "confirmationToken": {
       "type": "string",
       "configurable": false,
-      "private": true,
-      "searchable": false
+      "private": true
     },
     "confirmed": {
       "type": "boolean",
@@ -66,11 +63,24 @@
       "inversedBy": "users",
       "configurable": false
     },
+    "profileImage": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
     "tweets": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::tweet.tweet",
-      "mappedBy": "users_permissions_user"
+      "mappedBy": "user"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "user"
     }
   }
 }

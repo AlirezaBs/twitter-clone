@@ -13,7 +13,6 @@ import userPlaceholder from "../../public/man-placeholder.png"
 import { useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { postComments } from "@/utils/fetch/postComment"
-import imageLoader from "@/utils/imageLoader"
 import { useRouter } from "next/router"
 
 interface Props {
@@ -26,6 +25,8 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    const [commentText, setCommentText] = useState<string>("")
    const { data: session } = useSession()
    const router = useRouter()
+
+   console.log(tweet.text)
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -74,7 +75,6 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          <div className="flex space-x-3">
             {!!tweet.user.profileImage ? (
                <Image
-                  loader={() => imageLoader(tweet.user?.profileImage as string)}
                   src={tweet.user?.profileImage}
                   alt={tweet.user.username}
                   width={40}
@@ -111,18 +111,18 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   />
                </div>
 
-               <p className="pt-1">{tweet.text}</p>
+               <p className="pt-2 whitespace-pre-line">{tweet.text}</p>
 
                {tweet.image && (
                   <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm transition dark:border-gray-700">
                      <Image
-                        loader={() => imageLoader(tweet.image as string)}
                         src={tweet?.image}
                         alt=""
                         width={30}
                         height={30}
+                        placeholder="empty"
                         layout="responsive"
-                        className="transition duration-500 hover:scale-110 "
+                        className="transition duration-500 hover:scale-105 "
                      />
                   </div>
                )}

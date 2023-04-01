@@ -1,6 +1,6 @@
 import { User } from "@/types/typings"
 import qs from "qs"
-import { parseUsers } from "../parser/userParse"
+import { parseUsersList } from "../parser/userParse"
 
 const queryParams = qs.stringify(
    {
@@ -26,7 +26,7 @@ export async function GetUsersList() {
     }
  
     const data = await res.json()
-    const users: User[] = parseUsers(data)
+    const users: User[] = parseUsersList(data)
  
     return users
  }
