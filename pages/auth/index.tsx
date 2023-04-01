@@ -2,7 +2,7 @@ import AuthLayout from "@/components/layouts/authLayout"
 import React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import twitterLogo from "../../public/Twitter-logo.svg"
+import twitterLogo from "../../public/twitter.webp"
 
 export default function Page() {
    return (
