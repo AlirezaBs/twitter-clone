@@ -24,7 +24,7 @@ function Widegts() {
    }, [])
 
    return (
-      <div className="hide-scrollbar col-span-3 mt-2 hidden flex-col space-y-2 px-2 lg:flex">
+      <div className="hide-scrollbar dw-screen-100 overflow-y-auto col-span-3 mt-2 hidden flex-col space-y-2 px-2 lg:flex">
          <div className="my-2 flex items-center space-x-1 rounded-full bg-gray-100 p-3 text-gray-400 dark:bg-gray-600 dark:text-gray-200">
             <SearchIcon className="h-5 w-5" />
             <input

@@ -28,3 +28,7 @@ body {
 .hide-scrollbar::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
 }
+
+.dw-screen-100 {
+   height: 100dvh
+}

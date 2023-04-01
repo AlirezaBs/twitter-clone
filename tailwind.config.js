@@ -15,7 +15,7 @@ module.exports = {
          colors: {
             twitter: "#00aded",
             bgLight: "#fff",
-            bgDark: '#15202B'
+            bgDark: "#15202B",
          },
       },
    },
