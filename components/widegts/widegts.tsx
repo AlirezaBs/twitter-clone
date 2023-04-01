@@ -21,7 +21,7 @@ function Widegts() {
       }
 
       fetchUsers()
-   }, [users])
+   }, [])
 
    return (
       <div className="hide-scrollbar col-span-3 mt-2 hidden flex-col space-y-2 px-2 lg:flex">
