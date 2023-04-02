@@ -1,11 +1,11 @@
-import Image from "next/image"
 import React from "react"
 import twiiterLogo from "../public/twitter.webp"
+import ImageComponent from "./image"
 
 export default function SplashScreen() {
    return (
       <div className="flex flex-col space-y-5 h-screen w-screen items-center justify-center bg-white">
-            <Image
+            <ImageComponent
                src={twiiterLogo}
                alt="tweethub"
                width={50}

@@ -1,7 +1,7 @@
 import { RefreshIcon } from "@heroicons/react/outline"
 import React, { useEffect, useState } from "react"
 import TweetBox from "./tweetBox"
-import { Comments, Tweet } from "@/types/typings"
+import { Comments, Tweet, User } from "@/types/typings"
 import toast from "react-hot-toast"
 import TweetComponent from "./tweet"
 import { feedData } from "@/utils/fetch/feedData"
@@ -10,18 +10,21 @@ import TweetNonImageSkeleton from "../skeleton/tweetNonImageSkeleton"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 import { userTweets } from "@/utils/fetch/userTweets"
+import UserBox from "./userBox"
 
 interface Props {
    tweets: Tweet[]
    title: string
+   user?: User
 }
 
-export default function Feed({ tweets: tweetsProp, title }: Props) {
+export default function Feed({ tweets: tweetsProp, title, user }: Props) {
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
    const { data: session } = useSession()
    const router = useRouter()
    const path = router.asPath
+   const { slug: userId } = router.query
 
    const handleRefresh = async () => {
       setLoading(true)
@@ -30,7 +33,6 @@ export default function Feed({ tweets: tweetsProp, title }: Props) {
       if (path.includes("/feed")) {
          tweets = await feedData()
       } else {
-         const userId = router.query.slug
          tweets = await userTweets(userId as string)
       }
 
@@ -91,6 +93,13 @@ export default function Feed({ tweets: tweetsProp, title }: Props) {
                className="mr-5 h-8 w-8 transform-gpu cursor-pointer text-twitter transition-all duration-500 ease-out hover:rotate-180 active:scale-125 active:focus:rotate-180"
             />
          </div>
+
+         {/* display only in users profile page */}
+         {!!user && (
+         <div>
+            <UserBox user={user} />
+         </div>
+         )}
 
          <div>
             <TweetBox addToList={addToList} />

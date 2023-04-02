@@ -22,7 +22,7 @@ export default function Page({ tweets, error, user }: Props) {
 
    return (
       <Layout title={user.username}>
-         <Feed tweets={tweets} title="Profile" />
+         <Feed tweets={tweets} title="Profile" user={user} />
       </Layout>
    )
 }

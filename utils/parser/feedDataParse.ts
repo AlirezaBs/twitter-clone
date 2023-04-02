@@ -22,7 +22,7 @@ interface TweetData {
             attributes: {
                username: string
                blocked: boolean
-               profileImage: {
+               profileImage?: {
                   data: {
                      id: number
                      attributes: {
@@ -48,7 +48,7 @@ interface TweetData {
                      attributes: {
                         username: string
                         blocked: boolean
-                        profileImage: {
+                        profileImage?: {
                            data: {
                               id: number
                               attributes: {
@@ -72,7 +72,7 @@ export function parseTweetData(tweetData: TweetData[]): Tweet[] {
       const image = attributes?.image?.data ? attributes.image.data.attributes.url : ""
 
       const { username, blocked } = attributes.user.data.attributes
-      const profileImage = attributes?.user?.data?.attributes?.profileImage?.data?.attributes?.url ? attributes.user.data.attributes.profileImage.data.attributes.url : ""
+      const profileImage = attributes?.user?.data?.attributes?.profileImage?.data?.attributes?.url ? attributes.user.data.attributes.profileImage.data.attributes.url : null
       const user = { id: attributes.user.data.id, username, blocked, profileImage }
 
       const comments: Comments[] = attributes.comments.data.map((commentData) => {
@@ -80,7 +80,7 @@ export function parseTweetData(tweetData: TweetData[]): Tweet[] {
          const { comment, blockComment, likes, createdAt, updatedAt } = attributes
 
          const { username, blocked } = attributes.user.data.attributes
-         const profileImage = attributes?.user?.data?.attributes?.profileImage?.data?.attributes?.url ? attributes.user.data.attributes.profileImage.data.attributes.url : ""
+         const profileImage = attributes?.user?.data?.attributes?.profileImage?.data?.attributes?.url ? attributes.user.data.attributes.profileImage.data.attributes.url : null
          const user = { id: attributes.user.data.id, username, blocked, profileImage }
          return { id, comment, blockComment, likes, createdAt, updatedAt, user }
       })
