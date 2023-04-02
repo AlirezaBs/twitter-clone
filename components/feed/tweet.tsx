@@ -96,7 +96,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
             <div className="flex-1">
                <div className="flex items-center space-x-1">
                   <p
-                     className="text-sm font-bold hover:cursor-pointer hover:text-twitter"
+                     className="text-sm font-bold hover:cursor-pointer active:hover:text-twitter"
                      onClick={() => router.push(`/user/${tweet.user.id}`)}
                   >
                      @
@@ -122,7 +122,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                         height={30}
                         placeholder="empty"
                         layout="responsive"
-                        className="transition duration-500 hover:scale-105 "
+                        className="transition-transform duration-500 hover:scale-105 active:focus:scale-105"
                      />
                   </div>
                )}
@@ -165,7 +165,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   />
                   <button
                      disabled={!session || !commentText}
-                     className="rounded-full bg-twitter px-2 py-3 text-sm leading-3 text-white hover:bg-twitter/80 disabled:opacity-40"
+                     className="rounded-full bg-twitter px-2 pt-3 pb-2 text-sm leading-3 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
                      type="submit"
                   >
                      Comment

@@ -79,7 +79,7 @@ export default function Login() {
                      })}
                      id="username"
                      type="text"
-                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter "
+                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter focus:bg-white/90 "
                      placeholder="username"
                   />
                   <div className="h-2">
@@ -108,11 +108,11 @@ export default function Login() {
                      })}
                      id="password"
                      type={visible ? "text" : "password"}
-                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter"
+                     className="mt-1 w-full rounded-xl border-4 border-twitter/50 bg-white py-3 px-2 text-lg font-bold text-gray-500 outline-none transition duration-300 focus:border-twitter focus:bg-white/90"
                      placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
                   />
                   <EyeIcon
-                     className={`absolute right-4 bottom-5 hover:bg-twitter/10 p-2 h-11 w-11 cursor-pointer rounded-full text-twitter transition ${
+                     className={`absolute right-4 bottom-5 h-11 w-11 cursor-pointer rounded-full p-2 text-twitter transition hover:bg-twitter/10 ${
                         visible && "bg-twitter/30 hover:bg-twitter/50"
                      }`}
                      onClick={() => setVisible(!visible)}

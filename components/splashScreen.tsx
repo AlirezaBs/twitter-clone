@@ -10,7 +10,7 @@ export default function SplashScreen() {
                alt="tweethub"
                width={50}
                height={50}
-               className="transition-all hover:scale-125"
+               className="transition-all focus:active:hover:scale-125"
             />
          <h1 className="text-lg text-twitter">TweetHub</h1>
       </div>

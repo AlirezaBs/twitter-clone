@@ -40,7 +40,7 @@ export default function CommentsComponent({ comment }: Props) {
 
          <div>
             <div className="flex items-center space-x-1">
-               <p className="inline text-sm font-bold hover:cursor-pointer hover:text-twitter" onClick={() => router.push(`/user/${comment.user.id}`)}>
+               <p className="inline text-sm font-bold hover:cursor-pointer hover:focus:active:text-twitter" onClick={() => router.push(`/user/${comment.user.id}`)}>
                   @
                   {comment.user.username
                      .replace(/\s+/g, "")

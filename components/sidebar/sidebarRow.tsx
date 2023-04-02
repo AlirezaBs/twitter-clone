@@ -10,9 +10,9 @@ interface Props {
 export default function SidebarRow({ Icon, title, active, onClick }: Props) {
    return (
       <div
-         className={`flex lg:flex-row flex-col w-fitt cursor-pointer items-center justify-center lg:space-x-2 rounded-full px-4 py-1 sm:py-2 hover:bg-gray-100 hover:text-twitter dark:hover:bg-gray-200 ${
+         className={`flex lg:flex-row flex-col w-fitt cursor-pointer items-center justify-center lg:space-x-2 rounded-full px-4 py-1 sm:py-2 active:focus:outline-none hover:bg-gray-100 hover:text-twitter dark:hover:bg-gray-800 ${
             active
-               ? "bg-gray-100 text-twitter hover:bg-gray-200 dark:bg-gray-100 dark:hover:bg-gray-300"
+               ? "sm:bg-gray-100 text-twitter sm:hover:bg-gray-200 sm:dark:bg-gray-700 sm:dark:hover:bg-gray-300"
                : ""
          }`}
          onClick={onClick}

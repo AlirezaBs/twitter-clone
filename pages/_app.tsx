@@ -4,6 +4,7 @@ import { ThemeProvider } from "next-themes"
 import { Toaster } from "react-hot-toast"
 import { SessionProvider } from "next-auth/react"
 import { Heebo } from "@next/font/google"
+import AppLayout from "@/components/layouts/appLayout"
 
 const heebo = Heebo({
    subsets: ["latin"],
@@ -17,10 +18,12 @@ export default function App({
    return (
       <ThemeProvider attribute="class" enableSystem={true}>
          <SessionProvider session={session}>
-            <Toaster />
-            <main className={heebo.className}>
-               <Component {...pageProps} />
-            </main>
+            <AppLayout>
+               <Toaster />
+               <main className={`${heebo.className}`}>
+                  <Component {...pageProps} />
+               </main>
+            </AppLayout>
          </SessionProvider>
       </ThemeProvider>
    )
