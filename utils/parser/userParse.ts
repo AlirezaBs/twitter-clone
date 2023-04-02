@@ -4,6 +4,7 @@ export function parseUsersList(data: any[]): User[] {
    return data.map((item) => ({
       id: item.id.toString(),
       username: item.username,
+      about: item.about ? item.about : null,
       email: item.email,
       confirmed: item.confirmed,
       blocked: item.blocked,
@@ -17,6 +18,7 @@ export function parseUsers(data: any): User {
    return {
       id: data.id.toString(),
       username: data.username,
+      about: data.about ? data.about : null,
       email: data.email,
       confirmed: data.confirmed,
       blocked: data.blocked,

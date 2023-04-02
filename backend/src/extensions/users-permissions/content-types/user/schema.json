@@ -64,11 +64,12 @@
       "configurable": false
     },
     "profileImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "tweets": {
       "type": "relation",
@@ -81,6 +82,9 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "user"
+    },
+    "about": {
+      "type": "string"
     }
   }
 }

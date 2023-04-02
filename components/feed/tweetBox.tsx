@@ -13,6 +13,7 @@ import { postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
 import { Tweet } from "@/types/typings"
 import { useRouter } from "next/router"
+import ImageComponent from "../image"
 
 interface Props {
    addToList: Function
@@ -26,7 +27,8 @@ export default function TweetBox({ addToList }: Props) {
    const { data: session } = useSession()
    const router = useRouter()
    const path = router.asPath
-
+   const userImageSrc = session?.user?.image ?? placeholder
+   
    const handleImage = (e: React.FormEvent) => {
       e.preventDefault()
       setShowImageInput(false)
@@ -80,25 +82,9 @@ export default function TweetBox({ addToList }: Props) {
    }
 
    return (
-      <div className="flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700 ">
+      <div className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}>
          <div className="flex space-x-2">
-            {session?.user?.image ? (
-               <Image
-                  src={session.user.image}
-                  alt=""
-                  width={56}
-                  height={54}
-                  className="mt-4 h-14 w-14 rounded-full"
-               />
-            ) : (
-               <Image
-                  src={placeholder}
-                  alt=""
-                  width={56}
-                  height={54}
-                  className="mt-4 h-14 w-14 rounded-full"
-               />
-            )}
+            {!path.includes("/user/") && <ImageComponent height={54} width={54} src={userImageSrc as string} className="mt-4 h-14 w-14 rounded-full"  />}
 
             <div className="flex flex-1">
                <input
@@ -126,7 +112,7 @@ export default function TweetBox({ addToList }: Props) {
             <button
                disabled={!input || !!!session}
                onClick={handleSubmit}
-               className="rounded-full bg-twitter px-3 py-1 font-bold text-white duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:py-2"
+               className="rounded-full bg-twitter px-3 py-1 font-bold text-white duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:pt-2 md:pb-1"
             >
                Tweet
             </button>

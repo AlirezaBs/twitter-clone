@@ -6,14 +6,15 @@ import {
    UploadIcon,
 } from "@heroicons/react/outline"
 import Image from "next/image"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import TimeAgo from "react-timeago"
 import CommentsComponent from "./comment"
-import userPlaceholder from "../../public/man-placeholder.png"
+import placeholder from "../../public/man-placeholder.png"
 import { useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { postComments } from "@/utils/fetch/postComment"
 import { useRouter } from "next/router"
+import ImageComponent from "../image"
 
 interface Props {
    tweet: Tweet
@@ -25,8 +26,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    const [commentText, setCommentText] = useState<string>("")
    const { data: session } = useSession()
    const router = useRouter()
-
-   console.log(tweet.text)
+   const userImageSrc = tweet?.user?.profileImage ?? placeholder
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -73,30 +73,19 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    return (
       <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
          <div className="flex space-x-3">
-            {!!tweet.user.profileImage ? (
-               <Image
-                  src={tweet.user?.profileImage}
-                  alt={tweet.user.username}
+            <div onClick={() => router.push(`/user/${tweet.user.id}`)}>
+               <ImageComponent
+                  src={userImageSrc}
                   width={40}
                   height={40}
                   className="h-10 w-10 cursor-pointer rounded-full object-cover"
-                  onClick={() => router.push(`/user/${tweet.user.id}`)}
                />
-            ) : (
-               <Image
-                  src={userPlaceholder}
-                  alt={tweet.user.username}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 cursor-pointer rounded-full bg-transparent object-cover"
-                  onClick={() => router.push(`/user/${tweet.user.id}`)}
-               />
-            )}
+            </div>
 
             <div className="flex-1">
                <div className="flex items-center space-x-1">
                   <p
-                     className="text-sm font-bold hover:cursor-pointer active:hover:text-twitter"
+                     className="text-sm font-bold hover:cursor-pointer hover:text-twitter focus:text-twitter"
                      onClick={() => router.push(`/user/${tweet.user.id}`)}
                   >
                      @
@@ -111,18 +100,17 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   />
                </div>
 
-               <p className="pt-2 whitespace-pre-line">{tweet.text}</p>
+               <p className="whitespace-pre-line pt-2">{tweet.text}</p>
 
                {tweet.image && (
                   <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
-                     <Image
+                     <ImageComponent
                         src={tweet?.image}
                         alt=""
                         width={30}
                         height={30}
-                        placeholder="empty"
-                        layout="responsive"
                         className="transition-transform duration-500 hover:scale-105 active:focus:scale-105"
+                        layout="responsive"
                      />
                   </div>
                )}
