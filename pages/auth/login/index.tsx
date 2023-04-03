@@ -1,13 +1,14 @@
 import AuthLayout from "@/components/layouts/authLayout"
 import Image from "next/image"
 import Link from "next/link"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import twitterLogo from "../../../public/twitter.webp"
 import { useForm } from "react-hook-form"
 import { EyeIcon } from "@heroicons/react/outline"
 import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { useRouter } from "next/router"
+import LoadingBar, {LoadingBarRef} from "react-top-loading-bar"
 
 interface IFormInput {
    username: string
@@ -15,6 +16,7 @@ interface IFormInput {
 }
 
 export default function Login() {
+   const ref = useRef<LoadingBarRef>(null)
    const router = useRouter()
    const [visible, setVisible] = useState<boolean>()
    const {
@@ -24,6 +26,8 @@ export default function Login() {
    } = useForm<IFormInput>()
 
    const onSubmit = async (data: IFormInput) => {
+      ref.current?.continuousStart()
+
       const res = await signIn("credentials", {
          username: data.username,
          password: data.password,
@@ -41,10 +45,16 @@ export default function Login() {
 
       toast.success(`Welcome ${data.username}`)
       router.push("/feed")
+
+      setTimeout(() => {
+         ref.current?.complete()
+      }, 500)
    }
 
    return (
       <AuthLayout>
+         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+         
          <div className="flex h-full flex-col items-center justify-center space-y-5 p-5 dark:bg-bgDark md:p-8 lg:items-start lg:space-y-8">
             <Link href="/" className="cursor-pointer">
                <Image

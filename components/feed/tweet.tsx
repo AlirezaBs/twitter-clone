@@ -5,8 +5,7 @@ import {
    SwitchHorizontalIcon,
    UploadIcon,
 } from "@heroicons/react/outline"
-import Image from "next/image"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import TimeAgo from "react-timeago"
 import CommentsComponent from "./comment"
 import placeholder from "../../public/man-placeholder.png"
@@ -15,6 +14,7 @@ import { toast } from "react-hot-toast"
 import { postComments } from "@/utils/fetch/postComment"
 import { useRouter } from "next/router"
 import ImageComponent from "../image"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 interface Props {
    tweet: Tweet
@@ -22,6 +22,8 @@ interface Props {
 }
 
 export default function TweetComponent({ tweet, addComment }: Props) {
+   const ref = useRef<LoadingBarRef>(null)
+   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [showCommets, setShowComments] = useState<boolean>(false)
    const [commentText, setCommentText] = useState<string>("")
    const { data: session } = useSession()
@@ -29,7 +31,9 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    const userImageSrc = tweet?.user?.profileImage ?? placeholder
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      ref.current?.continuousStart()
       e.preventDefault()
+      setIsDisabledButton(true)
 
       try {
          if (!session?.user?.id || !session?.user?.jwt) {
@@ -63,17 +67,32 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          }
 
          addComment(newComment, tweet.id)
+         ref.current?.complete()
          setCommentText("")
+         setIsDisabledButton(false)
          toast.success("submitted successfully!")
       } catch (error) {
+         ref.current?.complete()
+         setIsDisabledButton(false)
          toast.error("something went wrong")
       }
    }
 
+   const goToUserProfile = (param: string) => {
+      ref.current?.continuousStart()
+      router.push(param)
+
+      setTimeout(() => {
+         ref.current?.complete()
+      }, 500)
+   }
+
    return (
       <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
+         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+
          <div className="flex space-x-3">
-            <div onClick={() => router.push(`/user/${tweet.user.id}`)}>
+            <div onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}>
                <ImageComponent
                   src={userImageSrc}
                   width={40}
@@ -86,7 +105,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <div className="flex items-center space-x-1">
                   <p
                      className="text-sm font-bold hover:cursor-pointer hover:text-twitter focus:text-twitter"
-                     onClick={() => router.push(`/user/${tweet.user.id}`)}
+                     onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}
                   >
                      @
                      {tweet.user.username
@@ -103,7 +122,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <p className="whitespace-pre-line pt-2">{tweet.text}</p>
 
                {tweet.image && (
-                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
+                  <div className="relative m-5 ml-0 mb-1 max-h-64 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
                      <ImageComponent
                         src={tweet?.image}
                         alt=""
@@ -152,7 +171,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                      onChange={(e) => setCommentText(e.target.value)}
                   />
                   <button
-                     disabled={!session || !commentText}
+                     disabled={!session || !commentText || isDisabledButton}
                      className="rounded-full bg-twitter px-2 pt-3 pb-2 text-sm leading-3 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
                      type="submit"
                   >

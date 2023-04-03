@@ -1,4 +1,11 @@
-import { ComponentType, SVGProps, memo, useEffect, useState } from "react"
+import {
+   ComponentType,
+   SVGProps,
+   memo,
+   useEffect,
+   useRef,
+   useState,
+} from "react"
 import Image from "next/image"
 import {
    UserIcon,
@@ -13,8 +20,10 @@ import { useTheme } from "next-themes"
 import { useRouter } from "next/router"
 import { signOut, useSession } from "next-auth/react"
 import { toast } from "react-hot-toast"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 function Sidebar() {
+   const ref = useRef<LoadingBarRef>(null)
    const [icon, setIcon] =
       useState<ComponentType<SVGProps<SVGSVGElement>>>(SunIcon)
    const { data: session } = useSession()
@@ -35,6 +44,29 @@ function Sidebar() {
       }
    }
 
+   const goToHome = () => {
+      if (!session) {
+         toast.error("Please log in")
+         return
+      }
+
+      ref.current?.continuousStart()
+      router.push(`/user/${session.user.id}`)
+
+      setTimeout(() => {
+         ref.current?.complete()
+      }, 500)
+   }
+
+   const goToFeed = () => {
+      ref.current?.continuousStart()
+      path !== "/feed" && router.push("/feed")
+
+      setTimeout(() => {
+         ref.current?.complete()
+      }, 500)
+   }
+
    useEffect(() => {
       if (theme === "light") {
          setIcon(SunIcon)
@@ -45,6 +77,8 @@ function Sidebar() {
 
    return (
       <div className="absolute bottom-0 z-50 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 dark:border-gray-500 dark:bg-bgDark sm:relative sm:col-span-2 sm:mt-3 sm:w-full sm:border-none sm:py-3">
+         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+
          <Image
             onClick={toggleTheme}
             src={twiiterLogo}
@@ -58,17 +92,17 @@ function Sidebar() {
                active={!!session && path.includes(`user/${session?.user.id}`)}
                Icon={HomeIcon}
                title="Home"
-               onClick={() =>
-                  !!session
-                     ? router.push(`/user/${session.user.id}`)
-                     : toast.error("Please log in")
-               }
+               onClick={goToHome}
             />
             <SidebarRow
-               active={!!!session || path.includes("feed") || (!!session && !path.includes(`user/${session?.user.id}`))}
+               active={
+                  !!!session ||
+                  path.includes("feed") ||
+                  (!!session && !path.includes(`user/${session?.user.id}`))
+               }
                Icon={SearchIcon}
                title="Feed"
-               onClick={() => path !== "/feed" && router.push("/feed")}
+               onClick={goToFeed}
             />
             <SidebarRow
                active={false}

@@ -1,6 +1,7 @@
 import Image from "next/image"
 import React, { ReactNode } from "react"
 import twitter from "../../public/auth.jpg"
+import Head from "next/head"
 
 interface Props {
    children: ReactNode
@@ -8,6 +9,15 @@ interface Props {
 
 export default function AuthLayout({ children }: Props) {
    return (
+      <>
+      <Head>
+            <title>Auth | TweetHub</title>
+            <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1"
+            />
+            <link rel="icon" href="/favicon.ico" />
+         </Head>
       <div className="grid h-screen grid-cols-2">
          <div className="hidden relative col-span-1 lg:flex items-center bg-twitter">
             <Image
@@ -21,5 +31,5 @@ export default function AuthLayout({ children }: Props) {
 
          <div className="col-span-2 lg:col-span-1 h-full">{children}</div>
       </div>
-   )
+      </>)
 }
