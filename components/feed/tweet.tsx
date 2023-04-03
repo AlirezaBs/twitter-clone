@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function TweetComponent({ tweet, addComment }: Props) {
-   const ref = useRef<LoadingBarRef>(null)
+   const barRef = useRef<LoadingBarRef>(null)
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [showCommets, setShowComments] = useState<boolean>(false)
    const [commentText, setCommentText] = useState<string>("")
@@ -31,7 +31,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    const userImageSrc = tweet?.user?.profileImage ?? placeholder
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      ref.current?.continuousStart()
+      barRef.current?.continuousStart()
       e.preventDefault()
       setIsDisabledButton(true)
 
@@ -67,32 +67,32 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          }
 
          addComment(newComment, tweet.id)
-         ref.current?.complete()
+         barRef.current?.complete()
          setCommentText("")
          setIsDisabledButton(false)
          toast.success("submitted successfully!")
       } catch (error) {
-         ref.current?.complete()
+         barRef.current?.complete()
          setIsDisabledButton(false)
          toast.error("something went wrong")
       }
    }
 
    const goToUserProfile = (param: string) => {
-      ref.current?.continuousStart()
+      barRef.current?.continuousStart()
       router.push(param)
 
       setTimeout(() => {
-         ref.current?.complete()
-      }, 500)
+         barRef.current?.complete()
+      }, 900)
    }
 
    return (
       <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
-         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
 
          <div className="flex space-x-3">
-            <div onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}>
+            <div className="h-fit w-fit" onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}>
                <ImageComponent
                   src={userImageSrc}
                   width={40}

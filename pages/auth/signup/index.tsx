@@ -17,7 +17,7 @@ interface IFormInput {
 }
 
 export default function Signup() {
-   const ref = useRef<LoadingBarRef>(null)
+   const barRef = useRef<LoadingBarRef>(null)
    const [visible, setVisible] = useState<boolean>(false)
    const {
       register,
@@ -27,7 +27,7 @@ export default function Signup() {
    const router = useRouter()
 
    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-      ref.current?.continuousStart()
+      barRef.current?.continuousStart()
 
       try {
          const res = await signUp(data)
@@ -38,13 +38,13 @@ export default function Signup() {
       }
       
       setTimeout(() => {
-         ref.current?.complete()
-      }, 500)
+         barRef.current?.complete()
+      }, 900)
    }
 
    return (
       <AuthLayout>
-         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
 
          <div className="flex h-full flex-col items-center justify-center space-y-5 p-5 dark:bg-bgDark md:p-8 lg:items-start lg:space-y-8">
             <Link href="/" className="cursor-pointer">

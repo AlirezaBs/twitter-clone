@@ -1,32 +1,20 @@
-import React, { useRef } from "react"
+import React from "react"
 import Image from "next/image"
 import { User } from "@/types/typings"
 import userPlaceholder from "../../public/man-placeholder.png"
 import TimeAgo from "react-timeago"
-import { useRouter } from "next/router"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 interface Props {
    user: User
+   goToUserProfile: Function
 }
 
-export default function UserRow({ user }: Props) {
-   const ref = useRef<LoadingBarRef>(null)
-   const router = useRouter()
+export default function UserRow({ user, goToUserProfile }: Props) {
 
-   const goToUserProfile = (param: string) => {
-      ref.current?.continuousStart()
-      router.push(param)
 
-      setTimeout(() => {
-         ref.current?.complete()
-      }, 500)
-   }
+   
 
    return (
-      <>
-         <LoadingBar color="#00aded" ref={ref} shadow={true} />
-
          <div className="flex flex-row items-center space-x-3 rounded-lg px-2 py-3 hover:bg-gray-200 hover:dark:bg-gray-700">
             <div onClick={() => goToUserProfile(`/user/${user.id}`)}>
                {!!user?.profileImage ? (
@@ -67,6 +55,5 @@ export default function UserRow({ user }: Props) {
                view
             </button>
          </div>
-      </>
    )
 }

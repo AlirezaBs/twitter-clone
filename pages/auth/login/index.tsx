@@ -16,7 +16,7 @@ interface IFormInput {
 }
 
 export default function Login() {
-   const ref = useRef<LoadingBarRef>(null)
+   const barRef = useRef<LoadingBarRef>(null)
    const router = useRouter()
    const [visible, setVisible] = useState<boolean>()
    const {
@@ -26,7 +26,7 @@ export default function Login() {
    } = useForm<IFormInput>()
 
    const onSubmit = async (data: IFormInput) => {
-      ref.current?.continuousStart()
+      barRef.current?.continuousStart()
 
       const res = await signIn("credentials", {
          username: data.username,
@@ -47,13 +47,13 @@ export default function Login() {
       router.push("/feed")
 
       setTimeout(() => {
-         ref.current?.complete()
-      }, 500)
+         barRef.current?.complete()
+      }, 900)
    }
 
    return (
       <AuthLayout>
-         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
          
          <div className="flex h-full flex-col items-center justify-center space-y-5 p-5 dark:bg-bgDark md:p-8 lg:items-start lg:space-y-8">
             <Link href="/" className="cursor-pointer">

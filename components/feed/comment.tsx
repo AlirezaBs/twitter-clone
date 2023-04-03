@@ -4,33 +4,36 @@ import TimeAgo from "react-timeago"
 import placeholder from "../../public/man-placeholder.png"
 import { useRouter } from "next/router"
 import ImageComponent from "../image"
-import LoadingBar, {LoadingBarRef} from "react-top-loading-bar"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 interface Props {
    comment: Comments
 }
 
 export default function CommentsComponent({ comment }: Props) {
-   const ref = useRef<LoadingBarRef>(null)
+   const barRef = useRef<LoadingBarRef>(null)
    const router = useRouter()
    const userImageSrc = comment?.user?.profileImage ?? placeholder
 
    const goToUserProfile = (param: string) => {
-      ref.current?.continuousStart()
+      barRef.current?.continuousStart()
       router.push(param)
 
       setTimeout(() => {
-         ref.current?.complete()
-      }, 500)
+         barRef.current?.complete()
+      }, 900)
    }
 
    return (
       <div key={comment.id} className="relative mb-5 flex space-x-2">
-         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
 
          <hr className="absolute left-5 top-10 h-[calc(100%-35px)] border-x border-twitter/20" />
 
-         <div onClick={() => goToUserProfile(`/user/${comment.user.id}`)}>
+         <div
+            className="h-fit w-fit"
+            onClick={() => goToUserProfile(`/user/${comment.user.id}`)}
+         >
             <ImageComponent
                src={userImageSrc}
                width={28}

@@ -2,7 +2,7 @@ import React from "react"
 
 export default function UserSkeleton() {
    return (
-      <div className="w-full">
+      <div className="w-full px-2">
          <div className="flex animate-pulse flex-row items-center space-x-3">
             <div className="h-12 w-12">
                <svg
