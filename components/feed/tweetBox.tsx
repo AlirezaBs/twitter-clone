@@ -1,9 +1,6 @@
-import React, { ChangeEvent, useState } from "react"
+import React, { ChangeEvent, useRef, useState } from "react"
 import placeholder from "../../public/man-placeholder.png"
-import {
-   EmojiHappyIcon,
-   PhotographIcon, XIcon
-} from "@heroicons/react/outline"
+import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline"
 import { useSession } from "next-auth/react"
 import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
@@ -11,12 +8,14 @@ import { Tweet } from "@/types/typings"
 import { useRouter } from "next/router"
 import ImageComponent from "../image"
 import { getTweetImage } from "@/utils/fetch/tweetImage"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 interface Props {
    addToList: Function
 }
 
 export default function TweetBox({ addToList }: Props) {
+   const ref = useRef<LoadingBarRef>(null)
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [input, setInput] = useState<string>("")
    const [file, setFile] = useState<File>()
@@ -34,6 +33,7 @@ export default function TweetBox({ addToList }: Props) {
 
    const handleSubmit = async () => {
       setIsDisabledButton(true)
+      ref.current?.continuousStart()
 
       try {
          if (!session?.user?.id || !session?.user?.jwt) {
@@ -90,76 +90,82 @@ export default function TweetBox({ addToList }: Props) {
          setInput("")
          setFile(undefined)
          setIsDisabledButton(false)
+         ref.current?.complete()
          toast.success("submitted successfully!")
       } catch (error) {
          setIsDisabledButton(false)
+         ref.current?.complete()
          toast.error("something went wrong!")
       }
    }
 
    return (
-      <div
-         className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
-      >
-         <div className="flex space-x-2">
-            {!path.includes("/user/") && (
-               <ImageComponent
-                  height={54}
-                  width={54}
-                  src={userImageSrc as string}
-                  className="mt-4 h-14 w-14 rounded-full"
-               />
+      <>
+         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+
+         <div
+            className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
+         >
+            <div className="flex space-x-2">
+               {!path.includes("/user/") && (
+                  <ImageComponent
+                     height={54}
+                     width={54}
+                     src={userImageSrc as string}
+                     className="mt-4 h-14 w-14 rounded-full"
+                  />
+               )}
+
+               <div className="flex flex-1">
+                  <input
+                     value={input}
+                     onChange={(e) => setInput(e.target.value)}
+                     type="text"
+                     placeholder="What's Happening?"
+                     className="lg h-24 w-full bg-transparent text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
+                  />
+               </div>
+            </div>
+
+            <div className="flex items-center">
+               <div className="flex flex-1 space-x-2 text-twitter">
+                  <label htmlFor="imageInput">
+                     <PhotographIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
+                  </label>
+                  <input
+                     id="imageInput"
+                     type="file"
+                     accept="image/*"
+                     className="sr-only"
+                     onChange={(e) => handleImageUpload(e)}
+                  />
+                  <EmojiHappyIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
+               </div>
+
+               <button
+                  disabled={!input || !session || isDisabledButton}
+                  onClick={handleSubmit}
+                  className="rounded-full bg-twitter px-3 py-1 font-bold text-white duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:pt-2 md:pb-1"
+               >
+                  Tweet
+               </button>
+            </div>
+
+            {file && (
+               <div className="relative w-full">
+                  <XIcon
+                     className="absolute right-3 top-5 h-10 w-10 cursor-pointer rounded-full text-red-500 hover:bg-red-500/40"
+                     onClick={() => setFile(undefined)}
+                  />
+                  <ImageComponent
+                     src={URL.createObjectURL(file) as string}
+                     width={250}
+                     height={70}
+                     className="max-w-64 ml-auto mt-4 h-32 rounded-lg border border-gray-200 dark:border-gray-700"
+                  />
+               </div>
             )}
-
-            <div className="flex flex-1">
-               <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  type="text"
-                  placeholder="What's Happening?"
-                  className="lg h-24 w-full bg-transparent text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
-               />
-            </div>
          </div>
-
-         <div className="flex items-center">
-            <div className="flex flex-1 space-x-2 text-twitter">
-               <label htmlFor="imageInput">
-                  <PhotographIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
-               </label>
-               <input
-                  id="imageInput"
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={(e) => handleImageUpload(e)}
-               />
-               <EmojiHappyIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
-            </div>
-
-            <button
-               disabled={!input || !session || isDisabledButton}
-               onClick={handleSubmit}
-               className="rounded-full bg-twitter px-3 py-1 font-bold text-white duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:pt-2 md:pb-1"
-            >
-               Tweet
-            </button>
-         </div>
-
-         {file && (
-            <div className="relative w-full">
-               <XIcon
-                  className="absolute right-3 top-5 h-10 w-10 cursor-pointer rounded-full text-red-500 hover:bg-red-500/40"
-                  onClick={() => setFile(undefined)}
-               />
-               <ImageComponent
-                  src={URL.createObjectURL(file) as string}
-                  width={250}
-                  height={70}
-                  className="max-w-64 ml-auto mt-4 h-32 rounded-lg border border-gray-200 dark:border-gray-700"
-               />
-            </div>
-         )}
-      </div>
+      </>
    )
 }

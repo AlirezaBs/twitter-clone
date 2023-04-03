@@ -19,7 +19,7 @@ export default function Page({ tweets, error }: Props) {
    }
    
    return (
-      <Layout title="Feed">
+      <Layout title="Feed | TweetHub">
          <Feed tweets={tweets} title="Feed" />
       </Layout>
    )

@@ -21,7 +21,7 @@ export default function Page({ tweets, error, user }: Props) {
    }
 
    return (
-      <Layout title={user.username}>
+      <Layout title={`${user.username} | TweetHub`}>
          <Feed tweets={tweets} title="Profile" user={user} />
       </Layout>
    )
