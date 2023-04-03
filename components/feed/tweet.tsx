@@ -5,7 +5,6 @@ import {
    SwitchHorizontalIcon,
    UploadIcon,
 } from "@heroicons/react/outline"
-import Image from "next/image"
 import React, { useState } from "react"
 import TimeAgo from "react-timeago"
 import CommentsComponent from "./comment"
@@ -22,6 +21,7 @@ interface Props {
 }
 
 export default function TweetComponent({ tweet, addComment }: Props) {
+   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [showCommets, setShowComments] = useState<boolean>(false)
    const [commentText, setCommentText] = useState<string>("")
    const { data: session } = useSession()
@@ -30,6 +30,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
+      setIsDisabledButton(true)
 
       try {
          if (!session?.user?.id || !session?.user?.jwt) {
@@ -64,8 +65,10 @@ export default function TweetComponent({ tweet, addComment }: Props) {
 
          addComment(newComment, tweet.id)
          setCommentText("")
+         setIsDisabledButton(false)
          toast.success("submitted successfully!")
       } catch (error) {
+         setIsDisabledButton(false)
          toast.error("something went wrong")
       }
    }
@@ -103,7 +106,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <p className="whitespace-pre-line pt-2">{tweet.text}</p>
 
                {tweet.image && (
-                  <div className="relative m-5 ml-0 mb-1 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
+                  <div className="relative m-5 ml-0 mb-1 max-h-64 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
                      <ImageComponent
                         src={tweet?.image}
                         alt=""
@@ -152,7 +155,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                      onChange={(e) => setCommentText(e.target.value)}
                   />
                   <button
-                     disabled={!session || !commentText}
+                     disabled={!session || !commentText || isDisabledButton}
                      className="rounded-full bg-twitter px-2 pt-3 pb-2 text-sm leading-3 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
                      type="submit"
                   >

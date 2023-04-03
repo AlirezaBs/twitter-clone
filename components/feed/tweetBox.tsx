@@ -1,52 +1,57 @@
-import React, { useState } from "react"
-import Image from "next/image"
+import React, { ChangeEvent, useState } from "react"
 import placeholder from "../../public/man-placeholder.png"
 import {
-   CalendarIcon,
    EmojiHappyIcon,
-   LocationMarkerIcon,
-   PhotographIcon,
-   SearchCircleIcon,
+   PhotographIcon, XIcon
 } from "@heroicons/react/outline"
 import { useSession } from "next-auth/react"
-import { postTweet } from "@/utils/fetch/postTweet"
+import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
 import { toast } from "react-hot-toast"
 import { Tweet } from "@/types/typings"
 import { useRouter } from "next/router"
 import ImageComponent from "../image"
+import { getTweetImage } from "@/utils/fetch/tweetImage"
 
 interface Props {
    addToList: Function
 }
 
 export default function TweetBox({ addToList }: Props) {
+   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [input, setInput] = useState<string>("")
-   const [showImageInput, setShowImageInput] = useState<boolean>(false)
-   const [showImage, setShowImage] = useState<boolean>(false)
-   const [imageInputValue, setImageInputValue] = useState<string>("")
+   const [file, setFile] = useState<File>()
    const { data: session } = useSession()
    const router = useRouter()
    const path = router.asPath
    const userImageSrc = session?.user?.image ?? placeholder
-   
-   const handleImage = (e: React.FormEvent) => {
-      e.preventDefault()
-      setShowImageInput(false)
-      setShowImage(true)
+
+   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+      const selectedImage = e.target.files?.[0]
+      if (selectedImage) {
+         setFile(selectedImage)
+      }
    }
 
    const handleSubmit = async () => {
+      setIsDisabledButton(true)
+
       try {
          if (!session?.user?.id || !session?.user?.jwt) {
             throw new Error("User ID is undefined")
          }
 
-         const res = await postTweet({
+         // prepare tweet data
+         let tweetData: PostTweet = {
             id: +session.user.id,
             text: input,
-            image: imageInputValue,
             jwt: session.user.jwt,
-         })
+            image: null,
+         }
+         if (file) {
+            tweetData.image = file
+         }
+
+         const res = await postTweet(tweetData)
 
          // get data and add to tweet list
          const id = res.data.id
@@ -68,6 +73,14 @@ export default function TweetBox({ addToList }: Props) {
             comments: [],
          }
 
+         //get image and append it to newTweet
+         let image: string
+         if (file) {
+            image = await getTweetImage(id as number)
+            newTweet.image = image
+         }
+
+         // dont update feed data if we are in other users profile
          if (
             path.includes(`user/${session.user.id}`) ||
             path.includes("feed")
@@ -75,16 +88,28 @@ export default function TweetBox({ addToList }: Props) {
             addToList(newTweet)
          }
          setInput("")
+         setFile(undefined)
+         setIsDisabledButton(false)
          toast.success("submitted successfully!")
       } catch (error) {
+         setIsDisabledButton(false)
          toast.error("something went wrong!")
       }
    }
 
    return (
-      <div className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}>
+      <div
+         className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
+      >
          <div className="flex space-x-2">
-            {!path.includes("/user/") && <ImageComponent height={54} width={54} src={userImageSrc as string} className="mt-4 h-14 w-14 rounded-full"  />}
+            {!path.includes("/user/") && (
+               <ImageComponent
+                  height={54}
+                  width={54}
+                  src={userImageSrc as string}
+                  className="mt-4 h-14 w-14 rounded-full"
+               />
+            )}
 
             <div className="flex flex-1">
                <input
@@ -99,18 +124,21 @@ export default function TweetBox({ addToList }: Props) {
 
          <div className="flex items-center">
             <div className="flex flex-1 space-x-2 text-twitter">
-               <PhotographIcon
-                  onClick={() => setShowImageInput(!showImageInput)}
-                  className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150"
+               <label htmlFor="imageInput">
+                  <PhotographIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
+               </label>
+               <input
+                  id="imageInput"
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => handleImageUpload(e)}
                />
-               <SearchCircleIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
                <EmojiHappyIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
-               <CalendarIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
-               <LocationMarkerIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
             </div>
 
             <button
-               disabled={!input || !!!session}
+               disabled={!input || !session || isDisabledButton}
                onClick={handleSubmit}
                className="rounded-full bg-twitter px-3 py-1 font-bold text-white duration-200 hover:bg-blue-400 disabled:opacity-40 disabled:hover:bg-twitter md:px-5 md:pt-2 md:pb-1"
             >
@@ -118,22 +146,19 @@ export default function TweetBox({ addToList }: Props) {
             </button>
          </div>
 
-         {showImageInput && (
-            <form
-               onSubmit={handleImage}
-               className="mt-3 flex h-14 flex-row overflow-hidden rounded-lg border-2 border-gray-300 text-xs dark:border-gray-500 md:text-sm"
-            >
-               <input
-                  className=" flex-1 bg-transparent pl-2 text-gray-500 outline-none placeholder:text-gray-400"
-                  type="text"
-                  value={imageInputValue}
-                  placeholder="http:// Image section not working now!"
-                  onChange={(e) => setImageInputValue(e.target.value)}
-               ></input>
-               <button className="bg-gray-200 px-2 dark:bg-gray-600">
-                  Submit
-               </button>
-            </form>
+         {file && (
+            <div className="relative w-full">
+               <XIcon
+                  className="absolute right-3 top-5 h-10 w-10 cursor-pointer rounded-full text-red-500 hover:bg-red-500/40"
+                  onClick={() => setFile(undefined)}
+               />
+               <ImageComponent
+                  src={URL.createObjectURL(file) as string}
+                  width={250}
+                  height={70}
+                  className="max-w-64 ml-auto mt-4 h-32 rounded-lg border border-gray-200 dark:border-gray-700"
+               />
+            </div>
          )}
       </div>
    )
