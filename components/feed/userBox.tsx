@@ -6,6 +6,7 @@ import ImageComponent from "../image"
 import UserBoxModal from "./userBoxModal"
 import { PencilAltIcon } from "@heroicons/react/outline"
 import { useSession } from "next-auth/react"
+import Modal from "../modal"
 
 interface Props {
    user: User
@@ -18,11 +19,12 @@ export default function UserBox({ user }: Props) {
 
    return (
       <>
-         <UserBoxModal
+         <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            user={user}
-         />
+         >
+            <UserBoxModal user={user} />
+         </Modal>
 
          <div className="relative flex flex-row items-start space-x-3 border-x border-b border-gray-200 p-5 dark:border-gray-700 ">
             {session?.user.id === user.id && (
@@ -36,7 +38,7 @@ export default function UserBox({ user }: Props) {
                src={userImageSrc as string}
                width={56}
                height={54}
-               className="h-20 w-20 rounded-full"
+               className="h-20 w-20 rounded-full border-2 border-gray-200 dark:border-gray-700"
             />
 
             <div className="flex flex-1 flex-col items-start justify-between space-y-2">

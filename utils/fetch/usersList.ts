@@ -4,7 +4,7 @@ import { parseUsersList } from "../parser/userParse"
 
 const queryParams = qs.stringify(
    {
-      sort: ["createdAt:desc"],
+      sort: ["updatedAt:desc"],
       populate: {
          profileImage: {
             fields: ["url"],

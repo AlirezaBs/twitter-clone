@@ -139,6 +139,7 @@ export default function TweetBox({ addToList }: Props) {
                      className="sr-only"
                      onChange={(e) => handleImageUpload(e)}
                   />
+                  
                   <EmojiHappyIcon className="h-6 w-6 cursor-pointer" />
                </div>
 
