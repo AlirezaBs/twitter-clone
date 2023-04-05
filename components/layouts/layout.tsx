@@ -11,7 +11,7 @@ interface Props {
 export default function Layout({ children, title }: Props) {
    return (
       <div className=" bg-bgLight dark:bg-bgDark">
-        <Head>
+         <Head>
             <title>{title}</title>
             <meta
                name="viewport"
@@ -19,7 +19,7 @@ export default function Layout({ children, title }: Props) {
             />
             <link rel="icon" href="/favicon.ico" />
          </Head>
-         <div className="mx-auto max-h-screen overflow-hidden lg:max-w-6xl">
+         <div className="lw-screen-100 relative mx-auto overflow-hidden lg:max-w-6xl">
             <main className="grid grid-cols-10">
                <Sidebar />
 

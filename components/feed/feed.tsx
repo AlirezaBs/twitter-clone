@@ -77,8 +77,8 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
    }, [tweetsProp, tweets])
 
    return (
-      <div className="hide-scrollbar dw-screen-100 col-span-10 overflow-scroll pb-20 sm:col-span-8 md:col-span-7 lg:col-span-5">
-         <div className="tap sticky top-0 z-10 flex items-center justify-between border-x border-b border-gray-200 py-4 backdrop-blur-md dark:border-gray-700 sm:py-6">
+      <div className="hide-scrollbar lw-screen-100 col-span-10 overflow-scroll pb-20 sm:col-span-8 md:col-span-7 lg:col-span-5">
+         <div className="tap sticky top-0 z-10 flex items-center justify-between border-x border-b border-gray-200 py-4 backdrop-blur-xl dark:border-gray-700 sm:py-6">
             {!!session ? (
                <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">
                   Hello {session.user.username}

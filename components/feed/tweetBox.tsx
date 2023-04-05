@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function TweetBox({ addToList }: Props) {
-   const ref = useRef<LoadingBarRef>(null)
+   const barRef = useRef<LoadingBarRef>(null)
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [input, setInput] = useState<string>("")
    const [file, setFile] = useState<File>()
@@ -33,7 +33,7 @@ export default function TweetBox({ addToList }: Props) {
 
    const handleSubmit = async () => {
       setIsDisabledButton(true)
-      ref.current?.continuousStart()
+      barRef.current?.continuousStart()
 
       try {
          if (!session?.user?.id || !session?.user?.jwt) {
@@ -90,18 +90,18 @@ export default function TweetBox({ addToList }: Props) {
          setInput("")
          setFile(undefined)
          setIsDisabledButton(false)
-         ref.current?.complete()
+         barRef.current?.complete()
          toast.success("submitted successfully!")
       } catch (error) {
          setIsDisabledButton(false)
-         ref.current?.complete()
+         barRef.current?.complete()
          toast.error("something went wrong!")
       }
    }
 
    return (
       <>
-         <LoadingBar color="#00aded" ref={ref} shadow={true} />
+         <LoadingBar className="z-50" color="#00aded" ref={barRef}/>
 
          <div
             className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
@@ -130,7 +130,7 @@ export default function TweetBox({ addToList }: Props) {
             <div className="flex items-center">
                <div className="flex flex-1 space-x-2 text-twitter">
                   <label htmlFor="imageInput">
-                     <PhotographIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
+                     <PhotographIcon className="h-6 w-6 cursor-pointer" />
                   </label>
                   <input
                      id="imageInput"
@@ -139,7 +139,8 @@ export default function TweetBox({ addToList }: Props) {
                      className="sr-only"
                      onChange={(e) => handleImageUpload(e)}
                   />
-                  <EmojiHappyIcon className="h-5 w-5 cursor-pointer transition-all duration-150 ease-out hover:scale-150" />
+                  
+                  <EmojiHappyIcon className="h-6 w-6 cursor-pointer" />
                </div>
 
                <button
