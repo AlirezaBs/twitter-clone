@@ -8,7 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { EyeIcon } from "@heroicons/react/outline"
 import { signUp } from "@/utils/fetch/register"
 import toast from "react-hot-toast"
-import LoadingBar, {LoadingBarRef} from "react-top-loading-bar"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 interface IFormInput {
    username: string
@@ -36,10 +36,10 @@ export default function Signup() {
       } catch (error: any) {
          toast.error(error.message || "An error occurred")
       }
-      
+
       setTimeout(() => {
          barRef.current?.complete()
-      }, 900)
+      }, 1100)
    }
 
    return (

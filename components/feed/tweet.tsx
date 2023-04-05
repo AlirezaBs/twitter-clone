@@ -84,7 +84,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
 
       setTimeout(() => {
          barRef.current?.complete()
-      }, 900)
+      }, 1100)
    }
 
    return (
@@ -122,7 +122,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <p className="whitespace-pre-line pt-2">{tweet.text}</p>
 
                {tweet.image && (
-                  <div className="relative m-5 ml-0 mb-1 max-h-64 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm dark:border-gray-700">
+                  <div className="relative m-5 ml-0 mb-1 max-h-64 w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
                      <ImageComponent
                         src={tweet?.image}
                         alt=""

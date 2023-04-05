@@ -48,7 +48,7 @@ export default function Login() {
 
       setTimeout(() => {
          barRef.current?.complete()
-      }, 900)
+      }, 1100)
    }
 
    return (

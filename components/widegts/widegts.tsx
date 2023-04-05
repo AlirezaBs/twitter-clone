@@ -19,7 +19,7 @@ function Widegts() {
 
       setTimeout(() => {
          barRef.current?.complete()
-      }, 900)
+      }, 1100)
    }
 
    useEffect(() => {
@@ -42,10 +42,9 @@ function Widegts() {
             className="z-50"
             color="#00aded"
             ref={barRef}
-            shadow={true}
          />
 
-         <div className="hide-scrollbar dw-screen-100 col-span-3 mt-2 hidden flex-col space-y-2 overflow-y-auto px-2 lg:flex">
+         <div className="hide-scrollbar lw-screen-100 col-span-3 mt-2 hidden flex-col space-y-2 overflow-y-auto px-2 lg:flex">
             <div className="my-2 flex items-center space-x-1 rounded-full bg-gray-100 p-3 text-gray-400 dark:bg-gray-600 dark:text-gray-200">
                <SearchIcon className="h-5 w-5" />
                <input

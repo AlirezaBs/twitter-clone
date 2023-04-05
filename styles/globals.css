@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+   -webkit-tap-highlight-color: transparent;
    --border-radius: 12px;
    --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
       "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
@@ -29,6 +30,6 @@ body {
     display: none;  /* Safari and Chrome */
 }
 
-.dw-screen-100 {
-   height: 100dvh
+.lw-screen-100 {
+   height: 100lvh
 }

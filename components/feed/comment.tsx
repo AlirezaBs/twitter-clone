@@ -21,7 +21,7 @@ export default function CommentsComponent({ comment }: Props) {
 
       setTimeout(() => {
          barRef.current?.complete()
-      }, 900)
+      }, 1100)
    }
 
    return (

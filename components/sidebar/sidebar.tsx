@@ -64,7 +64,7 @@ function Sidebar() {
 
       setTimeout(() => {
          barRef.current?.complete()
-      }, 900)
+      }, 1100)
    }
 
    useEffect(() => {
@@ -82,7 +82,7 @@ function Sidebar() {
             color="#00aded"
             ref={barRef}
          />
-         <div className="absolute bottom-0 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 dark:border-gray-500 dark:bg-bgDark sm:relative sm:z-10 sm:col-span-2 sm:mt-3 sm:w-full sm:border-none sm:py-3">
+         <div className="fixed z-10 bottom-0 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 dark:border-gray-500 dark:bg-bgDark sm:relative sm:z-10 sm:col-span-2 sm:mt-3 sm:w-full sm:border-none sm:py-3">
             <Image
                onClick={toggleTheme}
                src={twiiterLogo}
