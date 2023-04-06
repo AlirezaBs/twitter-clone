@@ -1,16 +1,20 @@
 import React, { useEffect, useState, memo, useRef } from "react"
-import { SearchIcon } from "@heroicons/react/outline"
-import { GetUsersList } from "@/utils/fetch/usersList"
-import { User } from "@/types/typings"
-import UserSkeleton from "../skeleton/userSkeleton"
-import UserRow from "./userRow"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 import { useRouter } from "next/router"
 
+import { SearchIcon } from "@heroicons/react/outline"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { GetUsersList } from "@/utils/fetch/usersList"
+import UserSkeleton from "../skeleton/userSkeleton"
+import UserRow from "./userRow"
+
+import { User } from "@/types/typings"
+
 function Widegts() {
+   const barRef = useRef<LoadingBarRef>(null)
    const [users, setUsers] = useState<User[]>([])
    const [loading, setLoading] = useState<Boolean>(true)
-   const barRef = useRef<LoadingBarRef>(null)
+
    const router = useRouter()
 
    const goToUserProfile = (param: string) => {
@@ -38,11 +42,7 @@ function Widegts() {
 
    return (
       <>
-         <LoadingBar
-            className="z-50"
-            color="#00aded"
-            ref={barRef}
-         />
+         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
 
          <div className="hide-scrollbar lw-screen-100 col-span-3 mt-2 hidden flex-col space-y-2 overflow-y-auto px-2 lg:flex">
             <div className="my-2 flex items-center space-x-1 rounded-full bg-gray-100 p-3 text-gray-400 dark:bg-gray-600 dark:text-gray-200">

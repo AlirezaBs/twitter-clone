@@ -1,14 +1,17 @@
 import React, { ChangeEvent, useRef, useState } from "react"
-import placeholder from "../../public/man-placeholder.png"
-import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline"
 import { useSession } from "next-auth/react"
-import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
-import { toast } from "react-hot-toast"
-import { Tweet } from "@/types/typings"
 import { useRouter } from "next/router"
+
+import { toast } from "react-hot-toast"
+import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import placeholder from "../../public/man-placeholder.png"
+import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
 import ImageComponent from "../image"
 import { getTweetImage } from "@/utils/fetch/tweetImage"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { Tweet } from "@/types/typings"
 
 interface Props {
    addToList: Function
@@ -19,8 +22,10 @@ export default function TweetBox({ addToList }: Props) {
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [input, setInput] = useState<string>("")
    const [file, setFile] = useState<File>()
+
    const { data: session } = useSession()
    const router = useRouter()
+
    const path = router.asPath
    const userImageSrc = session?.user?.image ?? placeholder
 
@@ -101,7 +106,7 @@ export default function TweetBox({ addToList }: Props) {
 
    return (
       <>
-         <LoadingBar className="z-50" color="#00aded" ref={barRef}/>
+         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
 
          <div
             className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
@@ -139,7 +144,7 @@ export default function TweetBox({ addToList }: Props) {
                      className="sr-only"
                      onChange={(e) => handleImageUpload(e)}
                   />
-                  
+
                   <EmojiHappyIcon className="h-6 w-6 cursor-pointer" />
                </div>
 

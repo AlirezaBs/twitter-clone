@@ -1,16 +1,19 @@
-import { RefreshIcon } from "@heroicons/react/outline"
 import React, { useEffect, useState } from "react"
-import TweetBox from "./tweetBox"
-import { Comments, Tweet, User } from "@/types/typings"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
+
+import { RefreshIcon } from "@heroicons/react/outline"
 import toast from "react-hot-toast"
+
+import TweetBox from "./tweetBox"
 import TweetComponent from "./tweet"
 import { feedData } from "@/utils/fetch/feedData"
 import TweetSkeleton from "../skeleton/tweetSkeleton"
 import TweetNonImageSkeleton from "../skeleton/tweetNonImageSkeleton"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/router"
 import { userTweets } from "@/utils/fetch/userTweets"
 import UserBox from "./userBox"
+
+import { Comments, Tweet, User } from "@/types/typings"
 
 interface Props {
    tweets: Tweet[]
@@ -21,8 +24,10 @@ interface Props {
 export default function Feed({ tweets: tweetsProp, title, user }: Props) {
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
+
    const { data: session } = useSession()
    const router = useRouter()
+   
    const path = router.asPath
    const { slug: userId } = router.query
 

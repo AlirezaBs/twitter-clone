@@ -1,10 +1,13 @@
-import { Comments } from "@/types/typings"
 import React, { useRef } from "react"
-import TimeAgo from "react-timeago"
-import placeholder from "../../public/man-placeholder.png"
 import { useRouter } from "next/router"
-import ImageComponent from "../image"
+
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+import TimeAgo from "react-timeago"
+
+import placeholder from "../../public/man-placeholder.png"
+import ImageComponent from "../image"
+
+import { Comments } from "@/types/typings"
 
 interface Props {
    comment: Comments

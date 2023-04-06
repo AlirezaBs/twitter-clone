@@ -1,5 +1,4 @@
 import { ReactNode } from "react"
-import { User } from "@/types/typings"
 
 interface Props {
    isOpen: boolean
@@ -9,7 +8,6 @@ interface Props {
 
 // just the layout of a modal and a layer beyond -- all content must be added with children
 export default function Modal({ isOpen, onClose, children }: Props) {
-
    if (!isOpen) return null
 
    return (
@@ -19,9 +17,7 @@ export default function Modal({ isOpen, onClose, children }: Props) {
             onClick={() => onClose()}
          ></div>
 
-         <div
-            className="absolute left-1/2 w-[90%] sm:w-[70%] lg:w-[55%] top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 rounded-lg border-2 border-gray-200 bg-bgLight p-5 dark:border-gray-700 dark:bg-bgDark "
-         >
+         <div className="absolute left-1/2 top-1/2 z-50 w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-lg border-2 border-gray-200 bg-bgLight p-5 dark:border-gray-700 dark:bg-bgDark sm:w-[70%] lg:w-[60%]">
             {children}
          </div>
       </>

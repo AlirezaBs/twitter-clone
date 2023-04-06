@@ -1,20 +1,23 @@
-import { Comments, Tweet } from "@/types/typings"
+import React, { useRef, useState } from "react"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
+
+import { toast } from "react-hot-toast"
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 import {
    ChatAlt2Icon,
    HeartIcon,
    SwitchHorizontalIcon,
    UploadIcon,
 } from "@heroicons/react/outline"
-import React, { useRef, useState } from "react"
 import TimeAgo from "react-timeago"
+
 import CommentsComponent from "./comment"
 import placeholder from "../../public/man-placeholder.png"
-import { useSession } from "next-auth/react"
-import { toast } from "react-hot-toast"
 import { postComments } from "@/utils/fetch/postComment"
-import { useRouter } from "next/router"
 import ImageComponent from "../image"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { Comments, Tweet } from "@/types/typings"
 
 interface Props {
    tweet: Tweet
@@ -26,8 +29,10 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [showCommets, setShowComments] = useState<boolean>(false)
    const [commentText, setCommentText] = useState<string>("")
+
    const { data: session } = useSession()
    const router = useRouter()
+   
    const userImageSrc = tweet?.user?.profileImage ?? placeholder
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

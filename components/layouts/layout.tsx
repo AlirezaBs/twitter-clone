@@ -1,7 +1,8 @@
 import React, { ReactNode } from "react"
+import Head from "next/head"
+
 import Sidebar from "../sidebar/sidebar"
 import Widegts from "../widegts/widegts"
-import Head from "next/head"
 
 interface Props {
    children: ReactNode

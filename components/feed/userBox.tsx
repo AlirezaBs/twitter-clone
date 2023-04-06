@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react"
-import placeholder from "../../public/man-placeholder.png"
-import { User } from "@/types/typings"
+import { useSession } from "next-auth/react"
+
+import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 import ReactTimeago from "react-timeago"
+import { PencilAltIcon } from "@heroicons/react/outline"
+
+import placeholder from "../../public/man-placeholder.png"
 import ImageComponent from "../image"
 import UserBoxModal from "./userBoxModal"
-import { PencilAltIcon } from "@heroicons/react/outline"
-import { useSession } from "next-auth/react"
 import Modal from "../modal"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { User } from "@/types/typings"
 
 interface Props {
    user: User
@@ -15,9 +18,9 @@ interface Props {
 
 export default function UserBox({ user }: Props) {
    const barRef = useRef<LoadingBarRef>(null)
-   const userImageSrc = user?.profileImage ?? placeholder
    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
    const { data: session } = useSession()
+   const userImageSrc = user?.profileImage ?? placeholder
 
    const handleLoading = (val: boolean) => {
       val ? barRef.current?.continuousStart() : barRef.current?.complete()
