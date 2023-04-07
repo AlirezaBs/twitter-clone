@@ -86,10 +86,6 @@ export default function TweetComponent({ tweet, addComment }: Props) {
    const goToUserProfile = (param: string) => {
       barRef.current?.continuousStart()
       router.push(param)
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    return (

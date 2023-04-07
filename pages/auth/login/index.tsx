@@ -45,10 +45,6 @@ export default function Login() {
 
       toast.success(`Welcome ${data.username}`)
       router.push("/feed")
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    return (

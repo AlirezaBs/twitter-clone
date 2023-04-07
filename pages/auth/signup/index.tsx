@@ -36,10 +36,6 @@ export default function Signup() {
       } catch (error: any) {
          toast.error(error.message || "An error occurred")
       }
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    return (

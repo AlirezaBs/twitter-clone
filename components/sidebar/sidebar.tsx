@@ -56,19 +56,11 @@ function Sidebar() {
 
       barRef.current?.continuousStart()
       router.push(`/user/${session.user.id}`)
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 900)
    }
 
    const goToFeed = () => {
       barRef.current?.continuousStart()
       path !== "/feed" && router.push("/feed")
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    useEffect(() => {

@@ -20,10 +20,6 @@ function Widegts() {
    const goToUserProfile = (param: string) => {
       barRef.current?.continuousStart()
       router.push(param)
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    useEffect(() => {
