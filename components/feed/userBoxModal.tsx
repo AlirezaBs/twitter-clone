@@ -14,9 +14,10 @@ interface Props {
    user: User
    onClose: Function
    setLoading: Function
+   setUserAbout: (text: string) => void
 }
 
-export default function UserBoxModal({ user, setLoading, onClose }: Props) {
+export default function UserBoxModal({ user, setLoading, onClose, setUserAbout }: Props) {
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [file, setFile] = useState<File>()
    const [about, setAbout] = useState(user.about)
@@ -52,6 +53,8 @@ export default function UserBoxModal({ user, setLoading, onClose }: Props) {
 
          const res = await patchUsers(patchBody)
 
+         setUserAbout(res.about)
+         
          setLoading(false)
          onClose()
       } catch (err) {

@@ -2,9 +2,14 @@ import React, { ChangeEvent, useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/router"
 
+import { useDispatch } from "react-redux"
+import {
+   startLoading,
+   setProgress,
+   stopLoading,
+} from "@/features/slices/loadingSlice"
 import { toast } from "react-hot-toast"
 import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 import placeholder from "../../public/man-placeholder.png"
 import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
@@ -18,13 +23,13 @@ interface Props {
 }
 
 export default function TweetBox({ addToList }: Props) {
-   const barRef = useRef<LoadingBarRef>(null)
+   const dispatch = useDispatch()
+   const { data: session } = useSession()
+   const router = useRouter()
+
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [input, setInput] = useState<string>("")
    const [file, setFile] = useState<File>()
-
-   const { data: session } = useSession()
-   const router = useRouter()
 
    const path = router.asPath
    const userImageSrc = session?.user?.image ?? placeholder
@@ -38,7 +43,7 @@ export default function TweetBox({ addToList }: Props) {
 
    const handleSubmit = async () => {
       setIsDisabledButton(true)
-      barRef.current?.continuousStart()
+      dispatch(startLoading())
 
       try {
          if (!session?.user?.id || !session?.user?.jwt) {
@@ -57,6 +62,8 @@ export default function TweetBox({ addToList }: Props) {
          }
 
          const res = await postTweet(tweetData)
+
+         dispatch(setProgress(40))
 
          // get data and add to tweet list
          const id = res.data.id
@@ -85,6 +92,8 @@ export default function TweetBox({ addToList }: Props) {
             newTweet.image = image
          }
 
+         dispatch(setProgress(70))
+
          // dont update feed data if we are in other users profile
          if (
             path.includes(`user/${session.user.id}`) ||
@@ -95,39 +104,36 @@ export default function TweetBox({ addToList }: Props) {
          setInput("")
          setFile(undefined)
          setIsDisabledButton(false)
-         barRef.current?.complete()
+         dispatch(stopLoading())
          toast.success("submitted successfully!")
       } catch (error) {
          setIsDisabledButton(false)
-         barRef.current?.complete()
+         dispatch(stopLoading())
          toast.error("something went wrong!")
       }
    }
 
    return (
       <>
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-
          <div
             className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
          >
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 mb-1 items-start">
                {!path.includes("/user/") && (
                   <ImageComponent
                      height={54}
                      width={54}
                      src={userImageSrc as string}
-                     className="mt-4 h-14 w-14 rounded-full"
+                     className="h-14 w-14 rounded-full border-2 border-gray-200 dark:border-gray-700"
                   />
                )}
 
-               <div className="flex flex-1">
-                  <input
+               <div className="flex-1 mt-4">
+                  <textarea
                      value={input}
                      onChange={(e) => setInput(e.target.value)}
-                     type="text"
                      placeholder="What's Happening?"
-                     className="lg h-24 w-full bg-transparent text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
+                     className="lg w-full bg-transparent resize-y min-h-[60px] text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
                   />
                </div>
             </div>

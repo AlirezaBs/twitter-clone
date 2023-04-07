@@ -1,8 +1,8 @@
 import React from "react"
-import Image from "next/image"
 import TimeAgo from "react-timeago"
-import userPlaceholder from "../../public/man-placeholder.png"
+import placeholder from "../../public/man-placeholder.png"
 import { User } from "@/types/typings"
+import ImageComponent from "../image"
 
 interface Props {
    user: User
@@ -10,26 +10,18 @@ interface Props {
 }
 
 export default function UserRow({ user, goToUserProfile }: Props) {
+   const userImageSrc = user?.profileImage ?? placeholder
+
    return (
       <div className="flex flex-row items-center space-x-3 rounded-lg px-2 py-3 hover:bg-gray-200 hover:dark:bg-gray-700">
          <div onClick={() => goToUserProfile(`/user/${user.id}`)}>
-            {!!user?.profileImage ? (
-               <Image
-                  src={user.profileImage}
-                  alt={user.username}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full object-cover"
-               />
-            ) : (
-               <Image
-                  src={userPlaceholder}
-                  alt={user.username}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full bg-transparent object-cover"
-               />
-            )}
+            <ImageComponent
+               src={userImageSrc}
+               alt={user.username}
+               width={40}
+               height={40}
+               className="h-10 w-10 rounded-full border-2 border-gray-200 bg-transparent object-cover dark:border-gray-700"
+            />
          </div>
 
          <div className="flex flex-1 flex-col justify-start">

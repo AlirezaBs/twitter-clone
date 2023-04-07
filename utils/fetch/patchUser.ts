@@ -27,7 +27,5 @@ export const patchUsers = async ({ id, about, image, jwt }: updateUser) => {
 
    const data = await res.json()
 
-   console.log(data)
-
    return data
 }

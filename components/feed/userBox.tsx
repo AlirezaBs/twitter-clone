@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+import {useDispatch} from 'react-redux'
+import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
 import ReactTimeago from "react-timeago"
 import { PencilAltIcon } from "@heroicons/react/outline"
 
@@ -17,22 +18,23 @@ interface Props {
 }
 
 export default function UserBox({ user }: Props) {
-   const barRef = useRef<LoadingBarRef>(null)
-   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+   const dispatch = useDispatch()
    const { data: session } = useSession()
+
+   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+   const [about, setAbout] = useState(user.about)
    const userImageSrc = user?.profileImage ?? placeholder
 
    const handleLoading = (val: boolean) => {
-      val ? barRef.current?.continuousStart() : barRef.current?.complete()
+      val ? dispatch(startLoading()) : dispatch(stopLoading())
    }
 
    return (
       <>
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-
          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <UserBoxModal
                user={user}
+               setUserAbout={(text) => setAbout(text)}
                onClose={() => setIsModalOpen(false)}
                setLoading={handleLoading}
             />
@@ -52,7 +54,7 @@ export default function UserBox({ user }: Props) {
                </p>
 
                <p className="whitespace-pre-line text-sm text-gray-600 dark:text-gray-300">
-                  {user.about ? user.about : "About me ..."}
+                  {about ? about : "About me ..."}
                </p>
 
                <div className="flex flex-row space-x-3">
