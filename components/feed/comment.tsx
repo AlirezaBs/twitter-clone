@@ -1,33 +1,36 @@
-import { Comments } from "@/types/typings"
 import React, { useRef } from "react"
-import TimeAgo from "react-timeago"
-import placeholder from "../../public/man-placeholder.png"
 import { useRouter } from "next/router"
+
+import { useDispatch } from "react-redux"
+import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
+import TimeAgo from "react-timeago"
+
+import placeholder from "../../public/man-placeholder.png"
 import ImageComponent from "../image"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { Comments } from "@/types/typings"
 
 interface Props {
    comment: Comments
 }
 
 export default function CommentsComponent({ comment }: Props) {
-   const barRef = useRef<LoadingBarRef>(null)
+   const dispatch = useDispatch()
    const router = useRouter()
    const userImageSrc = comment?.user?.profileImage ?? placeholder
 
    const goToUserProfile = (param: string) => {
-      barRef.current?.continuousStart()
-      router.push(param)
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
+      if (param === router.asPath) {
+         dispatch(startLoading())
+         dispatch(stopLoading())
+      } else {
+         dispatch(startLoading())
+         router.push(param)
+      }
    }
 
    return (
       <div key={comment.id} className="relative mb-5 flex space-x-2">
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-
          <hr className="absolute left-5 top-10 h-[calc(100%-35px)] border-x border-twitter/20" />
 
          <div
@@ -38,7 +41,7 @@ export default function CommentsComponent({ comment }: Props) {
                src={userImageSrc}
                width={28}
                height={28}
-               className="h-7 w-7 cursor-pointer rounded-full object-cover"
+               className="h-7 w-7 cursor-pointer rounded-full border-2 border-gray-200 object-cover dark:border-gray-700"
             />
          </div>
 

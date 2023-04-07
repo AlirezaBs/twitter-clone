@@ -7,6 +7,16 @@ import {
    useState,
 } from "react"
 import Image from "next/image"
+import { useTheme } from "next-themes"
+import { useRouter } from "next/router"
+import { signOut, useSession } from "next-auth/react"
+
+import { useDispatch } from "react-redux"
+import {
+   stopLoading,
+   startLoading,
+   setProgress,
+} from "@/features/slices/loadingSlice"
 import {
    UserIcon,
    HomeIcon,
@@ -14,21 +24,20 @@ import {
    MoonIcon,
    SearchIcon,
 } from "@heroicons/react/outline"
+import { toast } from "react-hot-toast"
+
 import twiiterLogo from "../../public/twitter.webp"
 import SidebarRow from "./sidebarRow"
-import { useTheme } from "next-themes"
-import { useRouter } from "next/router"
-import { signOut, useSession } from "next-auth/react"
-import { toast } from "react-hot-toast"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
 
 function Sidebar() {
-   const barRef = useRef<LoadingBarRef>(null)
-   const [icon, setIcon] =
-      useState<ComponentType<SVGProps<SVGSVGElement>>>(SunIcon)
+   const dispatch = useDispatch()
    const { data: session } = useSession()
    const { theme, setTheme } = useTheme()
    const router = useRouter()
+
+   const [icon, setIcon] =
+      useState<ComponentType<SVGProps<SVGSVGElement>>>(SunIcon)
+
    const path = router.asPath
 
    const toggleTheme = () => {
@@ -50,21 +59,23 @@ function Sidebar() {
          return
       }
 
-      barRef.current?.continuousStart()
-      router.push(`/user/${session.user.id}`)
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 900)
+      if (`/user/${session.user.id}` === router.asPath) {
+         dispatch(startLoading())
+         dispatch(stopLoading())
+      } else {
+         dispatch(startLoading())
+         router.push(`/user/${session.user.id}`)
+      }
    }
 
    const goToFeed = () => {
-      barRef.current?.continuousStart()
-      path !== "/feed" && router.push("/feed")
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
+      if ("/feed" === router.asPath) {
+         dispatch(startLoading())
+         dispatch(stopLoading())
+      } else {
+         dispatch(startLoading())
+         router.push("/feed")
+      }
    }
 
    useEffect(() => {
@@ -77,12 +88,7 @@ function Sidebar() {
 
    return (
       <>
-         <LoadingBar
-            className="z-50"
-            color="#00aded"
-            ref={barRef}
-         />
-         <div className="fixed z-10 bottom-0 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 dark:border-gray-500 dark:bg-bgDark sm:relative sm:z-10 sm:col-span-2 sm:mt-3 sm:w-full sm:border-none sm:py-3">
+         <div className="fixed bottom-0 z-10 flex w-screen flex-col items-center border-t border-gray-300 bg-bgLight px-1 py-1 dark:border-gray-500 dark:bg-bgDark sm:relative sm:z-10 sm:col-span-2 sm:mt-3 sm:w-full sm:border-none sm:py-3">
             <Image
                onClick={toggleTheme}
                src={twiiterLogo}

@@ -1,14 +1,16 @@
-import AuthLayout from "@/components/layouts/authLayout"
+import React, { useState } from "react"
+import { useRouter } from "next/router"
+import { useDispatch } from "react-redux"
 import Image from "next/image"
 import Link from "next/link"
-import React, { useRef, useState } from "react"
-import twitterLogo from "../../../public/twitter.webp"
-import { useForm } from "react-hook-form"
-import { EyeIcon } from "@heroicons/react/outline"
 import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
-import { useRouter } from "next/router"
-import LoadingBar, {LoadingBarRef} from "react-top-loading-bar"
+import { useForm } from "react-hook-form"
+import { EyeIcon } from "@heroicons/react/outline"
+import { startLoading } from "@/features/slices/loadingSlice"
+
+import AuthLayout from "@/components/layouts/authLayout"
+import twitterLogo from "../../../public/twitter.webp"
 
 interface IFormInput {
    username: string
@@ -16,7 +18,7 @@ interface IFormInput {
 }
 
 export default function Login() {
-   const barRef = useRef<LoadingBarRef>(null)
+   const dispatch = useDispatch()
    const router = useRouter()
    const [visible, setVisible] = useState<boolean>()
    const {
@@ -26,7 +28,7 @@ export default function Login() {
    } = useForm<IFormInput>()
 
    const onSubmit = async (data: IFormInput) => {
-      barRef.current?.continuousStart()
+      dispatch(startLoading())
 
       const res = await signIn("credentials", {
          username: data.username,
@@ -45,16 +47,10 @@ export default function Login() {
 
       toast.success(`Welcome ${data.username}`)
       router.push("/feed")
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    return (
-      <AuthLayout>
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-         
+      <AuthLayout>         
          <div className="flex h-full flex-col items-center justify-center space-y-5 p-5 dark:bg-bgDark md:p-8 lg:items-start lg:space-y-8">
             <Link href="/" className="cursor-pointer">
                <Image

@@ -1,14 +1,16 @@
-import AuthLayout from "@/components/layouts/authLayout"
 import React, { useRef, useState } from "react"
-import twitterLogo from "../../../public/twitter.webp"
+import toast from "react-hot-toast"
 import Image from "next/image"
+import { useForm, SubmitHandler } from "react-hook-form"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useForm, SubmitHandler } from "react-hook-form"
 import { EyeIcon } from "@heroicons/react/outline"
+import { useDispatch } from "react-redux"
+
 import { signUp } from "@/utils/fetch/register"
-import toast from "react-hot-toast"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+import twitterLogo from "../../../public/twitter.webp"
+import AuthLayout from "@/components/layouts/authLayout"
+import { startLoading } from "@/features/slices/loadingSlice"
 
 interface IFormInput {
    username: string
@@ -17,17 +19,18 @@ interface IFormInput {
 }
 
 export default function Signup() {
-   const barRef = useRef<LoadingBarRef>(null)
+   const router = useRouter()
+   const dispatch = useDispatch()
+
    const [visible, setVisible] = useState<boolean>(false)
    const {
       register,
       handleSubmit,
       formState: { errors },
    } = useForm<IFormInput>()
-   const router = useRouter()
 
    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-      barRef.current?.continuousStart()
+      dispatch(startLoading())
 
       try {
          const res = await signUp(data)
@@ -36,16 +39,10 @@ export default function Signup() {
       } catch (error: any) {
          toast.error(error.message || "An error occurred")
       }
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
    }
 
    return (
       <AuthLayout>
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-
          <div className="flex h-full flex-col items-center justify-center space-y-5 p-5 dark:bg-bgDark md:p-8 lg:items-start lg:space-y-8">
             <Link href="/" className="cursor-pointer">
                <Image

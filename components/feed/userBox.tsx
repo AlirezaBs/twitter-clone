@@ -1,35 +1,40 @@
 import React, { useRef, useState } from "react"
-import placeholder from "../../public/man-placeholder.png"
-import { User } from "@/types/typings"
+import { useSession } from "next-auth/react"
+
+import {useDispatch} from 'react-redux'
+import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
 import ReactTimeago from "react-timeago"
+import { PencilAltIcon } from "@heroicons/react/outline"
+
+import placeholder from "../../public/man-placeholder.png"
 import ImageComponent from "../image"
 import UserBoxModal from "./userBoxModal"
-import { PencilAltIcon } from "@heroicons/react/outline"
-import { useSession } from "next-auth/react"
 import Modal from "../modal"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { User } from "@/types/typings"
 
 interface Props {
    user: User
 }
 
 export default function UserBox({ user }: Props) {
-   const barRef = useRef<LoadingBarRef>(null)
-   const userImageSrc = user?.profileImage ?? placeholder
-   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+   const dispatch = useDispatch()
    const { data: session } = useSession()
 
+   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+   const [about, setAbout] = useState(user.about)
+   const userImageSrc = user?.profileImage ?? placeholder
+
    const handleLoading = (val: boolean) => {
-      val ? barRef.current?.continuousStart() : barRef.current?.complete()
+      val ? dispatch(startLoading()) : dispatch(stopLoading())
    }
 
    return (
       <>
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-
          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
             <UserBoxModal
                user={user}
+               setUserAbout={(text) => setAbout(text)}
                onClose={() => setIsModalOpen(false)}
                setLoading={handleLoading}
             />
@@ -49,7 +54,7 @@ export default function UserBox({ user }: Props) {
                </p>
 
                <p className="whitespace-pre-line text-sm text-gray-600 dark:text-gray-300">
-                  {user.about ? user.about : "About me ..."}
+                  {about ? about : "About me ..."}
                </p>
 
                <div className="flex flex-row space-x-3">

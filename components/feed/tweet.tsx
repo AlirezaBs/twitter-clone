@@ -1,20 +1,28 @@
-import { Comments, Tweet } from "@/types/typings"
+import React, { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/router"
+import { useSession } from "next-auth/react"
+
+import { useDispatch } from "react-redux"
+import {
+   startLoading,
+   stopLoading,
+   setProgress,
+} from "@/features/slices/loadingSlice"
+import { toast } from "react-hot-toast"
 import {
    ChatAlt2Icon,
    HeartIcon,
    SwitchHorizontalIcon,
    UploadIcon,
 } from "@heroicons/react/outline"
-import React, { useRef, useState } from "react"
 import TimeAgo from "react-timeago"
+
 import CommentsComponent from "./comment"
 import placeholder from "../../public/man-placeholder.png"
-import { useSession } from "next-auth/react"
-import { toast } from "react-hot-toast"
 import { postComments } from "@/utils/fetch/postComment"
-import { useRouter } from "next/router"
 import ImageComponent from "../image"
-import LoadingBar, { LoadingBarRef } from "react-top-loading-bar"
+
+import { Comments, Tweet } from "@/types/typings"
 
 interface Props {
    tweet: Tweet
@@ -22,16 +30,18 @@ interface Props {
 }
 
 export default function TweetComponent({ tweet, addComment }: Props) {
-   const barRef = useRef<LoadingBarRef>(null)
+   const dispatch = useDispatch()
+   const { data: session } = useSession()
+   const router = useRouter()
+
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [showCommets, setShowComments] = useState<boolean>(false)
    const [commentText, setCommentText] = useState<string>("")
-   const { data: session } = useSession()
-   const router = useRouter()
+
    const userImageSrc = tweet?.user?.profileImage ?? placeholder
 
    const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      barRef.current?.continuousStart()
+      dispatch(startLoading())
       e.preventDefault()
       setIsDisabledButton(true)
 
@@ -46,6 +56,8 @@ export default function TweetComponent({ tweet, addComment }: Props) {
             tweet: +tweet.id,
             jwt: session.user.jwt,
          })
+
+         dispatch(setProgress(70))
 
          // get data and add to tweet list
          const id = res.data.id
@@ -67,37 +79,39 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          }
 
          addComment(newComment, tweet.id)
-         barRef.current?.complete()
+         dispatch(stopLoading())
          setCommentText("")
          setIsDisabledButton(false)
          toast.success("submitted successfully!")
       } catch (error) {
-         barRef.current?.complete()
+         dispatch(stopLoading())
          setIsDisabledButton(false)
          toast.error("something went wrong")
       }
    }
 
    const goToUserProfile = (param: string) => {
-      barRef.current?.continuousStart()
-      router.push(param)
-
-      setTimeout(() => {
-         barRef.current?.complete()
-      }, 1100)
+      if (param === router.asPath) {
+         dispatch(startLoading())
+         dispatch(stopLoading())
+      } else {
+         dispatch(startLoading())
+         router.push(param)
+      }
    }
 
    return (
       <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
-         <LoadingBar className="z-50" color="#00aded" ref={barRef} />
-
          <div className="flex space-x-3">
-            <div className="h-fit w-fit" onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}>
+            <div
+               className="h-fit w-fit"
+               onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}
+            >
                <ImageComponent
                   src={userImageSrc}
                   width={40}
                   height={40}
-                  className="h-10 w-10 cursor-pointer rounded-full object-cover"
+                  className="h-10 w-10 cursor-pointer rounded-full border-2 border-gray-200 object-cover dark:border-gray-700"
                />
             </div>
 

@@ -1,30 +1,29 @@
-import {
-   ChangeEvent,
-   FocusEvent,
-   FormEvent,
-   InputHTMLAttributes,
-   useRef,
-   useState,
-} from "react"
-import { User } from "@/types/typings"
-import ImageComponent from "../image"
-import placeholder from "../../public/man-placeholder.png"
+import { ChangeEvent, useState } from "react"
+import { useSession } from "next-auth/react"
+
 import { PencilAltIcon } from "@heroicons/react/outline"
 import { toast } from "react-hot-toast"
-import { useSession } from "next-auth/react"
+
+import ImageComponent from "../image"
+import placeholder from "../../public/man-placeholder.png"
 import { patchUsers, updateUser } from "@/utils/fetch/patchUser"
+
+import { User } from "@/types/typings"
 
 interface Props {
    user: User
    onClose: Function
    setLoading: Function
+   setUserAbout: (text: string) => void
 }
 
-export default function UserBoxModal({ user, setLoading, onClose }: Props) {
+export default function UserBoxModal({ user, setLoading, onClose, setUserAbout }: Props) {
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [file, setFile] = useState<File>()
    const [about, setAbout] = useState(user.about)
+
    const { data: session } = useSession()
+
    const userImageSrc = file
       ? (URL.createObjectURL(file) as string)
       : user?.profileImage ?? placeholder
@@ -54,6 +53,8 @@ export default function UserBoxModal({ user, setLoading, onClose }: Props) {
 
          const res = await patchUsers(patchBody)
 
+         setUserAbout(res.about)
+         
          setLoading(false)
          onClose()
       } catch (err) {
@@ -92,20 +93,31 @@ export default function UserBoxModal({ user, setLoading, onClose }: Props) {
                value={about}
                placeholder="... ..."
                onChange={(e) => setAbout(e.target.value)}
-               className="min-h-[80px] w-full flex-1 resize-y rounded-lg border border-gray-200 bg-inherit p-2 pb-0 text-sm text-gray-600 outline-none transition focus:ring-1 dark:border-gray-700 dark:text-gray-300 sm:min-h-[110px] sm:text-base"
+               className="min-h-[85px] w-full flex-1 resize-y rounded-lg border border-gray-200 bg-inherit p-2 pb-0 text-sm text-gray-600 outline-none transition focus:ring-1 dark:border-gray-700 dark:text-gray-300 sm:min-h-[110px] sm:text-base"
             ></textarea>
          </div>
 
-         <button
-            type="submit"
-            disabled={
-               (about === user.about && file === undefined) || isDisabledButton
-            }
-            onClick={handleSubmit}
-            className="mt-2 ml-auto block rounded-full bg-twitter py-2 px-4 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
-         >
-            Submit
-         </button>
+         <div className="mt-4 flex justify-end space-x-3">
+            <button
+               type="submit"
+               disabled={isDisabledButton}
+               onClick={() => onClose()}
+               className="rounded-full border-2 border-twitter bg-white py-2 px-4 text-twitter hover:bg-white/90 focus:active:bg-white/80 disabled:opacity-40"
+            >
+               Cancel
+            </button>
+            <button
+               type="submit"
+               disabled={
+                  (about === user.about && file === undefined) ||
+                  isDisabledButton
+               }
+               onClick={handleSubmit}
+               className="rounded-full bg-twitter py-2 px-4 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
+            >
+               Submit
+            </button>
+         </div>
       </>
    )
 }
