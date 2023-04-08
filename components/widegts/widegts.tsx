@@ -14,7 +14,8 @@ import { User } from "@/types/typings"
 function Widegts() {
    const dispatch = useDispatch()
    const router = useRouter()
-   
+
+   const [pagingation, setPagination] = useState({ start: 0, limit: 6 })
    const [users, setUsers] = useState<User[]>([])
    const [loading, setLoading] = useState<Boolean>(true)
 
@@ -31,7 +32,7 @@ function Widegts() {
    useEffect(() => {
       const fetchUsers = async () => {
          try {
-            const res = await GetUsersList()
+            const res = await GetUsersList(pagingation)
             setUsers(res)
             setLoading(false)
          } catch (error) {
@@ -40,7 +41,7 @@ function Widegts() {
       }
 
       fetchUsers()
-   }, [])
+   }, [pagingation])
 
    return (
       <>

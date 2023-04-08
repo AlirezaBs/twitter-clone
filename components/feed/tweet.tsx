@@ -180,7 +180,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                   <input
                      className=" flex-1 bg-transparent text-gray-500 outline-none placeholder:text-gray-400 dark:text-gray-300"
                      type="text"
-                     placeholder="Your comment here"
+                     placeholder="Reply your comment"
                      value={commentText}
                      onChange={(e) => setCommentText(e.target.value)}
                   />

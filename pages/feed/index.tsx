@@ -17,7 +17,7 @@ export default function Page({ tweets, error }: Props) {
          </div>
       )
    }
-   
+
    return (
       <Layout title="Feed | TweetHub">
          <Feed tweets={tweets} title="Feed" />
@@ -27,7 +27,7 @@ export default function Page({ tweets, error }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
    try {
-      const tweets = await feedData()
+      const tweets = await feedData({ start: 0, limit: 15 })
 
       return {
          props: {

@@ -22,12 +22,13 @@ interface Props {
 }
 
 export default function Feed({ tweets: tweetsProp, title, user }: Props) {
+   const [pagination, setPagination] = useState({ start: 0, limit: 15 })
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
 
    const { data: session } = useSession()
    const router = useRouter()
-   
+
    const path = router.asPath
    const { slug: userId } = router.query
 
@@ -36,7 +37,7 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
       let tweets: Tweet[] = []
 
       if (path.includes("/feed")) {
-         tweets = await feedData()
+         tweets = await feedData(pagination)
       } else {
          tweets = await userTweets(userId as string)
       }
@@ -101,9 +102,9 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
 
          {/* display only in users profile page */}
          {!!user && (
-         <div>
-            <UserBox user={user} />
-         </div>
+            <div>
+               <UserBox user={user} />
+            </div>
          )}
 
          <div>
