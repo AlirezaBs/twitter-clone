@@ -3,10 +3,6 @@ import { Tweet } from "@/types/typings"
 import qs from "qs"
 import { parseTweetData } from "@/utils/parser/feedDataParse"
 
-type Params = {
-   username: string
-}
-
 const queryParams = qs.stringify(
    {
       sort: ["createdAt:desc"],

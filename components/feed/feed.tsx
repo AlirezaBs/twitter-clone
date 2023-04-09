@@ -22,7 +22,6 @@ interface Props {
 }
 
 export default function Feed({ tweets: tweetsProp, title, user }: Props) {
-   const [pagination, setPagination] = useState({ start: 0, limit: 15 })
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
 
@@ -37,7 +36,7 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
       let tweets: Tweet[] = []
 
       if (path.includes("/feed")) {
-         tweets = await feedData(pagination)
+         tweets = await feedData()
       } else {
          tweets = await userTweets(userId as string)
       }
@@ -84,7 +83,7 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
 
    return (
       <div className="hide-scrollbar lw-screen-100 col-span-10 overflow-scroll pb-20 sm:col-span-8 md:col-span-7 lg:col-span-5">
-         <div className="tap sticky top-0 z-10 flex items-center justify-between border-x border-b border-gray-200 py-4 backdrop-blur-xl dark:border-gray-700 sm:py-6">
+         <div className="tap sticky top-0 z-10 flex items-center justify-between border-x border-b border-gray-200 py-4 backdrop-blur-sm bg-gray-300/50 dark:bg-gray-700/50 dark:border-gray-700 sm:py-6">
             {!!session ? (
                <h1 className="pl-5 pb-0 text-xl font-bold text-twitter">
                   Hello {session.user.username}

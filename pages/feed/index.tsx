@@ -27,7 +27,7 @@ export default function Page({ tweets, error }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
    try {
-      const tweets = await feedData({ start: 0, limit: 15 })
+      const tweets = await feedData()
 
       return {
          props: {

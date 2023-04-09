@@ -27,7 +27,7 @@ const LoadingBarComponent = () => {
    return (
       <>
          <LoadingBar
-            height={1}
+            height={5}
             progress={progress}
             color="#00aded"
             ref={loadingBarRef}
