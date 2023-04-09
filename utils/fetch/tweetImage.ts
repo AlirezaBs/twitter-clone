@@ -1,6 +1,6 @@
 export const getTweetImage = async (id: number) => {
    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/tweetImage/${id}`
+      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/tweet/tweetImage/${id}`
    )
 
    if (res.status === 500) throw new Error("Internal Server Error")

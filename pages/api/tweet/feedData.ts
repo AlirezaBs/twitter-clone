@@ -42,7 +42,7 @@ const queryParams = qs.stringify(
       },
    },
    {
-      encodeValuesOnly: true, // prettify URL
+      encodeValuesOnly: true, // prettify URL/*  */
    }
 )
 

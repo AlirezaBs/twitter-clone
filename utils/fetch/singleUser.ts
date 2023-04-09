@@ -2,7 +2,7 @@ import { User } from "@/types/typings"
 
 export async function singleUser(userId: string) {
    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/user/${userId}`
+      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/user/singleUser/${userId}`
    )
 
    if (res.status === 500) throw new Error("Internal Server Error")

@@ -4,7 +4,7 @@ import { parseUsersList } from "../parser/userParse"
 export async function GetUsersList() {
   
    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/userList`
+      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/user/userList`
    )
 
    if (res.status === 500) throw new Error("Internal Server Error")
