@@ -19,7 +19,7 @@ export const postComments = async (props: Props) => {
       },
    })
 
-   if (res.status !== 200) {
+   if (!res.ok) {
       throw new Error("submit tweet error")
    }
 

@@ -1,7 +1,7 @@
-import SplashScreen from "@/components/splashScreen"
+import React, { useEffect } from "react"
 import Head from "next/head"
 import { useRouter } from "next/router"
-import React, { useEffect } from "react"
+import SplashScreen from "@/components/splashScreen"
 
 export default function Page() {
    const router = useRouter()
@@ -9,7 +9,7 @@ export default function Page() {
    useEffect(() => {
       setTimeout(() => {
          router.push("/feed")
-      }, 1000)
+      }, 500)
    }, [router])
 
    return (
