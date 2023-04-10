@@ -1,5 +1,6 @@
 import { Tweet, User } from "@/types/typings"
 import { GetServerSideProps } from "next"
+import Head from "next/head"
 import Layout from "@/components/layouts/layout"
 import Feed from "@/components/feed/feed"
 import { userTweets } from "@/utils/fetch/userTweets"
@@ -14,9 +15,18 @@ interface Props {
 export default function Page({ tweets, error, user }: Props) {
    if (error) {
       return (
+         <>
+         <Head>
+            <title>Error | tweethub</title>
+            <meta
+               name="viewport"
+               content="width=device-width, initial-scale=1"
+            />
+            <link rel="icon" href="/favicon.ico" />
+         </Head>
          <div className="flex h-screen items-center justify-center">
             Can not fetch any data, check your INTERNET or PROXY
-         </div>
+         </div></>
       )
    }
 

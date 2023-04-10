@@ -1,4 +1,4 @@
-export interface updateUser  {
+export interface updateUser {
    id: number
    about?: string | null
    image?: File | null
@@ -21,7 +21,7 @@ export const patchUsers = async ({ id, about, image, jwt }: updateUser) => {
       }
    )
 
-   if (res.status !== 200) {
+   if (!res.ok) {
       throw new Error("submit tweet error")
    }
 

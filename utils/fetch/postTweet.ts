@@ -20,7 +20,7 @@ export const postTweet = async ({ id, text, image, jwt }: PostTweet) => {
       },
    })
 
-   if (res.status !== 200) {
+   if (!res.ok) {
       throw new Error("submit tweet error")
    }
 

@@ -1,14 +1,31 @@
+import qs from "qs"
 import { User } from "@/types/typings"
+import { parseUsers } from "../parser/userParse"
 
 export async function singleUser(userId: string) {
-   const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_ROUTE_URL}api/user/singleUser/${userId}`
+   const queryParams = qs.stringify(
+      {
+        populate: {
+            profileImage: {
+               fields: ["url"],
+            },
+         },
+      },
+      {
+         encodeValuesOnly: true, // prettify URL
+      }
    )
 
-   if (res.status === 500) throw new Error("Internal Server Error")
-   else if (res.status !== 200) throw new Error("Fetching Error")
+   const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}api/users/${userId}?${queryParams}`
+   )
 
-   const user: User = await res.json()
+   if (!res.ok) {
+      throw new Error("some error accured")
+   }
+
+   const data = await res.json()
+   const user: User = parseUsers(data)
 
    return user
 }
