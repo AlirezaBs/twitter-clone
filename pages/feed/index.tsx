@@ -17,7 +17,7 @@ export default function Page({ tweets, error }: Props) {
          </div>
       )
    }
-   
+
    return (
       <Layout title="Feed | TweetHub">
          <Feed tweets={tweets} title="Feed" />

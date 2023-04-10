@@ -6,7 +6,7 @@ export interface PostTweet {
 }
 
 export const postTweet = async ({ id, text, image, jwt }: PostTweet) => {
-   const postData = {user: id, text}
+   const postData = { user: id, text }
 
    const formData = new FormData()
    formData.append("data", JSON.stringify(postData))
@@ -23,7 +23,6 @@ export const postTweet = async ({ id, text, image, jwt }: PostTweet) => {
    if (res.status !== 200) {
       throw new Error("submit tweet error")
    }
-
 
    const data = await res.json()
 

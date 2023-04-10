@@ -14,7 +14,7 @@ import { User } from "@/types/typings"
 function Widegts() {
    const dispatch = useDispatch()
    const router = useRouter()
-   
+
    const [users, setUsers] = useState<User[]>([])
    const [loading, setLoading] = useState<Boolean>(true)
 
