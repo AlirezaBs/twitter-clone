@@ -13,7 +13,7 @@ export async function userTweets(userId: string) {
             },
          },
          sort: ["createdAt:desc"],
-         fields: ["text", "blockTweet", "likes", "createdAt", "updatedAt"],
+         fields: ["text", "blockTweet", "createdAt", "updatedAt"],
          populate: {
             image: {
                fields: ["url"],
@@ -26,12 +26,14 @@ export async function userTweets(userId: string) {
                   },
                },
             },
+            likes: {
+               fileds: ["username"]
+            },
             comments: {
                sort: ["createdAt:desc"],
                fields: [
                   "comment",
                   "blockComment",
-                  "likes",
                   "createdAt",
                   "updatedAt",
                ],

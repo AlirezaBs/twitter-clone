@@ -21,7 +21,11 @@ interface Props {
    user?: User
 }
 
-export default function Feed({ tweets: tweetsProp, title, user }: Props) {
+export default function Feed({
+   tweets: tweetsProp,
+   title,
+   user
+}: Props) {
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
 
@@ -51,22 +55,6 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
 
    const addToList = (newTweet: Tweet) => {
       setTweets((tweets) => [newTweet, ...tweets])
-   }
-
-   const addComment = (newComment: Comments, tweetId: number) => {
-      setTweets((prevTweets) =>
-         prevTweets.map((tweet) =>
-            tweet.id === tweetId
-               ? {
-                    ...tweet,
-                    comments: [
-                       newComment,
-                       ...(tweet.comments || []),
-                    ] as Comments[],
-                 }
-               : tweet
-         )
-      )
    }
 
    useEffect(() => {
@@ -129,7 +117,6 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
                   <TweetComponent
                      key={tweet.id}
                      tweet={tweet}
-                     addComment={addComment}
                   />
                ))}
             </div>

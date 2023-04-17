@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 
 import {useDispatch} from 'react-redux'
@@ -28,6 +28,10 @@ export default function UserBox({ user }: Props) {
    const handleLoading = (val: boolean) => {
       val ? dispatch(startLoading()) : dispatch(stopLoading())
    }
+
+   useEffect(()=>{
+      setAbout(user.about)
+   }, [user])
 
    return (
       <>

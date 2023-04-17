@@ -85,6 +85,12 @@
     },
     "about": {
       "type": "string"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tweet.tweet",
+      "mappedBy": "likes"
     }
   }
 }

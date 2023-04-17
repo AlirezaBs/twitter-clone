@@ -5,7 +5,7 @@ import { parseTweetData } from "../parser/feedDataParse"
 const queryParams = qs.stringify(
    {
       sort: ["createdAt:desc"],
-      fields: ["text", "blockTweet", "likes", "createdAt", "updatedAt"],
+      fields: ["text", "blockTweet", "createdAt", "updatedAt"],
       populate: {
          image: {
             fields: ["url"],
@@ -18,12 +18,14 @@ const queryParams = qs.stringify(
                },
             },
          },
+         likes: {
+            fileds: ["username"]
+         },
          comments: {
             sort: ["createdAt:desc"],
             fields: [
                "comment",
                "blockComment",
-               "likes",
                "createdAt",
                "updatedAt",
             ],

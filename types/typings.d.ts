@@ -11,6 +11,7 @@ export interface Tweet extends TweetBody {
       profileImage?: string | null
    }
    comments?: Comments[]
+   likes: Likes[]
 }
 
 export interface Comments extends CommentBody {
@@ -40,10 +41,12 @@ export interface User {
 
 export type TweetBody = {
    text: string
-   likes: number
 }
 
 export type CommentBody = {
    comment: string
-   likes: number
+}
+
+export interface Likes {
+   username: string
 }

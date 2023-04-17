@@ -1,14 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
-import { useSession } from "next-auth/react"
-
 import { useDispatch } from "react-redux"
-import {
-   startLoading,
-   stopLoading,
-   setProgress,
-} from "@/features/slices/loadingSlice"
-import { toast } from "react-hot-toast"
+import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
 import {
    ChatAlt2Icon,
    HeartIcon,
@@ -16,79 +9,30 @@ import {
    UploadIcon,
 } from "@heroicons/react/outline"
 import TimeAgo from "react-timeago"
+import { useSession } from "next-auth/react"
 
-import CommentsComponent from "./comment"
+import Comment from "./comment"
 import placeholder from "../../public/man-placeholder.png"
-import { postComments } from "@/utils/fetch/postComment"
 import ImageComponent from "../image"
 
 import { Comments, Tweet } from "@/types/typings"
 
 interface Props {
    tweet: Tweet
-   addComment: Function
 }
 
-export default function TweetComponent({ tweet, addComment }: Props) {
+export default function TweetComponent({ tweet: tweetProps }: Props) {
    const dispatch = useDispatch()
-   const { data: session } = useSession()
    const router = useRouter()
+   const { data: session } = useSession()
 
-   const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
+   const [tweet, setTweet] = useState<Tweet>(tweetProps)
    const [showCommets, setShowComments] = useState<boolean>(false)
-   const [commentText, setCommentText] = useState<string>("")
+   const [isLiked, setIsLiked] = useState<boolean>(false)
 
    const userImageSrc = tweet?.user?.profileImage ?? placeholder
 
-   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      dispatch(startLoading())
-      e.preventDefault()
-      setIsDisabledButton(true)
-
-      try {
-         if (!session?.user?.id || !session?.user?.jwt) {
-            throw new Error("User ID is undefined")
-         }
-
-         const res = await postComments({
-            user: +session.user.id,
-            comment: commentText,
-            tweet: +tweet.id,
-            jwt: session.user.jwt,
-         })
-
-         dispatch(setProgress(70))
-
-         // get data and add to tweet list
-         const id = res.data.id
-         const { blockComment, createdAt, likes, comment, updatedAt } =
-            res.data.attributes
-         const newComment: Comments = {
-            id,
-            blockComment,
-            createdAt,
-            likes,
-            comment,
-            updatedAt,
-            user: {
-               id: session.user.id,
-               username: session.user.username,
-               blocked: session.user.blocked,
-               profileImage: session.user?.image,
-            },
-         }
-
-         addComment(newComment, tweet.id)
-         dispatch(stopLoading())
-         setCommentText("")
-         setIsDisabledButton(false)
-         toast.success("submitted successfully!")
-      } catch (error) {
-         dispatch(stopLoading())
-         setIsDisabledButton(false)
-         toast.error("something went wrong")
-      }
-   }
+   console.log(tweet.likes, session?.user.username)
 
    const goToUserProfile = (param: string) => {
       if (param === router.asPath) {
@@ -99,6 +43,23 @@ export default function TweetComponent({ tweet, addComment }: Props) {
          router.push(param)
       }
    }
+
+   const addComment = (newComment: Comments) => {
+      setTweet((tweet) => {
+         return {
+            ...tweet,
+            comments: [newComment, ...(tweet.comments as Comments[])],
+         }
+      })
+   }
+
+   useEffect(() => {
+      const isUserLiked: boolean = !!session
+         ? !!tweet.likes.find((user) => user.username === session.user.username)
+         : false
+
+      setIsLiked(isUserLiked)
+   }, [session, tweet.likes])
 
    return (
       <div className="space-x-3p-4 flex flex-col rounded-lg border border-gray-200 p-3 hover:bg-gray-100 dark:border-gray-700 hover:dark:bg-gray-800  md:p-5">
@@ -165,8 +126,18 @@ export default function TweetComponent({ tweet, addComment }: Props) {
                <SwitchHorizontalIcon className="h-5 w-5" />
             </div>
 
-            <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-transform hover:scale-110 hover:text-red-300">
-               <HeartIcon className="h-5 w-5" />
+            <div
+               className={`flex cursor-pointer items-center space-x-1 text-gray-400 ${
+                  isLiked && "text-rose-400 dark:text-rose-600"
+               }`}
+            >
+               <HeartIcon
+                  className={`h-5 w-5 transition-transform ${
+                     isLiked &&
+                     "scale-105 fill-rose-400 text-rose-500 dark:fill-rose-600 dark:text-rose-800"
+                  }`}
+               />
+               <p>{tweet.likes?.length || "0"}</p>
             </div>
 
             <div className="duration-125 flex cursor-pointer items-center space-x-3 text-gray-400 transition-transform hover:scale-110">
@@ -174,37 +145,7 @@ export default function TweetComponent({ tweet, addComment }: Props) {
             </div>
          </div>
 
-         {showCommets && (
-            <div className="hide-scrollbar my-2 mt-5 max-h-80 space-y-5 overflow-y-scroll border-t border-gray-300 p-3 py-0 dark:border-gray-500">
-               <form onSubmit={handleCommentSubmit} className="flex pt-5">
-                  <input
-                     className=" flex-1 bg-transparent text-gray-500 outline-none placeholder:text-gray-400 dark:text-gray-300"
-                     type="text"
-                     placeholder="Reply your comment"
-                     value={commentText}
-                     onChange={(e) => setCommentText(e.target.value)}
-                  />
-                  <button
-                     disabled={!session || !commentText || isDisabledButton}
-                     className="rounded-full bg-twitter px-2 pt-3 pb-2 text-sm leading-3 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
-                     type="submit"
-                  >
-                     Comment
-                  </button>
-               </form>
-               {(tweet?.comments?.length || 0) > 0 && (
-                  <div className="border-t border-gray-300 pt-4 dark:border-gray-500">
-                     {tweet?.comments &&
-                        tweet.comments.map((comment) => (
-                           <CommentsComponent
-                              key={comment.id}
-                              comment={comment}
-                           />
-                        ))}
-                  </div>
-               )}
-            </div>
-         )}
+         {showCommets && <Comment tweet={tweet} addComment={addComment} />}
       </div>
    )
 }
