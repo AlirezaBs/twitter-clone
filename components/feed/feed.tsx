@@ -90,7 +90,7 @@ export default function Feed({
          {/* display only in users profile page */}
          {!!user && (
             <div>
-               <UserBox user={user} />
+               <UserBox user={user} tweetCount={tweets.length} />
             </div>
          )}
 
