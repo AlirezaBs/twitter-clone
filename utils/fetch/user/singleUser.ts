@@ -9,6 +9,12 @@ export async function singleUser(userId: string) {
             profileImage: {
                fields: ["url"],
             },
+            following: {
+               fileds: ["id"]
+            },
+            follower: {
+               fields: ["id"]
+            }
          },
       },
       {

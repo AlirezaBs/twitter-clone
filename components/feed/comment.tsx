@@ -54,6 +54,7 @@ export default function Comment({ tweet, addComment }: Props) {
             createdAt,
             comment,
             updatedAt,
+            likes: [],
             user: {
                id: session.user.id,
                username: session.user.username,
@@ -86,7 +87,7 @@ export default function Comment({ tweet, addComment }: Props) {
             />
             <button
                disabled={!session || !commentText || isDisabledButton}
-               className="rounded-full bg-twitter px-2 pt-3 pb-2 text-sm leading-3 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
+               className="rounded-full bg-twitter px-2 py-2 text-sm font-bold leading-3 text-white hover:bg-twitter/80 focus:active:bg-twitter/80 disabled:opacity-40"
                type="submit"
             >
                Comment

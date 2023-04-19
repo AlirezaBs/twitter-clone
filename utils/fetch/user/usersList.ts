@@ -9,6 +9,12 @@ const queryParams = qs.stringify(
          profileImage: {
             fields: ["url"],
          },
+         following: {
+            fileds: ["id"],
+         },
+         follower: {
+            fields: ["id"],
+         },
       },
    },
    {
@@ -17,17 +23,16 @@ const queryParams = qs.stringify(
 )
 
 export async function GetUsersList() {
-    const res = await fetch(
-       `${process.env.NEXT_PUBLIC_API_URL}api/users?${queryParams}`
-    )
- 
-    if (!res.ok) {
-       throw new Error("some error accured")
-    }
- 
-    const data = await res.json()
-    const users: User[] = parseUsersList(data)
- 
-    return users
- }
- 
+   const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}api/users?${queryParams}`
+   )
+
+   if (!res.ok) {
+      throw new Error("some error accured")
+   }
+
+   const data = await res.json()
+   const users: User[] = parseUsersList(data)
+
+   return users
+}

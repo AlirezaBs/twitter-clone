@@ -128,7 +128,7 @@ export default function TweetComponent({ tweet: tweetProps }: Props) {
             <div className="flex-1">
                <div className="flex items-center space-x-1">
                   <p
-                     className="text-sm font-bold hover:cursor-pointer hover:text-twitter focus:text-twitter"
+                     className="text-sm font-bold cursor-pointer hover:text-twitter focus:text-twitter"
                      onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}
                   >
                      @

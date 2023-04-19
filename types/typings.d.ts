@@ -38,6 +38,9 @@ export interface User {
    createdAt: string
    updatedAt: string
    profileImage?: string
+
+   followings: Following[]
+   followers: followers[]
 }
 
 export type TweetBody = {
@@ -49,5 +52,13 @@ export type CommentBody = {
 }
 
 export interface Likes {
+   id: number
+}
+
+export interface Following {
+   id: number
+}
+
+export interface Followers {
    id: number
 }

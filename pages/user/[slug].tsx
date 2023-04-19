@@ -28,7 +28,7 @@ export default function Page({ tweets, error, user }: Props) {
                <div className="flex flex-col items-center justify-center">
                   <p className="text-center px-2">Can not fetch any data, check your INTERNET or PROXY</p>
                   <button
-                     className="mt-3 hover:bg-twitter transition hover:text-white rounded-lg border border-twitter bg-transparent px-2 py-1"
+                     className="mt-3 hover:bg-twitter transition hover:text-white rounded-lg border-2 border-twitter bg-transparent px-2 py-1"
                      onClick={() => window.location.reload()}
                   >
                      Reload

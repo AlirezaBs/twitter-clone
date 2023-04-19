@@ -1,4 +1,4 @@
-import { User } from "@/types/typings"
+import { Followers, Following, User } from "@/types/typings"
 
 export function parseUsersList(data: any[]): User[] {
    return data.map((item) => ({
@@ -11,6 +11,9 @@ export function parseUsersList(data: any[]): User[] {
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
       profileImage: item.profileImage ? item.profileImage.url : null,
+
+      followers: item.followers as Followers[],
+      followings: item.followings as Following[],
    }))
 }
 
@@ -25,5 +28,8 @@ export function parseUsers(data: any): User {
       createdAt: data.createdAt,
       updatedAt: data.updatedAt,
       profileImage: data.profileImage ? data.profileImage.url : null,
+
+      followings: data.following as Following[],
+      followers: data.follower as Followers[],
    }
 }
