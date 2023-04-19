@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import Feed from "@/components/feed/feed"
 import { Tweet } from "@/types/typings"
-import { feedData } from "@/utils/fetch/feedData"
+import { feedData } from "@/utils/fetch/tweet/feedData"
 import Layout from "@/components/layouts/layout"
 
 interface Props {

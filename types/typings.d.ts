@@ -25,6 +25,7 @@ export interface Comments extends CommentBody {
       profileImage?: string | null
       blocked: boolean
    }
+   likes: Likes[]
 }
 
 export interface User {
@@ -48,5 +49,5 @@ export type CommentBody = {
 }
 
 export interface Likes {
-   username: string
+   id: number
 }

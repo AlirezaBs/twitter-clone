@@ -57,6 +57,14 @@ interface TweetData {
                      }
                   }
                }
+               likes: {
+                  data: {
+                     id: number
+                     attributes: {
+                        username: string
+                     }
+                  }[]
+               }
             }
          }[]
       }
@@ -95,9 +103,9 @@ export function parseTweetData(tweetData: TweetData[]): Tweet[] {
       }
 
       const likes: Likes[] = attributes.likes?.data.map((likeData) => {
-         const username = likeData.attributes.username
+         const id = likeData.id
          return {
-            username,
+            id,
          }
       })
 
@@ -118,6 +126,14 @@ export function parseTweetData(tweetData: TweetData[]): Tweet[] {
                blocked,
                profileImage,
             }
+
+            const likes: Likes[] = attributes.likes?.data.map((likeData) => {
+               const id = likeData.id
+               return {
+                  id,
+               }
+            })
+
             return {
                id,
                comment,
@@ -125,6 +141,7 @@ export function parseTweetData(tweetData: TweetData[]): Tweet[] {
                createdAt,
                updatedAt,
                user,
+               likes,
             }
          }
       )

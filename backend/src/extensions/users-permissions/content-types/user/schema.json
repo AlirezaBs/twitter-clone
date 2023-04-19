@@ -86,11 +86,17 @@
     "about": {
       "type": "string"
     },
-    "user": {
+    "likes": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::tweet.tweet",
-      "mappedBy": "likes"
+      "inversedBy": "likes"
+    },
+    "commentsLikes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::comment.comment",
+      "inversedBy": "likes"
     }
   }
 }

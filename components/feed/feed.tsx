@@ -7,13 +7,13 @@ import toast from "react-hot-toast"
 
 import TweetBox from "./tweetBox"
 import TweetComponent from "./tweet"
-import { feedData } from "@/utils/fetch/feedData"
+import { feedData } from "@/utils/fetch/tweet/feedData"
 import TweetSkeleton from "../skeleton/tweetSkeleton"
 import TweetNonImageSkeleton from "../skeleton/tweetNonImageSkeleton"
-import { userTweets } from "@/utils/fetch/userTweets"
+import { userTweets } from "@/utils/fetch/tweet/userTweets"
 import UserBox from "./userBox"
 
-import { Comments, Tweet, User } from "@/types/typings"
+import { Tweet, User } from "@/types/typings"
 
 interface Props {
    tweets: Tweet[]

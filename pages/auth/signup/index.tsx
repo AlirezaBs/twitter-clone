@@ -7,7 +7,7 @@ import { useRouter } from "next/router"
 import { EyeIcon } from "@heroicons/react/outline"
 import { useDispatch } from "react-redux"
 
-import { signUp } from "@/utils/fetch/register"
+import { signUp } from "@/utils/fetch/user/register"
 import twitterLogo from "../../../public/twitter.webp"
 import AuthLayout from "@/components/layouts/authLayout"
 import { startLoading } from "@/features/slices/loadingSlice"

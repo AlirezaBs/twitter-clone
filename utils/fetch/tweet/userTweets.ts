@@ -1,6 +1,6 @@
 import { Tweet } from "@/types/typings"
 import qs from "qs"
-import { parseTweetData } from "../parser/feedDataParse"
+import { parseTweetData } from "../../parser/feedDataParse"
 
 export async function userTweets(userId: string) {
    const queryParams = qs.stringify(
@@ -45,6 +45,9 @@ export async function userTweets(userId: string) {
                            fields: ["url"],
                         },
                      },
+                  },
+                  likes: {
+                     fileds: ["username"]
                   },
                },
             },

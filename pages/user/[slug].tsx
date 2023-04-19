@@ -3,8 +3,8 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import Layout from "@/components/layouts/layout"
 import Feed from "@/components/feed/feed"
-import { userTweets } from "@/utils/fetch/userTweets"
-import { singleUser } from "@/utils/fetch/singleUser"
+import { userTweets } from "@/utils/fetch/tweet/userTweets"
+import { singleUser } from "@/utils/fetch/user/singleUser"
 
 interface Props {
    tweets: Tweet[]

@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
 import { SearchIcon } from "@heroicons/react/outline"
 
-import { GetUsersList } from "@/utils/fetch/usersList"
+import { GetUsersList } from "@/utils/fetch/user/usersList"
 import UserSkeleton from "../skeleton/userSkeleton"
 import UserRow from "./userRow"
 

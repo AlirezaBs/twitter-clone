@@ -12,9 +12,9 @@ import { toast } from "react-hot-toast"
 import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline"
 
 import placeholder from "../../public/man-placeholder.png"
-import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
+import { PostTweet, postTweet } from "@/utils/fetch/tweet/postTweet"
 import ImageComponent from "../image"
-import { getTweetImage } from "@/utils/fetch/tweetImage"
+import { getTweetImage } from "@/utils/fetch/tweet/tweetImage"
 
 import { Tweet } from "@/types/typings"
 

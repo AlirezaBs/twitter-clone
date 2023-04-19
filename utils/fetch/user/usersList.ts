@@ -1,6 +1,6 @@
 import { User } from "@/types/typings"
 import qs from "qs"
-import { parseUsersList } from "../parser/userParse"
+import { parseUsersList } from "../../parser/userParse"
 
 const queryParams = qs.stringify(
    {

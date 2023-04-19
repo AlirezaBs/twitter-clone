@@ -8,7 +8,7 @@ import {
    startLoading,
    stopLoading,
 } from "@/features/slices/loadingSlice"
-import { postComments } from "@/utils/fetch/postComment"
+import { postComments } from "@/utils/fetch/comment/postComment"
 
 import { Comments, Tweet } from "@/types/typings"
 import CommentsRow from "./commentRow"

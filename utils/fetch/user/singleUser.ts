@@ -1,6 +1,6 @@
 import qs from "qs"
 import { User } from "@/types/typings"
-import { parseUsers } from "../parser/userParse"
+import { parseUsers } from "../../parser/userParse"
 
 export async function singleUser(userId: string) {
    const queryParams = qs.stringify(
