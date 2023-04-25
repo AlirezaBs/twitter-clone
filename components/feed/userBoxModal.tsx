@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast"
 
 import ImageComponent from "../image"
 import placeholder from "../../public/man-placeholder.png"
-import { patchUsers, updateUser } from "@/utils/fetch/patchUser"
+import { patchUsers, updateUser } from "@/utils/fetch/user/patchUser"
 
 import { User } from "@/types/typings"
 

@@ -22,10 +22,6 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "comments"
     },
-    "likes": {
-      "type": "integer",
-      "default": 0
-    },
     "tweet": {
       "type": "relation",
       "relation": "manyToOne",
@@ -35,6 +31,12 @@
     "blockComment": {
       "type": "boolean",
       "default": false
+    },
+    "likes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "commentsLikes"
     }
   }
 }

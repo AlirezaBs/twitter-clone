@@ -1,6 +1,6 @@
 import qs from "qs"
 import { User } from "@/types/typings"
-import { parseUsers } from "../parser/userParse"
+import { parseUsers } from "../../parser/userParse"
 
 export async function singleUser(userId: string) {
    const queryParams = qs.stringify(
@@ -9,6 +9,12 @@ export async function singleUser(userId: string) {
             profileImage: {
                fields: ["url"],
             },
+            following: {
+               fileds: ["id"]
+            },
+            follower: {
+               fields: ["id"]
+            }
          },
       },
       {

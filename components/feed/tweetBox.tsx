@@ -12,9 +12,9 @@ import { toast } from "react-hot-toast"
 import { EmojiHappyIcon, PhotographIcon, XIcon } from "@heroicons/react/outline"
 
 import placeholder from "../../public/man-placeholder.png"
-import { PostTweet, postTweet } from "@/utils/fetch/postTweet"
+import { PostTweet, postTweet } from "@/utils/fetch/tweet/postTweet"
 import ImageComponent from "../image"
-import { getTweetImage } from "@/utils/fetch/tweetImage"
+import { getTweetImage } from "@/utils/fetch/tweet/tweetImage"
 
 import { Tweet } from "@/types/typings"
 
@@ -67,13 +67,11 @@ export default function TweetBox({ addToList }: Props) {
 
          // get data and add to tweet list
          const id = res.data.id
-         const { blockTweet, createdAt, likes, text, updatedAt } =
-            res.data.attributes
+         const { blockTweet, createdAt, text, updatedAt } = res.data.attributes
          const newTweet: Tweet = {
             id,
             blockTweet,
             createdAt,
-            likes,
             text,
             updatedAt,
             user: {
@@ -82,6 +80,7 @@ export default function TweetBox({ addToList }: Props) {
                blocked: session.user.blocked,
                profileImage: session.user?.image,
             },
+            likes: [],
             comments: [],
          }
 
@@ -118,7 +117,7 @@ export default function TweetBox({ addToList }: Props) {
          <div
             className={`flex flex-col space-x-2 rounded-b-lg border-x border-b border-gray-200 p-5 dark:border-gray-700`}
          >
-            <div className="flex space-x-2 mb-1 items-start">
+            <div className="mb-1 flex items-start space-x-2">
                {!path.includes("/user/") && (
                   <ImageComponent
                      height={54}
@@ -128,12 +127,12 @@ export default function TweetBox({ addToList }: Props) {
                   />
                )}
 
-               <div className="flex-1 mt-4">
+               <div className="mt-4 flex-1">
                   <textarea
                      value={input}
                      onChange={(e) => setInput(e.target.value)}
                      placeholder="What's Happening?"
-                     className="lg w-full bg-transparent resize-y min-h-[60px] text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
+                     className="lg min-h-[60px] w-full resize-y bg-transparent text-sm text-gray-400 outline-none placeholder:text-sm dark:text-gray-200 md:text-lg md:placeholder:text-lg"
                   />
                </div>
             </div>

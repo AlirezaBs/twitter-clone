@@ -7,13 +7,13 @@ import toast from "react-hot-toast"
 
 import TweetBox from "./tweetBox"
 import TweetComponent from "./tweet"
-import { feedData } from "@/utils/fetch/feedData"
+import { feedData } from "@/utils/fetch/tweet/feedData"
 import TweetSkeleton from "../skeleton/tweetSkeleton"
 import TweetNonImageSkeleton from "../skeleton/tweetNonImageSkeleton"
-import { userTweets } from "@/utils/fetch/userTweets"
+import { userTweets } from "@/utils/fetch/tweet/userTweets"
 import UserBox from "./userBox"
 
-import { Comments, Tweet, User } from "@/types/typings"
+import { Tweet, User } from "@/types/typings"
 
 interface Props {
    tweets: Tweet[]
@@ -21,7 +21,11 @@ interface Props {
    user?: User
 }
 
-export default function Feed({ tweets: tweetsProp, title, user }: Props) {
+export default function Feed({
+   tweets: tweetsProp,
+   title,
+   user
+}: Props) {
    const [tweets, setTweets] = useState<Tweet[]>(tweetsProp)
    const [loading, setLoading] = useState<boolean>(true)
 
@@ -51,22 +55,6 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
 
    const addToList = (newTweet: Tweet) => {
       setTweets((tweets) => [newTweet, ...tweets])
-   }
-
-   const addComment = (newComment: Comments, tweetId: number) => {
-      setTweets((prevTweets) =>
-         prevTweets.map((tweet) =>
-            tweet.id === tweetId
-               ? {
-                    ...tweet,
-                    comments: [
-                       newComment,
-                       ...(tweet.comments || []),
-                    ] as Comments[],
-                 }
-               : tweet
-         )
-      )
    }
 
    useEffect(() => {
@@ -102,7 +90,7 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
          {/* display only in users profile page */}
          {!!user && (
             <div>
-               <UserBox user={user} />
+               <UserBox user={user} tweetCount={tweets.length} />
             </div>
          )}
 
@@ -129,7 +117,6 @@ export default function Feed({ tweets: tweetsProp, title, user }: Props) {
                   <TweetComponent
                      key={tweet.id}
                      tweet={tweet}
-                     addComment={addComment}
                   />
                ))}
             </div>

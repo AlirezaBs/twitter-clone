@@ -1,6 +1,6 @@
 import { Tweet } from "@/types/typings"
 import qs from "qs"
-import { parseTweetData } from "../parser/feedDataParse"
+import { parseTweetData } from "../../parser/feedDataParse"
 
 export async function userTweets(userId: string) {
    const queryParams = qs.stringify(
@@ -13,7 +13,7 @@ export async function userTweets(userId: string) {
             },
          },
          sort: ["createdAt:desc"],
-         fields: ["text", "blockTweet", "likes", "createdAt", "updatedAt"],
+         fields: ["text", "blockTweet", "createdAt", "updatedAt"],
          populate: {
             image: {
                fields: ["url"],
@@ -26,12 +26,14 @@ export async function userTweets(userId: string) {
                   },
                },
             },
+            likes: {
+               fileds: ["username"]
+            },
             comments: {
                sort: ["createdAt:desc"],
                fields: [
                   "comment",
                   "blockComment",
-                  "likes",
                   "createdAt",
                   "updatedAt",
                ],
@@ -43,6 +45,9 @@ export async function userTweets(userId: string) {
                            fields: ["url"],
                         },
                      },
+                  },
+                  likes: {
+                     fileds: ["username"]
                   },
                },
             },

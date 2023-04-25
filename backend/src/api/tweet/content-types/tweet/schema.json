@@ -28,10 +28,6 @@
         "images"
       ]
     },
-    "likes": {
-      "type": "integer",
-      "default": 0
-    },
     "user": {
       "type": "relation",
       "relation": "manyToOne",
@@ -43,6 +39,12 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "tweet"
+    },
+    "likes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "likes"
     }
   }
 }

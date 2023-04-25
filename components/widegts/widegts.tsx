@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux"
 import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
 import { SearchIcon } from "@heroicons/react/outline"
 
-import { GetUsersList } from "@/utils/fetch/usersList"
+import { GetUsersList } from "@/utils/fetch/user/usersList"
 import UserSkeleton from "../skeleton/userSkeleton"
 import UserRow from "./userRow"
 
@@ -56,7 +56,7 @@ function Widegts() {
 
             <div className="flex flex-col overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
                <h1 className="py-3 pl-3 text-xl font-semibold">
-                  Who Joined tweethub
+                  Who Joined TweetHub
                </h1>
                {!!loading ? (
                   <div className="flex flex-col space-y-4">
@@ -67,7 +67,7 @@ function Widegts() {
                      ))}
                   </div>
                ) : (
-                  <>
+                  <div className="flex flex-col max-h-96 hide-scrollbar overflow-scroll">
                      {users.map((user) => (
                         <UserRow
                            key={user.id}
@@ -75,7 +75,7 @@ function Widegts() {
                            goToUserProfile={goToUserProfile}
                         />
                      ))}
-                  </>
+                  </div>
                )}
             </div>
          </div>

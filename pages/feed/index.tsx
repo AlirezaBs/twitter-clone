@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next"
 import Head from "next/head"
 import Feed from "@/components/feed/feed"
 import { Tweet } from "@/types/typings"
-import { feedData } from "@/utils/fetch/feedData"
+import { feedData } from "@/utils/fetch/tweet/feedData"
 import Layout from "@/components/layouts/layout"
 
 interface Props {
@@ -23,7 +23,17 @@ export default function Page({ tweets, error }: Props) {
                <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="flex h-screen items-center justify-center">
-               Can not fetch any data, check your INTERNET or PROXY
+               <div className="flex flex-col items-center justify-center">
+                  <p className="px-2 text-center">
+                     Can not fetch any data, check your INTERNET or PROXY
+                  </p>
+                  <button
+                     className="mt-3 rounded-lg border-2 border-twitter bg-transparent px-2 py-1 transition hover:bg-twitter hover:text-white"
+                     onClick={() => window.location.reload()}
+                  >
+                     Reload
+                  </button>
+               </div>
             </div>
          </>
       )

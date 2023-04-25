@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { User } from "next-auth/core/types"
-import { singleUser } from "@/utils/fetch/singleUser"
+import { singleUser } from "@/utils/fetch/user/singleUser"
 
 export const authOptions: NextAuthOptions = {
    session: {

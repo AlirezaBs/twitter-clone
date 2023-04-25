@@ -11,6 +11,7 @@ export interface Tweet extends TweetBody {
       profileImage?: string | null
    }
    comments?: Comments[]
+   likes: Likes[]
 }
 
 export interface Comments extends CommentBody {
@@ -24,6 +25,7 @@ export interface Comments extends CommentBody {
       profileImage?: string | null
       blocked: boolean
    }
+   likes: Likes[]
 }
 
 export interface User {
@@ -36,14 +38,27 @@ export interface User {
    createdAt: string
    updatedAt: string
    profileImage?: string
+
+   followings: Following[]
+   followers: followers[]
 }
 
 export type TweetBody = {
    text: string
-   likes: number
 }
 
 export type CommentBody = {
    comment: string
-   likes: number
+}
+
+export interface Likes {
+   id: number
+}
+
+export interface Following {
+   id: number
+}
+
+export interface Followers {
+   id: number
 }
