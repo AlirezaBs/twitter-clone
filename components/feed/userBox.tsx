@@ -29,6 +29,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
    const [about, setAbout] = useState(user.about)
    const [isUserFollowed, setIsUserFollowed] = useState<boolean>(false)
+   const [isUserFollowing, setIsUserFollowing] = useState<boolean>(false)
    const [isFollowDisabled, setIsFollowDisabled] = useState<boolean>(false)
 
    const userImageSrc = user?.profileImage ?? placeholder
@@ -95,6 +96,11 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
          !!session &&
          !!user.followers.find((user) => +user.id === +session.user.id)
 
+      const isFollowing: boolean =
+         !!session &&
+         !!user.followings.find((user) => +user.id === +session.user.id)
+
+      setIsUserFollowing(isFollowing)
       setIsUserFollowed(isFollowed)
    }, [session, user])
 
@@ -154,13 +160,18 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
                      <button
                         onClick={handleFollow}
                         disabled={isFollowDisabled}
-                        className={`w-[100px] rounded-full border-2 py-1  font-bold transition-transform disabled:opacity-75 md:w-[140px] ${
+                        className={`w-[100px] cursor-pointer rounded-full border-2 py-1 font-bold transition-transform disabled:scale-95 disabled:opacity-75 md:w-[140px] ${
                            isUserFollowed
-                              ? " border-twitter/40 bg-bgLight text-gray-800 hover:bg-gray-100/80 dark:bg-bgDark dark:text-gray-100 hover:dark:bg-gray-800/80"
-                              : "border-twitter bg-twitter hover:bg-twitter/80"
+                              ? " border-twitter/40 bg-bgLight text-gray-600 hover:bg-gray-100/80 dark:bg-bgDark dark:text-gray-200 hover:dark:bg-gray-800/80"
+                              : "border-twitter bg-twitter text-white hover:bg-twitter/80"
                         }`}
                      >
-                        {isUserFollowed ? "Unfollow" : "Follow"}
+                        {isUserFollowed
+                           ? "Unfollow"
+                           : isUserFollowing
+                           ? "Follow Back"
+                           : "Follow"}
+                           {isFollowDisabled && "..."}
                      </button>
                   )}
                </div>
