@@ -8,6 +8,7 @@ import AppLayout from "@/components/layouts/appLayout"
 import store from "@/features/store"
 import { Provider } from "react-redux"
 import LoadingBarComponent from "@/components/loadingBar"
+import { Analytics } from "@vercel/analytics/react"
 
 const heebo = Heebo({
    subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function App({
                   <Toaster />
                   <main className={`${heebo.className}`}>
                      <Component {...pageProps} />
+                     <Analytics />
                   </main>
                </AppLayout>
             </SessionProvider>
