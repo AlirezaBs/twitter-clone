@@ -9,6 +9,7 @@ import placeholder from "../../public/man-placeholder.png"
 import { patchUsers, updateUser } from "@/utils/fetch/user/patchUser"
 
 import { User } from "@/types/typings"
+import imageLoader from "@/utils/imageLoader"
 
 interface Props {
    user: User
@@ -17,7 +18,12 @@ interface Props {
    setUserAbout: (text: string) => void
 }
 
-export default function UserBoxModal({ user, setLoading, onClose, setUserAbout }: Props) {
+export default function UserBoxModal({
+   user,
+   setLoading,
+   onClose,
+   setUserAbout,
+}: Props) {
    const [isDisabledButton, setIsDisabledButton] = useState<boolean>(false)
    const [file, setFile] = useState<File>()
    const [about, setAbout] = useState(user.about)
@@ -26,7 +32,9 @@ export default function UserBoxModal({ user, setLoading, onClose, setUserAbout }
 
    const userImageSrc = file
       ? (URL.createObjectURL(file) as string)
-      : user?.profileImage ?? placeholder
+      : user?.profileImage
+      ? imageLoader(user.profileImage)
+      : placeholder
 
    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
       const selectedImage = e.target.files?.[0]
@@ -54,7 +62,7 @@ export default function UserBoxModal({ user, setLoading, onClose, setUserAbout }
          const res = await patchUsers(patchBody)
 
          setUserAbout(res.about)
-         
+
          setLoading(false)
          onClose()
       } catch (err) {

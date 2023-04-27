@@ -3,6 +3,7 @@ import TimeAgo from "react-timeago"
 import placeholder from "../../public/man-placeholder.png"
 import { User } from "@/types/typings"
 import ImageComponent from "../image"
+import imageLoader from "@/utils/imageLoader"
 
 interface Props {
    user: User
@@ -10,7 +11,9 @@ interface Props {
 }
 
 export default function UserRow({ user, goToUserProfile }: Props) {
-   const userImageSrc = user?.profileImage ?? placeholder
+   const userImageSrc = user?.profileImage
+      ? imageLoader(user.profileImage)
+      : placeholder
 
    return (
       <div className="flex flex-row items-center space-x-3 rounded-lg px-2 py-3 hover:bg-gray-200 hover:dark:bg-gray-700">

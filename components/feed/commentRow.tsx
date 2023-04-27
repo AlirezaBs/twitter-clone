@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast"
 import placeholder from "../../public/man-placeholder.png"
 import ImageComponent from "../image"
 import { likeComment } from "@/utils/fetch/comment/likeComment"
+import imageLoader from "@/utils/imageLoader"
 
 import { Comments } from "@/types/typings"
 
@@ -27,7 +28,9 @@ export default function CommentsRow({ comment: commentProps }: Props) {
    const [isLiked, setIsLiked] = useState<boolean>(false)
    const [isLikeDisabled, setIsLIkeDisabled] = useState<boolean>(false)
 
-   const userImageSrc = comment.user?.profileImage ?? placeholder
+   const userImageSrc = comment.user?.profileImage
+      ? imageLoader(comment.user?.profileImage)
+      : placeholder
 
    const goToUserProfile = (param: string) => {
       if (param === router.asPath) {
