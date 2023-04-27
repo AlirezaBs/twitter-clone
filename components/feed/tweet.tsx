@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react"
 import Comment from "./comment"
 import placeholder from "../../public/man-placeholder.png"
 import ImageComponent from "../image"
+import imageLoader from "@/utils/imageLoader"
 
 import { Comments, Tweet } from "@/types/typings"
 import { likeTweet } from "@/utils/fetch/tweet/likeTweet"
@@ -33,7 +34,9 @@ export default function TweetComponent({ tweet: tweetProps }: Props) {
    const [showCommets, setShowComments] = useState<boolean>(false)
    const [isLikeDisabled, setIsLIkeDisabled] = useState<boolean>(false)
 
-   const userImageSrc = tweet?.user?.profileImage ?? placeholder
+   const userImageSrc = tweet?.user?.profileImage
+      ? imageLoader(tweet?.user?.profileImage)
+      : placeholder
 
    const goToUserProfile = (param: string) => {
       if (param === router.asPath) {
@@ -128,7 +131,7 @@ export default function TweetComponent({ tweet: tweetProps }: Props) {
             <div className="flex-1">
                <div className="flex items-center space-x-1">
                   <p
-                     className="text-sm font-bold cursor-pointer hover:text-twitter focus:text-twitter"
+                     className="cursor-pointer text-sm font-bold hover:text-twitter focus:text-twitter"
                      onClick={() => goToUserProfile(`/user/${tweet.user.id}`)}
                   >
                      @
@@ -148,7 +151,7 @@ export default function TweetComponent({ tweet: tweetProps }: Props) {
                {tweet.image && (
                   <div className="relative m-5 ml-0 mb-1 max-h-64 w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
                      <ImageComponent
-                        src={tweet?.image}
+                        src={imageLoader(tweet?.image)}
                         alt=""
                         width={30}
                         height={30}

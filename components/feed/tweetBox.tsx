@@ -15,6 +15,7 @@ import placeholder from "../../public/man-placeholder.png"
 import { PostTweet, postTweet } from "@/utils/fetch/tweet/postTweet"
 import ImageComponent from "../image"
 import { getTweetImage } from "@/utils/fetch/tweet/tweetImage"
+import imageLoader from "@/utils/imageLoader"
 
 import { Tweet } from "@/types/typings"
 
@@ -32,7 +33,9 @@ export default function TweetBox({ addToList }: Props) {
    const [file, setFile] = useState<File>()
 
    const path = router.asPath
-   const userImageSrc = session?.user?.image ?? placeholder
+   const userImageSrc = session?.user?.image
+      ? imageLoader(session?.user?.image)
+      : placeholder
 
    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
       const selectedImage = e.target.files?.[0]

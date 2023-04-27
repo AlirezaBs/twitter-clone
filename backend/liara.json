@@ -1,0 +1,10 @@
+{
+    "app": "tweethub-backend",
+    "port": 1337,
+    "disks": [
+        {
+            "name": "thedata",
+            "mountTo": "uploads"
+        }
+    ]
+}

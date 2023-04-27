@@ -8,7 +8,9 @@ export interface updateUser {
 export const patchUsers = async ({ id, about, image, jwt }: updateUser) => {
    const formData = new FormData()
    about && formData.append("about", about)
-   image && formData.append("files.ProfileImage", image)
+   image && formData.append("files.profileImage", image)
+
+   console.log(formData, image)
 
    const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}api/users/${id}/`,

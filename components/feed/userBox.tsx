@@ -13,6 +13,7 @@ import UserBoxModal from "./userBoxModal"
 import Modal from "../modal"
 import numberFormat from "@/utils/numberFormat"
 import { followUser } from "@/utils/fetch/user/followUser"
+import imageLoader from "@/utils/imageLoader"
 
 import { User } from "@/types/typings"
 
@@ -32,7 +33,9 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
    const [isUserFollowing, setIsUserFollowing] = useState<boolean>(false)
    const [isFollowDisabled, setIsFollowDisabled] = useState<boolean>(false)
 
-   const userImageSrc = user?.profileImage ?? placeholder
+   const userImageSrc = user?.profileImage
+      ? imageLoader(user.profileImage)
+      : placeholder
 
    const handleLoading = (val: boolean) => {
       val ? dispatch(startLoading()) : dispatch(stopLoading())
@@ -112,6 +115,10 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
       setAbout(user.about)
    }, [user])
 
+   useEffect(() => {
+      setUser((user) => ({ ...user, about: about }))
+   }, [about])
+
    return (
       <>
          <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -171,7 +178,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
                            : isUserFollowing
                            ? "Follow Back"
                            : "Follow"}
-                           {isFollowDisabled && "..."}
+                        {isFollowDisabled && "..."}
                      </button>
                   )}
                </div>
