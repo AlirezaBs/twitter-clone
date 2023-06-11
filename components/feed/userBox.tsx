@@ -32,6 +32,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
    const [isUserFollowed, setIsUserFollowed] = useState<boolean>(false)
    const [isUserFollowing, setIsUserFollowing] = useState<boolean>(false)
    const [isFollowDisabled, setIsFollowDisabled] = useState<boolean>(false)
+   const [isThisUser, setIsThisUser] = useState<boolean>(false)
 
    const userImageSrc = user?.profileImage
       ? imageLoader(user.profileImage)
@@ -95,6 +96,8 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
    }
 
    useLayoutEffect(() => {
+      const isUser: boolean = !!session && session?.user.id !== user.id
+
       const isFollowed: boolean =
          !!session &&
          !!user.followers.find((user) => +user.id === +session.user.id)
@@ -103,6 +106,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
          !!session &&
          !!user.followings.find((user) => +user.id === +session.user.id)
 
+      setIsThisUser(isUser)
       setIsUserFollowing(isFollowing)
       setIsUserFollowed(isFollowed)
    }, [session, user])
@@ -163,7 +167,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
                      {user.username}
                   </p>
 
-                  {session?.user.id !== user.id && (
+                  {!isThisUser && (
                      <button
                         onClick={handleFollow}
                         disabled={isFollowDisabled}
@@ -196,7 +200,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
                </span>
             </div>
 
-            {session?.user.id === user.id && (
+            {isThisUser && (
                <PencilAltIcon
                   className="absolute right-3 top-2 h-5 w-5 cursor-pointer text-twitter"
                   onClick={() => setIsModalOpen(true)}

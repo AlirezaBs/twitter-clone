@@ -58,6 +58,7 @@ function Widegts() {
                <h1 className="py-3 pl-3 text-xl font-semibold">
                   Who Joined TweetHub
                </h1>
+               <hr className="border-gray-300 dark:border-gray-700" />
                {!!loading ? (
                   <div className="flex flex-col space-y-4">
                      {Array.from(Array(5)).map(() => (
@@ -66,8 +67,13 @@ function Widegts() {
                         </>
                      ))}
                   </div>
+               ) : users.length === 0 ? (
+                  <div className="p-3 text-sm text-gray-700 dark:text-gray-300">
+                     <p>No users registered yet!</p>
+                     <p>Try it Free now</p>
+                  </div>
                ) : (
-                  <div className="flex flex-col max-h-96 hide-scrollbar overflow-scroll">
+                  <div className="hide-scrollbar flex max-h-96 flex-col overflow-scroll">
                      {users.map((user) => (
                         <UserRow
                            key={user.id}
