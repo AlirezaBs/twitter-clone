@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
 
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: [process.env.NEXT_PUBLIC_API_URL_NEXTJS],
   },
 }
 
