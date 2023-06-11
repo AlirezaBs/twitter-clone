@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { useSession } from "next-auth/react"
 
 import { useDispatch } from "react-redux"
@@ -94,7 +94,7 @@ export default function UserBox({ user: userProps, tweetCount }: Props) {
       setIsFollowDisabled(false)
    }
 
-   useEffect(() => {
+   useLayoutEffect(() => {
       const isFollowed: boolean =
          !!session &&
          !!user.followers.find((user) => +user.id === +session.user.id)

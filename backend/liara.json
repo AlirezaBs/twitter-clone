@@ -4,7 +4,7 @@
     "disks": [
         {
             "name": "thedata",
-            "mountTo": "uploads"
+            "mountTo": "theData"
         }
     ]
 }
