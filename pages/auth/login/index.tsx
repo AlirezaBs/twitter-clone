@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { useForm } from "react-hook-form"
 import { EyeIcon } from "@heroicons/react/outline"
-import { startLoading } from "@/features/slices/loadingSlice"
+import { startLoading, stopLoading } from "@/features/slices/loadingSlice"
 
 import AuthLayout from "@/components/layouts/authLayout"
 import twitterLogo from "../../../public/twitter.webp"
@@ -42,6 +42,7 @@ export default function Login() {
                ? "Invalid username or password"
                : res.error || "An error occurred"
          )
+         dispatch(stopLoading())
          return
       }
 

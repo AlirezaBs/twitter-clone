@@ -23,7 +23,7 @@ export default function UserRow({ user, goToUserProfile }: Props) {
                alt={user.username}
                width={40}
                height={40}
-               className="h-10 w-10 rounded-full border-2 border-gray-200 bg-transparent object-cover dark:border-gray-700"
+               className="h-10 w-10 cursor-pointer rounded-full border-2 border-gray-200 bg-transparent object-cover dark:border-gray-700"
             />
          </div>
 
